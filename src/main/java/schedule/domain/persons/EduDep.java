@@ -13,8 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import schedule.domain.Chair.Faculty;
-import schedule.domain.ScheduleChangeJournal;
+import schedule.domain.schedule.ScheduleChangeJournal;
+import schedule.domain.struct.Chair.Faculty;
 
 
 /**

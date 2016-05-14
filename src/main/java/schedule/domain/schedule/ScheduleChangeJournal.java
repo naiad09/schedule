@@ -1,4 +1,4 @@
-package schedule.domain;
+package schedule.domain.schedule;
 // Generated 09.05.2016 15:19:28 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;

@@ -4,6 +4,6 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean name="chairDAO" class="schedule.dao.SimpleGenericDAO"
-		c:type="schedule.domain.Chair" />
+		c:type="schedule.domain.struct.Chair" />
 
 </beans>

@@ -13,7 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import schedule.domain.LecturerJob;
+import schedule.domain.struct.LecturerJob;
 
 
 /**

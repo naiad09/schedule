@@ -6,12 +6,15 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
+
 <sec:authorize access="isAnonymous()">
     Вы не авторизированны. 
     <a href="${pageContext.request.contextPath}/login">Войти</a>
 </sec:authorize>
 
 <sec:authorize access="isAuthenticated()">
+
+	<sec:authentication property="principal.person" var="currentUser" />
 
 	<a
 		href="${pageContext.request.contextPath}/persons/uid${currentUser.uid}">

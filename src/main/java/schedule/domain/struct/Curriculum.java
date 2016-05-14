@@ -1,4 +1,4 @@
-package schedule.domain;
+package schedule.domain.struct;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -26,6 +26,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import schedule.domain.converters.TrainingPeriodAttributeConverter;
+import schedule.domain.schedule.CurDiscipline;
 
 
 /**

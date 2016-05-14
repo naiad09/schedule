@@ -1,4 +1,4 @@
-package schedule.domain;
+package schedule.domain.schedule;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import schedule.domain.struct.EduProcGraphic;
 
 
 /**

@@ -9,7 +9,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
-import schedule.domain.Group;
+import schedule.domain.struct.Group;
 
 
 /**
