@@ -1,0 +1,14 @@
+<!DOCTYPE tiles-definitions PUBLIC   "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN" 
+  "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+	<definition name="template" template="/WEB-INF/views/_main.jsp">
+		<put-attribute name="loginWidget"
+			value="/WEB-INF/views/utils/loginWidget.jsp" />
+	</definition>
+
+	<definition name="*" extends="template">
+		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
+	</definition>
+
+</tiles-definitions>

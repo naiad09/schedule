@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<transcript>
+	<degrees>
+		<degree id="ctn" shortName="к.т.н." fullName="кандидат технических наук" />
+		<degree id="dtn" shortName="д.т.н." fullName="доктор технических наук" />
+	</degrees>
+	<jobs>
+		<job id="pr" shortName="пр." fullName="профессор" />
+		<job id="doc" shortName="доц." fullName="доцент" />
+		<job id="stp" shortName="ст.пр." fullName="старший преподаватель" />
+	</jobs>
+	<faculties>
+		<faculty id="vf" shortName="ВФ" fullName="Вечерний Факультет" />
+		<faculty id="frt" shortName="ФРТ"
+			fullName="Факультет Радиотехники и Телекоммуникаций" />
+		<faculty id="fe" shortName="ФЭ" fullName="Факультет Электроники" />
+		<faculty id="faitu" shortName="ФАИТУ"
+			fullName="Факультет Автоматики и Информационных Технологий в Управлении" />
+		<faculty id="fvt" shortName="ФВТ" fullName="Факультет Вычислительной Техники" />
+		<faculty id="ief" shortName="ИЭФ"
+			fullName="Инженерно-Экономический Факультет" />
+		<faculty id="hi" shortName="ГИ" fullName="Гуманитарный Институт" />
+		<faculty id="vi" shortName="ВИ" fullName="Военный Институт" />
+	</faculties>
+</transcript>
