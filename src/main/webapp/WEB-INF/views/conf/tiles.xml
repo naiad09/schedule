@@ -2,14 +2,21 @@
   "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
 <tiles-definitions>
 
-	<definition name="template" template="/WEB-INF/views/utils/_main.jsp">
-		<put-attribute name="loginWidget"
-			value="/WEB-INF/views/utils/loginWidget.jsp" />
-	</definition>
+    <definition name="main" template="/WEB-INF/views/utils/_main.jsp">
+        <put-attribute name="loginWidget"
+            value="/WEB-INF/views/utils/loginWidget.jsp" />
+    </definition>
 
-	<definition name="*" extends="template">
-		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
-		<put-attribute name="toTitle" value="{1}" />
-	</definition>
+    <definition name="person" extends="main">
+        <put-attribute name="content" value="/WEB-INF/views/person.jsp" />
+        <put-attribute name="title" expression="РГРТУ - ${person.fullName}" />
+    </definition>
+
+    <definition name="common/*" extends="main">
+        <put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
+        <put-attribute name="title"
+            value="/WEB-INF/views/utils/titleFromProperties.jsp" />
+        <put-attribute name="toTitle" value="{1}" cascade="true" />
+    </definition>
 
 </tiles-definitions>

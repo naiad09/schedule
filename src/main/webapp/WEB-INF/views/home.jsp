@@ -40,7 +40,7 @@
 <table class="data">
 	<c:forEach items="${chairs}" var="chair">
 		<tr>
-			<td>${chair.faculty.transcript.shortName}</td>
+			<td><spring:message code="${chair.faculty}.shortName" /></td>
 			<td>${chair.chairName}</td>
 			<td>${chair.chairShortname}</td>
 		</tr>

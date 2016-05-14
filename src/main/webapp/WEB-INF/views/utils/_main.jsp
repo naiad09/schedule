@@ -10,8 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link href="${pageContext.request.contextPath}/resources/style.css"
 	rel="stylesheet" />
-<title><t:importAttribute name="toTitle" /> РГРТУ - <spring:message
-		code="${toTitle}" /></title>
+<title><t:insertAttribute name="title" /></title>
 </head>
 <body>
 	<div id="page">

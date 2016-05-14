@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import schedule.dao.PersonDao;
-import schedule.dao.PersonDao.Role;
 import schedule.dao.SimpleGenericDAO;
 import schedule.domain.Chair;
 import schedule.domain.persons.HttpAuth;
@@ -41,7 +41,7 @@ public class HomeController {
 				((HttpAuth) userPrincipal.getPrincipal()).getPerson());
 		else req.getSession().setAttribute("currentUser", null);
 		
-		return "home";
+		return "common/home";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
@@ -50,15 +50,13 @@ public class HomeController {
 		Authentication auth = SecurityContextHolder.getContext()
 				.getAuthentication();
 		
-		Role role = Role.valueOf(auth.getAuthorities().toArray()[0].toString());
-		
-		if (Role.ROLE_ANONYMOUS == role) return "login";
+		if (auth instanceof AnonymousAuthenticationToken) return "common/login";
 		else return "redirect:/index";
 	}
 	
 	@RequestMapping(value = "/error404")
 	public String error404() {
-		return "error404";
+		return "common/error404";
 	}
 	
 	@RequestMapping("/persons/uid{personId}")

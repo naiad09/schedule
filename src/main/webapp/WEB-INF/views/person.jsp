@@ -17,9 +17,9 @@
 				</c:when>
 
 		<c:when test="${person.role == 'Lecturer'}">
-               ${person.degree.transcript.fullName},<br>
+			<spring:message code="${person.degree}.fullName" />,<br>
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
-                   ${job.jobType.transcript.fullName} кафедры
+				<spring:message code="${job.jobType}.fullName" /> кафедры
                    ${job.chair.chairShortname}
                    <c:if test="${!loop.last }">
 					,<br>
@@ -30,7 +30,8 @@
 		<c:when test="${person.role == 'EduDep'}">
 		    учебный отдел
 		    <c:if test="${person.faculty != null}">
-				<br>диспетчер ${person.faculty.transcript.shortName}
+				<br>диспетчер <spring:message
+					code="${person.faculty}.shortName" />
 			</c:if>
 		</c:when>
 
@@ -43,6 +44,7 @@
 		<c:when test="${person.gender == 'm'}">мужской</c:when>
 		<c:otherwise>женский</c:otherwise>
 	</c:choose>
-	<c:if test="${person.birthday != null}"><br>Дата рождения: ${person.birthday}</c:if>
+	<c:if test="${person.birthday != null}">
+		<br>Дата рождения: ${person.birthday}</c:if>
 
 </p>

@@ -14,7 +14,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 import schedule.domain.LecturerJob;
-import schedule.service.Transcript;
 
 
 /**
@@ -50,11 +49,6 @@ public class Lecturer extends Person {
 	
 	public enum Degree {
 		ctn, dtn;
-		public final Transcript transcript = new Transcript();
-		
-		public Transcript getTranscript() {
-			return transcript;
-		}
 	}
 	
 }

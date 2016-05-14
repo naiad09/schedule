@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import schedule.domain.persons.Lecturer;
-import schedule.service.Transcript;
 
 
 /**
@@ -80,12 +79,6 @@ public class LecturerJob {
 	
 	public enum JobType {
 		doc, pr, stp;
-		public final Transcript transcript = new Transcript();
-		
-		public Transcript getTranscript() {
-			return transcript;
-		}
-		
 	}
 	
 }

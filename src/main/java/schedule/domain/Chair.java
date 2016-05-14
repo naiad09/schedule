@@ -16,8 +16,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import schedule.service.Transcript;
-
 
 /**
  * Кафедра. Привязана к факультету, имеет название и сокращенное название. К
@@ -118,12 +116,6 @@ public class Chair {
 	
 	public enum Faculty {
 		vf, frt, fe, faitu, fvt, ief, hi, vi;
-		public final Transcript transcript = new Transcript();
-		
-		public Transcript getTranscript() {
-			return transcript;
-		}
-		
 	}
 	
 }
