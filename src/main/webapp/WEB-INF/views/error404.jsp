@@ -5,4 +5,4 @@
 <h1>Упс! Что-то потерялось.</h1>
 
 <p>Ошибка 404. Если вы уверены, что ссылка верна, обратитесь к администратору сайта.<p>
-<p><a href="${pageContext.request.contextPath}/index">На главную страницу</a></p>
+<p><a href="${pageContext.request.contextPath}/">На главную страницу</a></p>

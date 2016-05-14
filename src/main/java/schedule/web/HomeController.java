@@ -30,7 +30,7 @@ public class HomeController {
 	@Autowired
 	private PersonDao personDao;
 	
-	@RequestMapping({ "/", "index" })
+	@RequestMapping("/")
 	public String home(Model model, HttpServletRequest req) {
 		
 		List<Chair> all = chairDAO.getAll();
@@ -51,7 +51,7 @@ public class HomeController {
 				.getAuthentication();
 		
 		if (auth instanceof AnonymousAuthenticationToken) return "common/login";
-		else return "redirect:/index";
+		else return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/error404")

@@ -40,7 +40,8 @@
 <table class="data">
 	<c:forEach items="${chairs}" var="chair">
 		<tr>
-			<td><spring:message code="${chair.faculty}.shortName" /></td>
+			<td><a href="${chair.faculty}"><spring:message
+						code="${chair.faculty}.shortName" /></a></td>
 			<td>${chair.chairName}</td>
 			<td>${chair.chairShortname}</td>
 		</tr>

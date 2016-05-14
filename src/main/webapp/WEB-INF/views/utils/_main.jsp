@@ -10,13 +10,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link href="${pageContext.request.contextPath}/resources/style.css"
 	rel="stylesheet" />
-<title><t:insertAttribute name="title" /></title>
+<title>РГРТУ - <t:insertAttribute name="title" /></title>
 </head>
 <body>
 	<div id="page">
 		<div id="header">
 			<div id="title">
-				<a href="${pageContext.request.contextPath}/index">Рязанский
+				<a href="${pageContext.request.contextPath}/">Рязанский
 					Государственный Радиотехнический Университет</a>
 			</div>
 			<div id="login">

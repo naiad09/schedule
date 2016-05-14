@@ -4,4 +4,4 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <t:importAttribute name="toTitle" />
-РГРТУ - <spring:message code="${toTitle}" />
+<spring:message code="${toTitle}" />

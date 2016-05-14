@@ -9,7 +9,7 @@
 
     <definition name="person" extends="main">
         <put-attribute name="content" value="/WEB-INF/views/person.jsp" />
-        <put-attribute name="title" expression="РГРТУ - ${person.fullName}" />
+        <put-attribute name="title" expression="${person.fullName}" />
     </definition>
 
     <definition name="common/*" extends="main">
