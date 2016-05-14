@@ -58,7 +58,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/error404")
 	public String error404() {
-		return "utils/error404";
+		return "error404";
 	}
 	
 	@RequestMapping("/persons/uid{personId}")

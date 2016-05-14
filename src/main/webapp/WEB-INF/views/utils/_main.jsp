@@ -10,13 +10,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link href="${pageContext.request.contextPath}/resources/style.css"
 	rel="stylesheet" />
-<title><c:choose>
-		<c:when test="${pageTitle == null}">Рязанский Государственный Радиотехнический Университет</c:when>
-		<c:otherwise>РГРТУ - ${pageTitle}</c:otherwise>
-	</c:choose></title>
+<title><t:importAttribute name="toTitle" /> РГРТУ - <spring:message
+		code="${toTitle}" /></title>
 </head>
 <body>
-	<spring:message code="login" />
 	<div id="page">
 		<div id="header">
 			<div id="title">
