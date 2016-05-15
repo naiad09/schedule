@@ -24,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "http_auth")
 public class HttpAuth implements UserDetails {
+	
 	private static final long serialVersionUID = 1L;
 	
 	private Person person;
