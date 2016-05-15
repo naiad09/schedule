@@ -1,6 +1,10 @@
 package schedule.dao;
 
+import org.hibernate.FetchMode;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
 import schedule.domain.persons.HttpAuth;
@@ -14,8 +18,15 @@ public class PersonDao extends SimpleGenericDAO<Person> {
 		super(Person.class);
 	}
 	
-	public HttpAuth find(String username) {
-		return (HttpAuth) currentSession().createCriteria(HttpAuth.class)
-				.add(Restrictions.eq("login", username)).uniqueResult();
+	public Person find(String username) {
+		DetachedCriteria detCrit = DetachedCriteria
+				.forClass(HttpAuth.class, "ha")
+				.add(Restrictions.eq("ha.login", username))
+				.setProjection(Projections.id());
+		
+		return (Person) currentSession().createCriteria(Person.class, "per")
+				.add(Subqueries.propertyEq("per.uid", detCrit))
+				.setFetchMode("group", FetchMode.SELECT)
+				.setFetchMode("lecturerJobs", FetchMode.SELECT).uniqueResult();
 	}
 }

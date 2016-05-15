@@ -24,7 +24,7 @@ public class GenericDAO<E, K extends Serializable> {
 		this.daoType = type;
 	}
 	
-	protected Session currentSession() {
+	public Session currentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 	

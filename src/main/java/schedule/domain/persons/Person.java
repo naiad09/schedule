@@ -1,16 +1,16 @@
 package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import static javax.persistence.GenerationType.IDENTITY;
-
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -29,6 +29,7 @@ import javax.persistence.Transient;
 public abstract class Person {
 	private Integer uid;
 	private HttpAuth httpAuth;
+	
 	private String lastName;
 	private String firstName;
 	private String middleName;
@@ -38,7 +39,7 @@ public abstract class Person {
 	private boolean submit;
 	
 	@Id
-	@GeneratedValue(strategy = IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid", unique = true, updatable = false, nullable = false)
 	public Integer getUid() {
 		return this.uid;
@@ -48,7 +49,8 @@ public abstract class Person {
 		this.uid = uid;
 	}
 	
-	@OneToOne(fetch = FetchType.LAZY, mappedBy = "person")
+	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
+				mappedBy = "person")
 	public HttpAuth getHttpAuth() {
 		return httpAuth;
 	}

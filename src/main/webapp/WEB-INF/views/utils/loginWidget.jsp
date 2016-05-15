@@ -14,10 +14,7 @@
 
 <sec:authorize access="isAuthenticated()">
 
-	<sec:authentication property="principal.person" var="currentUser" />
-
-	<a
-		href="${pageContext.request.contextPath}/persons/uid${currentUser.uid}">
+	<a href="${pageContext.request.contextPath}/profile">
 		${currentUser.fullName} </a>
 	<br>
 

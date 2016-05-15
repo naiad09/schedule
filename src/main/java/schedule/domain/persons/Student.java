@@ -21,6 +21,7 @@ import schedule.domain.struct.Group;
 public class Student extends Person {
 	
 	private Group group;
+	
 	private int recordBookNumber;
 	
 	public Student() {}
