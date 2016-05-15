@@ -59,20 +59,18 @@ public class HomeController {
 	public String person(@PathVariable Integer personId, Model model) {
 		
 		Person find = personDao.find(personId);
-		if (find == null) return error404();
+		if (find == null) throw new ResourceNotFoundException();
 		model.addAttribute("person", find);
 		
 		return "person";
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or principal.userId == #id")
+	@PreAuthorize("hasRole('ROLE_ADMIN') or "
+			+ "(isAuthenticated() and principal.person.uid == #personId)")
 	@RequestMapping(path = "/persons/uid{personId}/edit",
 					method = RequestMethod.GET)
 	public String personEdit(@PathVariable Integer personId, Model model) {
-		
-		Person find = personDao.find(personId);
-		if (find == null) return error404();
-		model.addAttribute("person", find);
+		person(personId, model);
 		
 		return "common/personEdit";
 	}
