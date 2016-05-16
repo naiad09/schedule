@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:c="http://www.springframework.org/schema/c"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-	<bean name="chairDAO" class="schedule.dao.SimpleGenericDAO"
+	<bean name="chairDAO" class="schedule.dao.GenericDAO"
 		c:type="schedule.domain.struct.Chair" />
 
 </beans>

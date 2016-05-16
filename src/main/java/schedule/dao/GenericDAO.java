@@ -28,20 +28,20 @@ public class GenericDAO<E, K extends Serializable> {
 		return sessionFactory.getCurrentSession();
 	}
 	
-	public void add(E entity) {
+	public void create(E entity) {
 		currentSession().save(entity);
 	}
 	
-	public void saveOrUpdate(E entity) {
-		currentSession().saveOrUpdate(entity);
-	}
-	
-	public void remove(E entity) {
-		currentSession().delete(entity);
-	}
-	
-	public E find(K key) {
+	public E read(K key) {
 		return currentSession().get(daoType, key);
+	}
+	
+	public void update(E entity) {
+		currentSession().update(entity);
+	}
+	
+	public void delete(E entity) {
+		currentSession().delete(entity);
 	}
 	
 	@SuppressWarnings("unchecked")

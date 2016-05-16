@@ -8,14 +8,15 @@
 
 
 <sec:authorize access="isAnonymous()">
+	<c:url value="/login" var="loginUrl" />
     Вы не авторизированны. 
-    <a href="${pageContext.request.contextPath}/login">Войти</a>
+    <a href="${loginUrl}">Войти</a>
 </sec:authorize>
 
 <sec:authorize access="isAuthenticated()">
 
-	<a href="${pageContext.request.contextPath}/profile">
-		${currentUser.fullName} </a>
+	<c:url value="/persons/uid${currentUser.uid}" var="profileUrl" />
+	<a href="${profileUrl}">${currentUser.fullName}</a>
 	<br>
 
 	<sec:authorize access="hasRole('ROLE_STUDENT')">
@@ -40,5 +41,6 @@
 	</sec:authorize>
 
 	<br>
-	<a href="${pageContext.request.contextPath}/logout">Выйти</a>
+	<c:url value="/logout" var="logoutUrl" />
+	<a href="${logoutUrl}">Выйти</a>
 </sec:authorize>

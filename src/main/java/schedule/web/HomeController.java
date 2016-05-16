@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import schedule.dao.GenericDAO;
 import schedule.dao.PersonDao;
-import schedule.dao.SimpleGenericDAO;
 import schedule.domain.persons.Person;
 import schedule.domain.struct.Chair;
 import schedule.service.CustomUserDetails;
@@ -25,7 +25,7 @@ import schedule.service.CustomUserDetails;
 public class HomeController {
 	
 	@Autowired
-	private SimpleGenericDAO<Chair> chairDAO;
+	private GenericDAO<Chair, Integer> chairDAO;
 	@Autowired
 	private PersonDao personDao;
 	
@@ -34,7 +34,7 @@ public class HomeController {
 		
 		if (auth != null) {
 			CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-			ses.setAttribute("currentUser", personDao.find(cud.getUid()));
+			ses.setAttribute("currentUser", personDao.read(cud.getUid()));
 		}
 		
 		List<Chair> all = chairDAO.getAll();
@@ -62,7 +62,7 @@ public class HomeController {
 	@RequestMapping("/persons/uid{personId}")
 	public String getPerson(@PathVariable Integer personId, Model model) {
 		
-		Person find = personDao.find(personId);
+		Person find = personDao.read(personId);
 		if (find == null) throw new ResourceNotFoundException();
 		model.addAttribute("person", find);
 		
@@ -75,20 +75,6 @@ public class HomeController {
 					method = RequestMethod.GET)
 	public String editPerson(@PathVariable Integer personId, Model model) {
 		getPerson(personId, model);
-		return "common/personEdit";
-	}
-	
-	@PreAuthorize("isAuthenticated()")
-	@RequestMapping("profile")
-	public String getProfile(Authentication auth, Model model) {
-		CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-		return getPerson(cud.getUid(), model);
-	}
-	
-	@PreAuthorize("isAuthenticated()")
-	@RequestMapping("profile/edit")
-	public String editProfile(Authentication auth, Model model) {
-		CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-		return editPerson(cud.getUid(), model);
+		return "common/editPerson";
 	}
 }

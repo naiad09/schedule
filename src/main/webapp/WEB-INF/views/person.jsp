@@ -1,9 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=utf8"
 	pageEncoding="utf8"%>
+<%@taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h1>${person.lastName}&nbsp;${person.firstName}&nbsp;${person.middleName}</h1>
+<c:url value="/persons/uid${person.uid}/edit" var="editUrl" />
+<sec:authorize url="${editUrl}">
+	<div id="edit">
+		<a href="${editUrl}">Редактировать</a>
+	</div>
+</sec:authorize>
 <p>
 	<c:choose>
 
