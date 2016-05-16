@@ -28,89 +28,96 @@ import schedule.domain.schedule.CurDiscipline;
 @Table(name = "chair")
 public class Chair {
 	
-	private Integer idChair;
-	private Faculty faculty;
-	private String chairName;
-	private String chairShortname;
-	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
-	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
-	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
-	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_chair", updatable = false, unique = true,
 			nullable = false)
+	private Integer idChair;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "id_faculty", updatable = false,
+			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)",
+			nullable = false, length = 5)
+	private Faculty faculty;
+	
+	@Column(name = "chair_name", updatable = false, nullable = false,
+			length = 100)
+	private String chairName;
+	
+	@Column(name = "chair_shortname", updatable = false, nullable = false,
+			length = 32)
+	private String chairShortname;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
+	
 	public Integer getIdChair() {
-		return this.idChair;
+		return idChair;
 	}
 	
 	public void setIdChair(Integer idChair) {
 		this.idChair = idChair;
 	}
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "id_faculty", updatable = false,
-			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)",
-			nullable = false, length = 5)
 	public Faculty getFaculty() {
-		return this.faculty;
+		return faculty;
 	}
 	
 	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
 	}
 	
-	@Column(name = "chair_name", updatable = false, nullable = false,
-			length = 100)
 	public String getChairName() {
-		return this.chairName;
+		return chairName;
 	}
 	
 	public void setChairName(String chairName) {
 		this.chairName = chairName;
 	}
 	
-	@Column(name = "chair_shortname", updatable = false, nullable = false,
-			length = 32)
 	public String getChairShortname() {
-		return this.chairShortname;
+		return chairShortname;
 	}
 	
 	public void setChairShortname(String chairShortname) {
 		this.chairShortname = chairShortname;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
 	public Set<LecturerJob> getLecturerJobs() {
-		return this.lecturerJobs;
+		return lecturerJobs;
 	}
 	
 	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {
 		this.lecturerJobs = lecturerJobs;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
 	public Set<Classroom> getClassrooms() {
-		return this.classrooms;
+		return classrooms;
 	}
 	
 	public void setClassrooms(Set<Classroom> classrooms) {
 		this.classrooms = classrooms;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
 	public Set<SkillProfile> getSkillProfiles() {
-		return this.skillProfiles;
+		return skillProfiles;
 	}
 	
 	public void setSkillProfiles(Set<SkillProfile> skillProfiles) {
 		this.skillProfiles = skillProfiles;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
 	public Set<CurDiscipline> getCurDisciplines() {
-		return this.curDisciplines;
+		return curDisciplines;
 	}
 	
 	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {

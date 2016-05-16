@@ -3,7 +3,6 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.time.Year;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,46 +26,49 @@ import schedule.domain.struct.EduProcGraphic;
 		"semester_year", "fall-spring" }))
 public class Semester {
 	
-	private int idSemester;
-	private Year semesterYear;
-	private boolean fallSpring;
-	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
-			0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_semester", unique = true, updatable = false,
 			nullable = false)
+	private int idSemester;
+	
+	@Column(name = "semester_year", nullable = false, updatable = false,
+			length = 0)
+	private int semesterYear;
+	
+	@Column(name = "fall-spring", updatable = false, nullable = false)
+	private boolean fallSpring;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "semester")
+	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
+			0);
+	
 	public int getIdSemester() {
-		return this.idSemester;
+		return idSemester;
 	}
 	
 	public void setIdSemester(int idSemester) {
 		this.idSemester = idSemester;
 	}
 	
-	@Column(name = "semester_year", nullable = false, updatable = false,
-			length = 0)
-	public Year getSemesterYear() {
-		return this.semesterYear;
+	public int getSemesterYear() {
+		return semesterYear;
 	}
 	
-	public void setSemesterYear(Year semesterYear) {
+	public void setSemesterYear(int semesterYear) {
 		this.semesterYear = semesterYear;
 	}
 	
-	@Column(name = "fall-spring", updatable = false, nullable = false)
 	public boolean isFallSpring() {
-		return this.fallSpring;
+		return fallSpring;
 	}
 	
 	public void setFallSpring(boolean fallSpring) {
 		this.fallSpring = fallSpring;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "semester")
 	public Set<EduProcGraphic> getEduProcGraphics() {
-		return this.eduProcGraphics;
+		return eduProcGraphics;
 	}
 	
 	public void setEduProcGraphics(Set<EduProcGraphic> eduProcGraphics) {

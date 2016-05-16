@@ -32,86 +32,32 @@ import javax.persistence.Table;
 @Table(name = "schedule")
 public class Schedule {
 	
-	private long idSchedule;
-	private GroupLessonType groupLessonType;
-	private Twain twain;
-	private int timePlan;
-	private DayOfWeek weekday;
-	private String note;
-	private boolean elective;
-	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
-	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
-			0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule", updatable = false, unique = true,
 			nullable = false)
-	public long getIdSchedule() {
-		return this.idSchedule;
-	}
-	
-	public void setIdSchedule(long idSchedule) {
-		this.idSchedule = idSchedule;
-	}
+	private long idSchedule;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_lesson_types", updatable = false, nullable = false)
-	public GroupLessonType getGroupLessonType() {
-		return this.groupLessonType;
-	}
-	
-	public void setGroupLessonType(GroupLessonType groupLessonType) {
-		this.groupLessonType = groupLessonType;
-	}
+	private GroupLessonType groupLessonType;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_twain", nullable = false)
-	public Twain getTwain() {
-		return this.twain;
-	}
-	
-	public void setTwain(Twain twain) {
-		this.twain = twain;
-	}
+	private Twain twain;
 	
 	@Column(name = "time_plan", nullable = false)
-	public int getTimePlan() {
-		return this.timePlan;
-	}
+	private int timePlan;
 	
-	public void setTimePlan(int timePlan) {
-		this.timePlan = timePlan;
-	}
-	
-	// TODO
 	@Enumerated(EnumType.ORDINAL)
 	@Column(name = "weekday", nullable = false, length = 4)
-	public DayOfWeek getWeekday() {
-		return this.weekday;
-	}
-	
-	public void setWeekday(DayOfWeek weekday) {
-		this.weekday = weekday;
-	}
+	private DayOfWeek weekday;
 	
 	@Column(name = "note", length = 256)
-	public String getNote() {
-		return this.note;
-	}
-	
-	public void setNote(String note) {
-		this.note = note;
-	}
+	private String note;
 	
 	@Column(name = "elective", nullable = false)
-	public boolean isElective() {
-		return this.elective;
-	}
-	
-	public void setElective(boolean elective) {
-		this.elective = elective;
-	}
+	private boolean elective;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(	name = "schedule_classroom",
@@ -121,17 +67,78 @@ public class Schedule {
 				inverseJoinColumns = {
 						@JoinColumn(name = "id_classroom", nullable = false,
 									updatable = false) })
+	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule")
+	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
+			0);
+	
+	public long getIdSchedule() {
+		return idSchedule;
+	}
+	
+	public void setIdSchedule(long idSchedule) {
+		this.idSchedule = idSchedule;
+	}
+	
+	public GroupLessonType getGroupLessonType() {
+		return groupLessonType;
+	}
+	
+	public void setGroupLessonType(GroupLessonType groupLessonType) {
+		this.groupLessonType = groupLessonType;
+	}
+	
+	public Twain getTwain() {
+		return twain;
+	}
+	
+	public void setTwain(Twain twain) {
+		this.twain = twain;
+	}
+	
+	public int getTimePlan() {
+		return timePlan;
+	}
+	
+	public void setTimePlan(int timePlan) {
+		this.timePlan = timePlan;
+	}
+	
+	public DayOfWeek getWeekday() {
+		return weekday;
+	}
+	
+	public void setWeekday(DayOfWeek weekday) {
+		this.weekday = weekday;
+	}
+	
+	public String getNote() {
+		return note;
+	}
+	
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	public boolean isElective() {
+		return elective;
+	}
+	
+	public void setElective(boolean elective) {
+		this.elective = elective;
+	}
+	
 	public Set<Classroom> getClassrooms() {
-		return this.classrooms;
+		return classrooms;
 	}
 	
 	public void setClassrooms(Set<Classroom> classrooms) {
 		this.classrooms = classrooms;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule")
 	public Set<ScheduleChangeJournal> getScheduleChangeJournals() {
-		return this.scheduleChangeJournals;
+		return scheduleChangeJournals;
 	}
 	
 	public void setScheduleChangeJournals(

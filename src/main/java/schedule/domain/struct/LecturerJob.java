@@ -23,18 +23,10 @@ import schedule.domain.persons.Lecturer;
 @Table(name = "lecturer_job")
 public class LecturerJob {
 	
-	private Chair chair;
-	private LecturerJobId id;
-	private JobType jobType;
-	
-	private Lecturer lecturer;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_chair", nullable = false, insertable = false,
 				updatable = false)
-	public Chair getChair() {
-		return this.chair;
-	}
+	private Chair chair;
 	
 	@EmbeddedId
 	@AttributeOverrides({
@@ -44,33 +36,44 @@ public class LecturerJob {
 			@AttributeOverride(	name = "idChair",
 								column = @Column(	name = "id_chair",
 													nullable = false)) })
-	public LecturerJobId getId() {
-		return this.id;
-	}
+	
+	private LecturerJobId id;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_job", columnDefinition = "enum('pr','doc','stp')")
-	public JobType getJobType() {
-		return this.jobType;
-	}
+	private JobType jobType;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_lecturer", nullable = false, insertable = false,
 				updatable = false)
-	public Lecturer getLecturer() {
-		return this.lecturer;
+	private Lecturer lecturer;
+	
+	public Chair getChair() {
+		return chair;
 	}
 	
 	public void setChair(Chair chair) {
 		this.chair = chair;
 	}
 	
+	public LecturerJobId getId() {
+		return id;
+	}
+	
 	public void setId(LecturerJobId id) {
 		this.id = id;
 	}
 	
-	public void setJobType(JobType idJob) {
-		this.jobType = idJob;
+	public JobType getJobType() {
+		return jobType;
+	}
+	
+	public void setJobType(JobType jobType) {
+		this.jobType = jobType;
+	}
+	
+	public Lecturer getLecturer() {
+		return lecturer;
 	}
 	
 	public void setLecturer(Lecturer lecturer) {

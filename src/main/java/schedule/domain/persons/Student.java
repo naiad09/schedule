@@ -20,30 +20,23 @@ import schedule.domain.struct.Group;
 @PrimaryKeyJoinColumn(name = "id_student", referencedColumnName = "uid")
 public class Student extends Person {
 	
-	private Group group;
-	
-	private int recordBookNumber;
-	
-	public Student() {}
-	
-	public Student(Group group, int recordBookNumber) {
-		this.group = group;
-		this.recordBookNumber = recordBookNumber;
-	}
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_group", nullable = false)
+	private Group group;
+	
+	@Column(name = "record_book_number", updatable = false, nullable = false)
+	private int recordBookNumber;
+	
 	public Group getGroup() {
-		return this.group;
+		return group;
 	}
 	
 	public void setGroup(Group group) {
 		this.group = group;
 	}
 	
-	@Column(name = "record_book_number", updatable = false, nullable = false)
 	public int getRecordBookNumber() {
-		return this.recordBookNumber;
+		return recordBookNumber;
 	}
 	
 	public void setRecordBookNumber(int recordBookNumber) {

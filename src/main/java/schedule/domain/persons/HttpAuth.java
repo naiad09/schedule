@@ -19,16 +19,26 @@ import javax.persistence.Table;
 @Table(name = "http_auth")
 public class HttpAuth {
 	
-	private Integer authUid;
-	private Person person;
-	private String login;
-	private String password;
-	private boolean active = true;
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "auth_uid", unique = true, updatable = false,
 			nullable = false)
+	private Integer authUid;
+	
+	@OneToOne(fetch = FetchType.EAGER)
+	@PrimaryKeyJoinColumn
+	private Person person;
+	
+	@Column(name = "login", unique = true, updatable = false, nullable = false,
+			length = 32)
+	private String login;
+	
+	@Column(name = "password", nullable = false, length = 32)
+	private String password;
+	
+	@Column(name = "active", nullable = false)
+	private boolean active = true;
+	
 	public Integer getAuthUid() {
 		return authUid;
 	}
@@ -37,8 +47,6 @@ public class HttpAuth {
 		this.authUid = authUid;
 	}
 	
-	@OneToOne(fetch = FetchType.EAGER)
-	@PrimaryKeyJoinColumn
 	public Person getPerson() {
 		return person;
 	}
@@ -47,17 +55,14 @@ public class HttpAuth {
 		this.person = person;
 	}
 	
-	@Column(name = "login", unique = true, updatable = false, nullable = false,
-			length = 32)
 	public String getLogin() {
-		return this.login;
+		return login;
 	}
 	
 	public void setLogin(String login) {
 		this.login = login;
 	}
 	
-	@Column(name = "password", nullable = false, length = 32)
 	public String getPassword() {
 		return password;
 	}
@@ -66,7 +71,6 @@ public class HttpAuth {
 		this.password = password;
 	}
 	
-	@Column(name = "active", nullable = false)
 	public boolean isActive() {
 		return active;
 	}

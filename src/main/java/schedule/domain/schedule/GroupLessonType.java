@@ -34,54 +34,23 @@ import schedule.domain.struct.Group;
 @Inheritance(strategy = InheritanceType.JOINED)
 public class GroupLessonType {
 	
-	private Integer idLessonTypes;
-	private Group group;
-	private DiscTerm discTerm;
-	private String idLessonType;
-	private Set<Lecturer> lecturers = new HashSet<Lecturer>(0);
-	private Set<Schedule> schedules = new HashSet<Schedule>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_lesson_types", unique = true, updatable = false,
 			nullable = false)
-	public Integer getIdLessonTypes() {
-		return this.idLessonTypes;
-	}
-	
-	public void setIdLessonTypes(Integer idLessonTypes) {
-		this.idLessonTypes = idLessonTypes;
-	}
+	private Integer idLessonTypes;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_group", updatable = false, nullable = false)
-	public Group getGroup() {
-		return this.group;
-	}
-	
-	public void setGroup(Group group) {
-		this.group = group;
-	}
+	private Group group;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_disc_sem", updatable = false, nullable = false)
-	public DiscTerm getDiscTerm() {
-		return this.discTerm;
-	}
-	
-	public void setDiscTerm(DiscTerm discTerm) {
-		this.discTerm = discTerm;
-	}
+	private DiscTerm discTerm;
 	
 	@Column(name = "id_lesson_type", updatable = false, nullable = false,
 			length = 5)
-	public String getIdLessonType() {
-		return this.idLessonType;
-	}
-	
-	public void setIdLessonType(String idLessonType) {
-		this.idLessonType = idLessonType;
-	}
+	private String idLessonType;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(	name = "lecturers_lessons",
@@ -89,19 +58,54 @@ public class GroupLessonType {
 						@JoinColumn(name = "id_lesson_types", nullable = false,
 									updatable = false) },
 				inverseJoinColumns = {
-						@JoinColumn(name = "id_lecturer", nullable = false,
-									updatable = false) })
+						@JoinColumn(name = "id_lecturer", nullable = false) })
+	private Set<Lecturer> lecturers = new HashSet<Lecturer>(0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "groupLessonType")
+	private Set<Schedule> schedules = new HashSet<Schedule>(0);
+	
+	public Integer getIdLessonTypes() {
+		return idLessonTypes;
+	}
+	
+	public void setIdLessonTypes(Integer idLessonTypes) {
+		this.idLessonTypes = idLessonTypes;
+	}
+	
+	public Group getGroup() {
+		return group;
+	}
+	
+	public void setGroup(Group group) {
+		this.group = group;
+	}
+	
+	public DiscTerm getDiscTerm() {
+		return discTerm;
+	}
+	
+	public void setDiscTerm(DiscTerm discTerm) {
+		this.discTerm = discTerm;
+	}
+	
+	public String getIdLessonType() {
+		return idLessonType;
+	}
+	
+	public void setIdLessonType(String idLessonType) {
+		this.idLessonType = idLessonType;
+	}
+	
 	public Set<Lecturer> getLecturers() {
-		return this.lecturers;
+		return lecturers;
 	}
 	
 	public void setLecturers(Set<Lecturer> lecturers) {
 		this.lecturers = lecturers;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "groupLessonType")
 	public Set<Schedule> getSchedules() {
-		return this.schedules;
+		return schedules;
 	}
 	
 	public void setSchedules(Set<Schedule> schedules) {

@@ -3,7 +3,7 @@ package schedule.domain.struct;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,8 +16,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import schedule.domain.schedule.Semester;
 
@@ -31,112 +29,114 @@ import schedule.domain.schedule.Semester;
 @Table(name = "edu_proc_graphic")
 public class EduProcGraphic {
 	
-	private int idEduPeriod;
-	private Semester semester;
-	private Date eduStart;
-	private Date scheduleChangeDate;
-	private Date semestrEnd;
-	private Date recordSessionStart;
-	private Date recordSessionEnd;
-	private Date examsSessionStart;
-	private Date examsSessionEnd;
-	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_period", updatable = false, unique = true,
 			nullable = false)
-	public Integer getIdEduPeriod() {
-		return this.idEduPeriod;
-	}
-	
-	public void setIdEduPeriod(Integer idEduPeriod) {
-		this.idEduPeriod = idEduPeriod;
-	}
+	private int idEduPeriod;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_semestr", updatable = false, nullable = false)
+	private Semester semester;
+	
+	@Column(name = "edu_start", nullable = false, length = 10)
+	private LocalDate eduStart;
+	
+	@Column(name = "schedule_change_LocalDate", length = 10)
+	private LocalDate scheduleChangeLocalDate;
+	
+	@Column(name = "semestr_end", nullable = false, length = 10)
+	private LocalDate semestrEnd;
+	
+	@Column(name = "record_session_start", length = 10)
+	private LocalDate recordSessionStart;
+	
+	@Column(name = "record_session_end", length = 10)
+	private LocalDate recordSessionEnd;
+	
+	@Column(name = "exams_session_start", length = 10)
+	private LocalDate examsSessionStart;
+	
+	@Column(name = "exams_session_end", length = 10)
+	private LocalDate examsSessionEnd;
+	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "eduProcGraphics")
+	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
+	
+	public int getIdEduPeriod() {
+		return idEduPeriod;
+	}
+	
+	public void setIdEduPeriod(int idEduPeriod) {
+		this.idEduPeriod = idEduPeriod;
+	}
+	
 	public Semester getSemester() {
-		return this.semester;
+		return semester;
 	}
 	
 	public void setSemester(Semester semester) {
 		this.semester = semester;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "edu_start", nullable = false, length = 10)
-	public Date getEduStart() {
-		return this.eduStart;
+	public LocalDate getEduStart() {
+		return eduStart;
 	}
 	
-	public void setEduStart(Date eduStart) {
+	public void setEduStart(LocalDate eduStart) {
 		this.eduStart = eduStart;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "schedule_change_date", length = 10)
-	public Date getScheduleChangeDate() {
-		return this.scheduleChangeDate;
+	public LocalDate getScheduleChangeLocalDate() {
+		return scheduleChangeLocalDate;
 	}
 	
-	public void setScheduleChangeDate(Date scheduleChangeDate) {
-		this.scheduleChangeDate = scheduleChangeDate;
+	public void setScheduleChangeLocalDate(LocalDate scheduleChangeLocalDate) {
+		this.scheduleChangeLocalDate = scheduleChangeLocalDate;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "semestr_end", nullable = false, length = 10)
-	public Date getSemestrEnd() {
-		return this.semestrEnd;
+	public LocalDate getSemestrEnd() {
+		return semestrEnd;
 	}
 	
-	public void setSemestrEnd(Date semestrEnd) {
+	public void setSemestrEnd(LocalDate semestrEnd) {
 		this.semestrEnd = semestrEnd;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "record_session_start", length = 10)
-	public Date getRecordSessionStart() {
-		return this.recordSessionStart;
+	public LocalDate getRecordSessionStart() {
+		return recordSessionStart;
 	}
 	
-	public void setRecordSessionStart(Date recordSessionStart) {
+	public void setRecordSessionStart(LocalDate recordSessionStart) {
 		this.recordSessionStart = recordSessionStart;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "record_session_end", length = 10)
-	public Date getRecordSessionEnd() {
-		return this.recordSessionEnd;
+	public LocalDate getRecordSessionEnd() {
+		return recordSessionEnd;
 	}
 	
-	public void setRecordSessionEnd(Date recordSessionEnd) {
+	public void setRecordSessionEnd(LocalDate recordSessionEnd) {
 		this.recordSessionEnd = recordSessionEnd;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "exams_session_start", length = 10)
-	public Date getExamsSessionStart() {
-		return this.examsSessionStart;
+	public LocalDate getExamsSessionStart() {
+		return examsSessionStart;
 	}
 	
-	public void setExamsSessionStart(Date examsSessionStart) {
+	public void setExamsSessionStart(LocalDate examsSessionStart) {
 		this.examsSessionStart = examsSessionStart;
 	}
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "exams_session_end", length = 10)
-	public Date getExamsSessionEnd() {
-		return this.examsSessionEnd;
+	public LocalDate getExamsSessionEnd() {
+		return examsSessionEnd;
 	}
 	
-	public void setExamsSessionEnd(Date examsSessionEnd) {
+	public void setExamsSessionEnd(LocalDate examsSessionEnd) {
 		this.examsSessionEnd = examsSessionEnd;
 	}
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "eduProcGraphics")
 	public Set<Curriculum> getCurriculums() {
-		return this.curriculums;
+		return curriculums;
 	}
 	
 	public void setCurriculums(Set<Curriculum> curriculums) {

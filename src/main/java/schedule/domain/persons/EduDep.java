@@ -27,24 +27,25 @@ import schedule.domain.struct.Chair.Faculty;
 @PrimaryKeyJoinColumn(name = "id_edu_dep", referencedColumnName = "uid")
 public class EduDep extends Person {
 	
-	private Faculty faculty;
-	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
-			0);
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_faculty", length = 5, nullable = true, updatable = false,
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
+	private Faculty faculty;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduDep")
+	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
+			0);
+	
 	public Faculty getFaculty() {
-		return this.faculty;
+		return faculty;
 	}
 	
 	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduDep")
 	public Set<ScheduleChangeJournal> getScheduleChangeJournals() {
-		return this.scheduleChangeJournals;
+		return scheduleChangeJournals;
 	}
 	
 	public void setScheduleChangeJournals(

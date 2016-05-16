@@ -24,23 +24,24 @@ import schedule.domain.struct.LecturerJob;
 @PrimaryKeyJoinColumn(name = "id_lecturer", referencedColumnName = "uid")
 public class Lecturer extends Person {
 	
-	private Degree degree;
-	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
-	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "degree", columnDefinition = "enum(ctn,dtn)",
 			nullable = false, length = 5)
+	private Degree degree;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lecturer")
+	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
+	
 	public Degree getDegree() {
-		return this.degree;
+		return degree;
 	}
 	
 	public void setDegree(Degree degree) {
 		this.degree = degree;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lecturer")
 	public Set<LecturerJob> getLecturerJobs() {
-		return this.lecturerJobs;
+		return lecturerJobs;
 	}
 	
 	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {

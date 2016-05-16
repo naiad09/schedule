@@ -21,32 +21,36 @@ import javax.persistence.Table;
 						referencedColumnName = "id_lesson_types")
 public class Exam extends GroupLessonType {
 	
-	private Classroom consultClassroom;
-	private LocalDateTime consultDate;
-	private Classroom examClassroom;
-	private LocalDateTime examDate;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "consult_id_classroom", nullable = false)
+	private Classroom consultClassroom;
+	
+	@Column(name = "consult_date", nullable = false, length = 19)
+	private LocalDateTime consultDate;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "exam_id_classroom", nullable = false)
+	private Classroom examClassroom;
+	
+	@Column(name = "exam_date", nullable = false, length = 19)
+	private LocalDateTime examDate;
+	
 	public Classroom getConsultClassroom() {
-		return this.consultClassroom;
+		return consultClassroom;
 	}
 	
 	public void setConsultClassroom(Classroom consultClassroom) {
 		this.consultClassroom = consultClassroom;
 	}
 	
-	@Column(name = "consult_date", nullable = false, length = 19)
 	public LocalDateTime getConsultDate() {
-		return this.consultDate;
+		return consultDate;
 	}
 	
 	public void setConsultDate(LocalDateTime consultDate) {
 		this.consultDate = consultDate;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "exam_id_classroom", nullable = false)
 	public Classroom getExamClassroom() {
 		return examClassroom;
 	}
@@ -55,9 +59,8 @@ public class Exam extends GroupLessonType {
 		this.examClassroom = examClassroom;
 	}
 	
-	@Column(name = "exam_date", nullable = false, length = 19)
 	public LocalDateTime getExamDate() {
-		return this.examDate;
+		return examDate;
 	}
 	
 	public void setExamDate(LocalDateTime examDate) {

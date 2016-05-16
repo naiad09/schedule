@@ -27,69 +27,74 @@ import javax.persistence.Table;
 @Table(name = "edu_program")
 public class EduProgram {
 	
-	private int idEduProg;
-	private EduProgGroup eduProgGroup;
-	private EduQual eduQual = EduQual.bac;
-	private String eduProgCode;
-	private String eduProgName;
-	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_prog", unique = true, updatable = false,
 			nullable = false)
-	public Integer getIdEduProg() {
-		return this.idEduProg;
-	}
-	
-	public void setIdEduProg(Integer idEduProg) {
-		this.idEduProg = idEduProg;
-	}
+	private int idEduProg;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "edu_prog_group_code", updatable = false,
 				nullable = false)
+	private EduProgGroup eduProgGroup;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "id_qual_type", updatable = false, nullable = false,
+			columnDefinition = "enum('bac','mag','spec','asp')")
+	private EduQual eduQual = EduQual.bac;
+	
+	@Column(name = "edu_prog_code", updatable = false, nullable = false,
+			length = 8)
+	private String eduProgCode;
+	
+	@Column(name = "edu_prog_name", updatable = false, nullable = false)
+	private String eduProgName;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduProgram")
+	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
+	
+	public int getIdEduProg() {
+		return idEduProg;
+	}
+	
+	public void setIdEduProg(int idEduProg) {
+		this.idEduProg = idEduProg;
+	}
+	
 	public EduProgGroup getEduProgGroup() {
-		return this.eduProgGroup;
+		return eduProgGroup;
 	}
 	
 	public void setEduProgGroup(EduProgGroup eduProgGroup) {
 		this.eduProgGroup = eduProgGroup;
 	}
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "id_qual_type", updatable = false, nullable = false,
-			columnDefinition = "enum('bac','mag','spec','asp')")
 	public EduQual getEduQual() {
-		return this.eduQual;
+		return eduQual;
 	}
 	
 	public void setEduQual(EduQual eduQual) {
 		this.eduQual = eduQual;
 	}
 	
-	@Column(name = "edu_prog_code", updatable = false, nullable = false,
-			length = 8)
 	public String getEduProgCode() {
-		return this.eduProgCode;
+		return eduProgCode;
 	}
 	
 	public void setEduProgCode(String eduProgCode) {
 		this.eduProgCode = eduProgCode;
 	}
 	
-	@Column(name = "edu_prog_name", updatable = false, nullable = false)
 	public String getEduProgName() {
-		return this.eduProgName;
+		return eduProgName;
 	}
 	
 	public void setEduProgName(String eduProgName) {
 		this.eduProgName = eduProgName;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduProgram")
 	public Set<SkillProfile> getSkillProfiles() {
-		return this.skillProfiles;
+		return skillProfiles;
 	}
 	
 	public void setSkillProfiles(Set<SkillProfile> skillProfiles) {

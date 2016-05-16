@@ -27,57 +27,61 @@ import javax.persistence.UniqueConstraint;
 		uniqueConstraints = @UniqueConstraint(columnNames = "profile_name"))
 public class SkillProfile {
 	
-	private Integer idProfile;
-	private EduProgram eduProgram;
-	private Chair chair;
-	private String profileName;
-	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_profile", updatable = false, unique = true,
 			nullable = false)
+	private Integer idProfile;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_edu_prog", updatable = false, nullable = false)
+	private EduProgram eduProgram;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_chair", updatable = false, nullable = false)
+	private Chair chair;
+	
+	@Column(name = "profile_name", updatable = false, unique = true,
+			length = 150)
+	private String profileName;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "skillProfile")
+	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
+	
 	public Integer getIdProfile() {
-		return this.idProfile;
+		return idProfile;
 	}
 	
 	public void setIdProfile(Integer idProfile) {
 		this.idProfile = idProfile;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_edu_prog", updatable = false, nullable = false)
 	public EduProgram getEduProgram() {
-		return this.eduProgram;
+		return eduProgram;
 	}
 	
 	public void setEduProgram(EduProgram eduProgram) {
 		this.eduProgram = eduProgram;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_chair", updatable = false, nullable = false)
 	public Chair getChair() {
-		return this.chair;
+		return chair;
 	}
 	
 	public void setChair(Chair chair) {
 		this.chair = chair;
 	}
 	
-	@Column(name = "profile_name", updatable = false, unique = true,
-			length = 150)
 	public String getProfileName() {
-		return this.profileName;
+		return profileName;
 	}
 	
 	public void setProfileName(String profileName) {
 		this.profileName = profileName;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "skillProfile")
 	public Set<Curriculum> getCurriculums() {
-		return this.curriculums;
+		return curriculums;
 	}
 	
 	public void setCurriculums(Set<Curriculum> curriculums) {

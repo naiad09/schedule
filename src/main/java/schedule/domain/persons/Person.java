@@ -27,30 +27,50 @@ import javax.persistence.Transient;
 @Table(name = "person")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Person {
-	private Integer uid;
-	private HttpAuth httpAuth;
-	
-	private String lastName;
-	private String firstName;
-	private String middleName;
-	private Gender gender;
-	private LocalDate birthday;
-	private String email;
-	private boolean submit;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid", unique = true, updatable = false, nullable = false)
+	private Integer uid;
+	
+	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
+				mappedBy = "person")
+	private HttpAuth httpAuth;
+	
+	@Column(name = "last_name", updatable = false, nullable = false,
+			length = 25)
+	private String lastName;
+	
+	@Column(name = "first_name", updatable = false, nullable = false,
+			length = 15)
+	private String firstName;
+	
+	@Column(name = "middle_name", updatable = false, nullable = false,
+			length = 20)
+	private String middleName;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(name = "gender", updatable = false, nullable = false,
+			columnDefinition = "enum('m','f')")
+	private Gender gender;
+	
+	@Column(name = "birthday", updatable = false, length = 10)
+	private LocalDate birthday;
+	
+	@Column(name = "email", length = 256)
+	private String email;
+	
+	@Column(name = "submit", nullable = false)
+	private boolean submit;
+	
 	public Integer getUid() {
-		return this.uid;
+		return uid;
 	}
 	
 	public void setUid(Integer uid) {
 		this.uid = uid;
 	}
 	
-	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
-				mappedBy = "person")
 	public HttpAuth getHttpAuth() {
 		return httpAuth;
 	}
@@ -59,68 +79,56 @@ public abstract class Person {
 		this.httpAuth = httpAuth;
 	}
 	
-	@Column(name = "last_name", updatable = false, nullable = false,
-			length = 25)
 	public String getLastName() {
-		return this.lastName;
+		return lastName;
 	}
 	
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 	
-	@Column(name = "first_name", updatable = false, nullable = false,
-			length = 15)
 	public String getFirstName() {
-		return this.firstName;
+		return firstName;
 	}
 	
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 	
-	@Column(name = "middle_name", updatable = false, nullable = false,
-			length = 20)
 	public String getMiddleName() {
-		return this.middleName;
+		return middleName;
 	}
 	
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
 	
-	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", updatable = false, nullable = false,
-			columnDefinition = "enum('m','f')")
 	public Gender getGender() {
-		return this.gender;
+		return gender;
 	}
 	
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
 	
-	@Column(name = "birthday", updatable = false, length = 10)
 	public LocalDate getBirthday() {
-		return this.birthday;
+		return birthday;
 	}
 	
 	public void setBirthday(LocalDate birthday) {
 		this.birthday = birthday;
 	}
 	
-	@Column(name = "email", length = 256)
 	public String getEmail() {
-		return this.email;
+		return email;
 	}
 	
 	public void setEmail(String email) {
 		this.email = email;
 	}
 	
-	@Column(name = "submit", nullable = false)
 	public boolean isSubmit() {
-		return this.submit;
+		return submit;
 	}
 	
 	public void setSubmit(boolean submit) {

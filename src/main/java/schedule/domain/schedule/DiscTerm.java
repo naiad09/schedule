@@ -25,67 +25,72 @@ import javax.persistence.Table;
 @Table(name = "disc_term")
 public class DiscTerm {
 	
-	private int idDiscSem;
-	private CurDiscipline curDiscipline;
-	private float hoursHerWeek;
-	private int termNum;
-	private boolean exam;
-	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
-			0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_sem", unique = true, updatable = false,
 			nullable = false)
-	public Integer getIdDiscSem() {
-		return this.idDiscSem;
-	}
-	
-	public void setIdDiscSem(Integer idDiscSem) {
-		this.idDiscSem = idDiscSem;
-	}
+	private int idDiscSem;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_cur_dics", updatable = false, nullable = false)
+	private CurDiscipline curDiscipline;
+	
+	@Column(name = "hours_her_week", nullable = false, precision = 12,
+			scale = 0)
+	private float hoursHerWeek;
+	
+	@Column(name = "term_num", nullable = false)
+	private int termNum;
+	
+	@Column(name = "exam", nullable = false)
+	private boolean exam;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discTerm")
+	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
+			0);
+	
+	public int getIdDiscSem() {
+		return idDiscSem;
+	}
+	
+	public void setIdDiscSem(int idDiscSem) {
+		this.idDiscSem = idDiscSem;
+	}
+	
 	public CurDiscipline getCurDiscipline() {
-		return this.curDiscipline;
+		return curDiscipline;
 	}
 	
 	public void setCurDiscipline(CurDiscipline curDiscipline) {
 		this.curDiscipline = curDiscipline;
 	}
 	
-	@Column(name = "hours_her_week", nullable = false, precision = 12,
-			scale = 0)
 	public float getHoursHerWeek() {
-		return this.hoursHerWeek;
+		return hoursHerWeek;
 	}
 	
 	public void setHoursHerWeek(float hoursHerWeek) {
 		this.hoursHerWeek = hoursHerWeek;
 	}
 	
-	@Column(name = "term_num", nullable = false)
 	public int getTermNum() {
-		return this.termNum;
+		return termNum;
 	}
 	
 	public void setTermNum(int termNum) {
 		this.termNum = termNum;
 	}
 	
-	@Column(name = "exam", nullable = false)
 	public boolean isExam() {
-		return this.exam;
+		return exam;
 	}
 	
 	public void setExam(boolean exam) {
 		this.exam = exam;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discTerm")
 	public Set<GroupLessonType> getGroupLessonTypes() {
-		return this.groupLessonTypes;
+		return groupLessonTypes;
 	}
 	
 	public void setGroupLessonTypes(Set<GroupLessonType> groupLessonTypes) {

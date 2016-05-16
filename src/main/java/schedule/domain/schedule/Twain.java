@@ -3,7 +3,7 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.sql.Time;
+import java.time.LocalTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,38 +19,40 @@ import javax.persistence.Table;
 @Table(name = "twain")
 public class Twain {
 	
-	private int idTwain;
-	private Time timeStart;
-	private Time timeEnd;
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_twain", updatable = false, unique = true,
 			nullable = false)
-	public Integer getIdTwain() {
-		return this.idTwain;
-	}
-	
-	public void setIdTwain(Integer idPeriod) {
-		this.idTwain = idPeriod;
-	}
+	private int idTwain;
 	
 	@Column(name = "time_start", updatable = false, nullable = false,
 			length = 8)
-	public Time getTimeStart() {
-		return this.timeStart;
+	private LocalTime timeStart;
+	
+	@Column(name = "time_end", updatable = false, nullable = false, length = 8)
+	private LocalTime timeEnd;
+	
+	public int getIdTwain() {
+		return idTwain;
 	}
 	
-	public void setTimeStart(Time timeStart) {
+	public void setIdTwain(int idTwain) {
+		this.idTwain = idTwain;
+	}
+	
+	public LocalTime getTimeStart() {
+		return timeStart;
+	}
+	
+	public void setTimeStart(LocalTime timeStart) {
 		this.timeStart = timeStart;
 	}
 	
-	@Column(name = "time_end", updatable = false, nullable = false, length = 8)
-	public Time getTimeEnd() {
-		return this.timeEnd;
+	public LocalTime getTimeEnd() {
+		return timeEnd;
 	}
 	
-	public void setTimeEnd(Time timeEnd) {
+	public void setTimeEnd(LocalTime timeEnd) {
 		this.timeEnd = timeEnd;
 	}
 	

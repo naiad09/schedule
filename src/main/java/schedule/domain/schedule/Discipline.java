@@ -18,34 +18,36 @@ import javax.persistence.Table;
 @Table(name = "discipline")
 public class Discipline {
 	
-	private Integer idDiscName;
-	private int idDiscMod;
-	private String discName;
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_name", unique = true, updatable = false,
 			nullable = false)
+	private Integer idDiscName;
+	
+	@Column(name = "id_disc_mod", updatable = false, nullable = false)
+	private int idDiscMod;
+	
+	@Column(name = "disc_name", updatable = false, nullable = false)
+	private String discName;
+	
 	public Integer getIdDiscName() {
-		return this.idDiscName;
+		return idDiscName;
 	}
 	
 	public void setIdDiscName(Integer idDiscName) {
 		this.idDiscName = idDiscName;
 	}
 	
-	@Column(name = "id_disc_mod", updatable = false, nullable = false)
 	public int getIdDiscMod() {
-		return this.idDiscMod;
+		return idDiscMod;
 	}
 	
 	public void setIdDiscMod(int idDiscMod) {
 		this.idDiscMod = idDiscMod;
 	}
 	
-	@Column(name = "disc_name", updatable = false, nullable = false)
 	public String getDiscName() {
-		return this.discName;
+		return discName;
 	}
 	
 	public void setDiscName(String discName) {

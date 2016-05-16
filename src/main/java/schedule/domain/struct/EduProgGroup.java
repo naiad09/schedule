@@ -20,33 +20,34 @@ import javax.persistence.Table;
 @Table(name = "edu_prog_group")
 public class EduProgGroup {
 	
-	private int eduProgGroupCode;
-	private String eduProgGroupName;
-	private Set<EduProgram> eduPrograms = new HashSet<EduProgram>(0);
-	
 	@Id
 	@Column(name = "edu_prog_group_code", unique = true, updatable = false,
 			nullable = false)
+	private int eduProgGroupCode;
+	@Column(name = "edu_prog_group_name", updatable = false, nullable = false)
+	private String eduProgGroupName;
+	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "eduProgGroup")
+	private Set<EduProgram> eduPrograms = new HashSet<EduProgram>(0);
+	
 	public int getEduProgGroupCode() {
-		return this.eduProgGroupCode;
+		return eduProgGroupCode;
 	}
 	
 	public void setEduProgGroupCode(int eduProgGroupCode) {
 		this.eduProgGroupCode = eduProgGroupCode;
 	}
 	
-	@Column(name = "edu_prog_group_name", updatable = false, nullable = false)
 	public String getEduProgGroupName() {
-		return this.eduProgGroupName;
+		return eduProgGroupName;
 	}
 	
 	public void setEduProgGroupName(String eduProgGroupName) {
 		this.eduProgGroupName = eduProgGroupName;
 	}
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "eduProgGroup")
 	public Set<EduProgram> getEduPrograms() {
-		return this.eduPrograms;
+		return eduPrograms;
 	}
 	
 	public void setEduPrograms(Set<EduProgram> eduPrograms) {

@@ -38,86 +38,33 @@ import schedule.domain.schedule.CurDiscipline;
 @Table(name = "curriculum")
 public class Curriculum {
 	
-	private Integer idCurriculum;
-	private SkillProfile skillProfile;
-	private EduMode eduMode;
-	private int yearStart;
-	private Period trainingPeriod;
-	private boolean scheduleDone;
-	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
-	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
-			0);
-	private Set<Group> groups = new HashSet<Group>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_curriculum", unique = true, updatable = false,
 			nullable = false)
-	public Integer getIdCurriculum() {
-		return this.idCurriculum;
-	}
-	
-	public void setIdCurriculum(Integer idCurriculum) {
-		this.idCurriculum = idCurriculum;
-	}
+	private Integer idCurriculum;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_profile", updatable = false, nullable = false)
-	public SkillProfile getSkillProfile() {
-		return this.skillProfile;
-	}
-	
-	public void setSkillProfile(SkillProfile skillProfile) {
-		this.skillProfile = skillProfile;
-	}
+	private SkillProfile skillProfile;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "edu_mode", updatable = false,
 			columnDefinition = "enum(och,zao,oz)", nullable = false)
-	public EduMode getEduMode() {
-		return this.eduMode;
-	}
-	
-	public void setEduMode(EduMode eduMode) {
-		this.eduMode = eduMode;
-	}
+	private EduMode eduMode;
 	
 	@Column(name = "year_start", updatable = false, nullable = false)
-	public int getYearStart() {
-		return this.yearStart;
-	}
-	
-	public void setYearStart(int yearStart) {
-		this.yearStart = yearStart;
-	}
+	private int yearStart;
 	
 	@Convert(converter = TrainingPeriodAttributeConverter.class)
 	@Column(name = "training_period", updatable = false, nullable = false)
-	public Period getTrainingPeriod() {
-		return this.trainingPeriod;
-	}
-	
-	public void setTrainingPeriod(Period trainingPeriod) {
-		this.trainingPeriod = trainingPeriod;
-	}
+	private Period trainingPeriod;
 	
 	@Column(name = "schedule_done", nullable = false)
-	public boolean isScheduleDone() {
-		return this.scheduleDone;
-	}
-	
-	public void setScheduleDone(boolean scheduleDone) {
-		this.scheduleDone = scheduleDone;
-	}
+	private boolean scheduleDone;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
-	public Set<CurDiscipline> getCurDisciplines() {
-		return this.curDisciplines;
-	}
-	
-	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {
-		this.curDisciplines = curDisciplines;
-	}
+	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "curriculum_semester",
@@ -127,17 +74,78 @@ public class Curriculum {
 				inverseJoinColumns = {
 						@JoinColumn(name = "id_edu_period", nullable = false,
 									updatable = false) })
+	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
+			0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
+	private Set<Group> groups = new HashSet<Group>(0);
+	
+	public Integer getIdCurriculum() {
+		return idCurriculum;
+	}
+	
+	public void setIdCurriculum(Integer idCurriculum) {
+		this.idCurriculum = idCurriculum;
+	}
+	
+	public SkillProfile getSkillProfile() {
+		return skillProfile;
+	}
+	
+	public void setSkillProfile(SkillProfile skillProfile) {
+		this.skillProfile = skillProfile;
+	}
+	
+	public EduMode getEduMode() {
+		return eduMode;
+	}
+	
+	public void setEduMode(EduMode eduMode) {
+		this.eduMode = eduMode;
+	}
+	
+	public int getYearStart() {
+		return yearStart;
+	}
+	
+	public void setYearStart(int yearStart) {
+		this.yearStart = yearStart;
+	}
+	
+	public Period getTrainingPeriod() {
+		return trainingPeriod;
+	}
+	
+	public void setTrainingPeriod(Period trainingPeriod) {
+		this.trainingPeriod = trainingPeriod;
+	}
+	
+	public boolean isScheduleDone() {
+		return scheduleDone;
+	}
+	
+	public void setScheduleDone(boolean scheduleDone) {
+		this.scheduleDone = scheduleDone;
+	}
+	
+	public Set<CurDiscipline> getCurDisciplines() {
+		return curDisciplines;
+	}
+	
+	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {
+		this.curDisciplines = curDisciplines;
+	}
+	
 	public Set<EduProcGraphic> getEduProcGraphics() {
-		return this.eduProcGraphics;
+		return eduProcGraphics;
 	}
 	
 	public void setEduProcGraphics(Set<EduProcGraphic> eduProcGraphics) {
 		this.eduProcGraphics = eduProcGraphics;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
 	public Set<Group> getGroups() {
-		return this.groups;
+		return groups;
 	}
 	
 	public void setGroups(Set<Group> groups) {

@@ -3,7 +3,7 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 import schedule.domain.persons.EduDep;
@@ -33,72 +31,28 @@ import schedule.domain.persons.EduDep;
 				"date_of_change" }))
 public class ScheduleChangeJournal {
 	
-	private Integer idScheduleChange;
-	private EduDep eduDep;
-	private Schedule schedule;
-	private String note;
-	private boolean commitBool;
-	private Date dateOfChange;
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_change", updatable = false, unique = true,
 			nullable = false)
-	public Integer getIdScheduleChange() {
-		return this.idScheduleChange;
-	}
-	
-	public void setIdScheduleChange(Integer idScheduleChange) {
-		this.idScheduleChange = idScheduleChange;
-	}
+	private Integer idScheduleChange;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_edu_dep", updatable = false, nullable = false)
-	public EduDep getEduDep() {
-		return this.eduDep;
-	}
-	
-	public void setEduDep(EduDep eduDep) {
-		this.eduDep = eduDep;
-	}
+	private EduDep eduDep;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_schedule", updatable = false, nullable = false)
-	public Schedule getSchedule() {
-		return this.schedule;
-	}
-	
-	public void setSchedule(Schedule schedule) {
-		this.schedule = schedule;
-	}
+	private Schedule schedule;
 	
 	@Column(name = "note", length = 200)
-	public String getNote() {
-		return this.note;
-	}
-	
-	public void setNote(String note) {
-		this.note = note;
-	}
+	private String note;
 	
 	@Column(name = "commit_bool", nullable = false)
-	public boolean isCommitBool() {
-		return this.commitBool;
-	}
+	private boolean commitBool;
 	
-	public void setCommitBool(boolean commitBool) {
-		this.commitBool = commitBool;
-	}
-	
-	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "date_of_change", updatable = false, nullable = false,
 			length = 19)
-	public Date getDateOfChange() {
-		return this.dateOfChange;
-	}
-	
-	public void setDateOfChange(Date dateOfChange) {
-		this.dateOfChange = dateOfChange;
-	}
+	private LocalDateTime dateOfChange;
 	
 }

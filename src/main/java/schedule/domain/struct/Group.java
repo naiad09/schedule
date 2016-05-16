@@ -26,58 +26,61 @@ import schedule.domain.schedule.GroupLessonType;
 @Entity
 @Table(name = "`group`")
 public class Group {
-	
-	private Integer idGroup;
-	private Curriculum curriculum;
-	private String groupNumber;
-	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
-			0);
-	private Set<Student> students = new HashSet<Student>(0);
-	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_group", unique = true, updatable = false,
 			nullable = false)
+	private Integer idGroup;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "id_curriculum", updatable = false, nullable = false)
+	private Curriculum curriculum;
+	
+	@Column(name = "group_number", updatable = false, nullable = false,
+			length = 5)
+	private String groupNumber;
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
+			0);
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
+	private Set<Student> students = new HashSet<Student>(0);
+	
 	public Integer getIdGroup() {
-		return this.idGroup;
+		return idGroup;
 	}
 	
 	public void setIdGroup(Integer idGroup) {
 		this.idGroup = idGroup;
 	}
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_curriculum", updatable = false, nullable = false)
 	public Curriculum getCurriculum() {
-		return this.curriculum;
+		return curriculum;
 	}
 	
 	public void setCurriculum(Curriculum curriculum) {
 		this.curriculum = curriculum;
 	}
 	
-	@Column(name = "group_number", updatable = false, nullable = false,
-			length = 5)
 	public String getGroupNumber() {
-		return this.groupNumber;
+		return groupNumber;
 	}
 	
 	public void setGroupNumber(String groupNumber) {
 		this.groupNumber = groupNumber;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
 	public Set<GroupLessonType> getGroupLessonTypes() {
-		return this.groupLessonTypes;
+		return groupLessonTypes;
 	}
 	
 	public void setGroupLessonTypes(Set<GroupLessonType> groupLessonTypes) {
 		this.groupLessonTypes = groupLessonTypes;
 	}
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
 	public Set<Student> getStudents() {
-		return this.students;
+		return students;
 	}
 	
 	public void setStudents(Set<Student> students) {

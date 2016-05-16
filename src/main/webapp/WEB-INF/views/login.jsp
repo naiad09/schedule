@@ -7,9 +7,7 @@
 <c:url var="loginUrl" value="/login" />
 <form action="${loginUrl}" method="post">
 	<c:if test="${param.error != null}">
-		<div class="alert">
-			<p>Неверные логин и пароль.</p>
-		</div>
+		<p class="alert">Неверные логин и пароль.</p>
 	</c:if>
 
 	<table>

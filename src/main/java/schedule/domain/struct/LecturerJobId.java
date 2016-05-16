@@ -11,28 +11,23 @@ import javax.persistence.Embeddable;
 @Embeddable
 public class LecturerJobId implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
-	private int idLecturer;
-	private int idChair;
-	
-	public LecturerJobId() {}
-	
-	public LecturerJobId(int idLecturer, int idChair) {
-		this.idLecturer = idLecturer;
-		this.idChair = idChair;
-	}
 	
 	@Column(name = "id_lecturer", updatable = false, nullable = false)
+	private int idLecturer;
+	
+	@Column(name = "id_chair", updatable = false, nullable = false)
+	private int idChair;
+	
 	public int getIdLecturer() {
-		return this.idLecturer;
+		return idLecturer;
 	}
 	
 	public void setIdLecturer(int idLecturer) {
 		this.idLecturer = idLecturer;
 	}
 	
-	@Column(name = "id_chair", updatable = false, nullable = false)
 	public int getIdChair() {
-		return this.idChair;
+		return idChair;
 	}
 	
 	public void setIdChair(int idChair) {
