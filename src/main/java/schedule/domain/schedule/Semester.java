@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.struct.EduProcGraphic;
 
@@ -23,20 +24,20 @@ import schedule.domain.struct.EduProcGraphic;
  */
 @Entity
 @Table(name = "semester", uniqueConstraints = @UniqueConstraint(columnNames = {
-		"semester_year", "fall-spring" }))
+		"semester_year", "fall_spring" }))
 public class Semester {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_semester", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_semester", unique = true, updatable = false)@NotNull
 	private int idSemester;
 	
-	@Column(name = "semester_year", nullable = false, updatable = false,
-			length = 0)
-	private int semesterYear;
+	@Column(name = "semester_year", updatable = false)
+	@NotNull
+	private Integer semesterYear;
 	
-	@Column(name = "fall-spring", updatable = false, nullable = false)
+	@Column(name = "fall_spring", updatable = false)
+	@NotNull
 	private boolean fallSpring;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "semester")
@@ -51,11 +52,11 @@ public class Semester {
 		this.idSemester = idSemester;
 	}
 	
-	public int getSemesterYear() {
+	public Integer getSemesterYear() {
 		return semesterYear;
 	}
 	
-	public void setSemesterYear(int semesterYear) {
+	public void setSemesterYear(Integer semesterYear) {
 		this.semesterYear = semesterYear;
 	}
 	

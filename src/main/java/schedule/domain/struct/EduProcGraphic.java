@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.schedule.Semester;
 
@@ -31,33 +32,35 @@ public class EduProcGraphic {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_edu_period", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_edu_period", updatable = false, unique = true)
 	private int idEduPeriod;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_semestr", updatable = false, nullable = false)
+	@JoinColumn(name = "id_semestr", updatable = false)
+	@NotNull
 	private Semester semester;
 	
-	@Column(name = "edu_start", nullable = false, length = 10)
+	@NotNull
+	@Column(name = "edu_start")
 	private LocalDate eduStart;
 	
-	@Column(name = "schedule_change_LocalDate", length = 10)
+	@Column(name = "schedule_change_LocalDate")
 	private LocalDate scheduleChangeLocalDate;
 	
-	@Column(name = "semestr_end", nullable = false, length = 10)
+	@NotNull
+	@Column(name = "semestr_end")
 	private LocalDate semestrEnd;
 	
-	@Column(name = "record_session_start", length = 10)
+	@Column(name = "record_session_start")
 	private LocalDate recordSessionStart;
 	
-	@Column(name = "record_session_end", length = 10)
+	@Column(name = "record_session_end")
 	private LocalDate recordSessionEnd;
 	
-	@Column(name = "exams_session_start", length = 10)
+	@Column(name = "exams_session_start")
 	private LocalDate examsSessionStart;
 	
-	@Column(name = "exams_session_end", length = 10)
+	@Column(name = "exams_session_end")
 	private LocalDate examsSessionEnd;
 	
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "eduProcGraphics")

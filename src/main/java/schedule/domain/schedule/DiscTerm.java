@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -27,22 +28,24 @@ public class DiscTerm {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_disc_sem", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_disc_sem", updatable = false)
 	private int idDiscSem;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_cur_dics", updatable = false, nullable = false)
+	@JoinColumn(name = "id_cur_dics", updatable = false)
+	@NotNull
 	private CurDiscipline curDiscipline;
 	
-	@Column(name = "hours_her_week", nullable = false, precision = 12,
-			scale = 0)
+	@NotNull
+	@Column(name = "hours_her_week")
 	private float hoursHerWeek;
 	
-	@Column(name = "term_num", nullable = false)
+	@Column(name = "term_num")
+	@NotNull
 	private int termNum;
 	
-	@Column(name = "exam", nullable = false)
+	@Column(name = "exam")
+	@NotNull
 	private boolean exam;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discTerm")

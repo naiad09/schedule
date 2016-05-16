@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.struct.Group;
 
@@ -21,10 +22,12 @@ import schedule.domain.struct.Group;
 public class Student extends Person {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_group", nullable = false)
+	@JoinColumn(name = "id_group")
+	@NotNull
 	private Group group;
 	
-	@Column(name = "record_book_number", updatable = false, nullable = false)
+	@Column(name = "record_book_number", updatable = false)
+	@NotNull
 	private int recordBookNumber;
 	
 	public Group getGroup() {

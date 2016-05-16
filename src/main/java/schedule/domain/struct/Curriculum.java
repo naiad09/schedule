@@ -24,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.converters.TrainingPeriodAttributeConverter;
 import schedule.domain.schedule.CurDiscipline;
@@ -40,27 +41,31 @@ public class Curriculum {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_curriculum", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_curriculum", unique = true, updatable = false)@NotNull
 	private Integer idCurriculum;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_profile", updatable = false, nullable = false)
+	@JoinColumn(name = "id_profile", updatable = false)
+	@NotNull
 	private SkillProfile skillProfile;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "edu_mode", updatable = false,
-			columnDefinition = "enum(och,zao,oz)", nullable = false)
+			columnDefinition = "enum(och,zao,oz)")
+	@NotNull
 	private EduMode eduMode;
 	
-	@Column(name = "year_start", updatable = false, nullable = false)
+	@Column(name = "year_start", updatable = false)
+	@NotNull
 	private int yearStart;
 	
 	@Convert(converter = TrainingPeriodAttributeConverter.class)
-	@Column(name = "training_period", updatable = false, nullable = false)
+	@Column(name = "training_period", updatable = false)
+	@NotNull
 	private Period trainingPeriod;
 	
-	@Column(name = "schedule_done", nullable = false)
+	@Column(name = "schedule_done")
+	@NotNull
 	private boolean scheduleDone;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
@@ -68,12 +73,10 @@ public class Curriculum {
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "curriculum_semester",
-				joinColumns = {
-						@JoinColumn(name = "id_curriculum", nullable = false,
-									updatable = false) },
-				inverseJoinColumns = {
-						@JoinColumn(name = "id_edu_period", nullable = false,
-									updatable = false) })
+				joinColumns = { @JoinColumn(name = "id_curriculum",
+											updatable = false) },
+				inverseJoinColumns = { @JoinColumn(	name = "id_edu_period",
+													updatable = false) })
 	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
 			0);
 	

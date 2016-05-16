@@ -16,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -29,20 +31,21 @@ public class SkillProfile {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_profile", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_profile", updatable = false)
 	private Integer idProfile;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_edu_prog", updatable = false, nullable = false)
+	@JoinColumn(name = "id_edu_prog", updatable = false)
+	@NotNull
 	private EduProgram eduProgram;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_chair", updatable = false, nullable = false)
+	@JoinColumn(name = "id_chair", updatable = false)
+	@NotNull
 	private Chair chair;
 	
-	@Column(name = "profile_name", updatable = false, unique = true,
-			length = 150)
+	@Column(name = "profile_name", updatable = false, unique = true)
+	@Size(max = 150, min = 10)
 	private String profileName;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "skillProfile")

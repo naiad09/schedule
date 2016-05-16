@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -21,10 +22,12 @@ import javax.persistence.Table;
 public class EduProgGroup {
 	
 	@Id
-	@Column(name = "edu_prog_group_code", unique = true, updatable = false,
-			nullable = false)
+	@NotNull
+	@Column(name = "edu_prog_group_code", unique = true, updatable = false)
 	private int eduProgGroupCode;
-	@Column(name = "edu_prog_group_name", updatable = false, nullable = false)
+	
+	@Column(name = "edu_prog_group_name", updatable = false)
+	@NotNull
 	private String eduProgGroupName;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "eduProgGroup")

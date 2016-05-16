@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import schedule.dao.GenericDAO;
 import schedule.dao.PersonDao;
 import schedule.domain.persons.Person;
+import schedule.domain.schedule.Semester;
 import schedule.domain.struct.Chair;
 import schedule.service.CustomUserDetails;
 
@@ -27,14 +28,22 @@ public class HomeController {
 	@Autowired
 	private GenericDAO<Chair, Integer> chairDAO;
 	@Autowired
-	private PersonDao personDao;
+	private PersonDao personDAO;
+	
+	@RequestMapping("test")
+	public void test() {
+		Semester semester = new Semester();
+		semester.setFallSpring(false);
+		
+		personDAO.currentSession().save(semester);
+	}
 	
 	@RequestMapping("/")
 	public String home(Authentication auth, Model model, HttpSession ses) {
 		
 		if (auth != null) {
 			CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-			ses.setAttribute("currentUser", personDao.read(cud.getUid()));
+			ses.setAttribute("currentUser", personDAO.read(cud.getUid()));
 		}
 		
 		List<Chair> all = chairDAO.getAll();
@@ -62,7 +71,7 @@ public class HomeController {
 	@RequestMapping("/persons/uid{personId}")
 	public String getPerson(@PathVariable Integer personId, Model model) {
 		
-		Person find = personDao.read(personId);
+		Person find = personDAO.read(personId);
 		if (find == null) throw new ResourceNotFoundException();
 		model.addAttribute("person", find);
 		

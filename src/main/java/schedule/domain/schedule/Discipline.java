@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -20,14 +22,16 @@ public class Discipline {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_disc_name", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_disc_name", updatable = false)
 	private Integer idDiscName;
 	
-	@Column(name = "id_disc_mod", updatable = false, nullable = false)
-	private int idDiscMod;
+	@Column(name = "id_disc_mod", updatable = false)
+	@NotNull
+	private int discMod;
 	
-	@Column(name = "disc_name", updatable = false, nullable = false)
+	@Column(name = "disc_name", updatable = false)
+	@NotNull
+	@Size(max = 255, min = 5)
 	private String discName;
 	
 	public Integer getIdDiscName() {
@@ -38,12 +42,12 @@ public class Discipline {
 		this.idDiscName = idDiscName;
 	}
 	
-	public int getIdDiscMod() {
-		return idDiscMod;
+	public int getDiscMod() {
+		return discMod;
 	}
 	
-	public void setIdDiscMod(int idDiscMod) {
-		this.idDiscMod = idDiscMod;
+	public void setDiscMod(int discMod) {
+		this.discMod = discMod;
 	}
 	
 	public String getDiscName() {

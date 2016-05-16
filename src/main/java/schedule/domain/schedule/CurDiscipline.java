@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Curriculum;
@@ -32,8 +34,7 @@ public class CurDiscipline {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_cur_dics", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_cur_dics", updatable = false)
 	private int idCurDics;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -41,33 +42,132 @@ public class CurDiscipline {
 	private Chair chair;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_disc_name", updatable = false, nullable = false)
+	@JoinColumn(name = "id_disc_name", updatable = false)
+	@NotNull
 	private Discipline discipline;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_curriculum", updatable = false, nullable = false)
+	@JoinColumn(name = "id_curriculum", updatable = false)
+	@NotNull
 	private Curriculum curriculum;
 	
-	@Column(name = "lecture_hours", nullable = false)
+	@Column(name = "lecture_hours")
+	@NotNull
 	private short lectureHours;
 	
-	@Column(name = "lab_hours", nullable = false)
+	@Column(name = "lab_hours")
+	@NotNull
 	private short labHours;
 	
-	@Column(name = "seminar_hours", nullable = false)
+	@Column(name = "seminar_hours")
+	@NotNull
 	private short seminarHours;
 	
-	@Column(name = "disc_code", nullable = false, updatable = false,
-			length = 16)
+	@NotNull
+	@Column(name = "disc_code", updatable = false)
+	@Size(max = 16, min = 10)
 	private String discCode;
 	
-	@Column(name = "common-profile", nullable = false)
+	@Column(name = "common_profile")
+	@NotNull
 	private boolean commonProfile;
 	
-	@Column(name = "variability", nullable = false, length = 4)
-	private String variability;
+	@NotNull
+	@Column(name = "variability", columnDefinition = "enum('baz','var','vib')")
+	private DisciplineVariability variability;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "curDiscipline")
 	private Set<DiscTerm> discTerms = new HashSet<DiscTerm>(0);
 	
+	public int getIdCurDics() {
+		return idCurDics;
+	}
+	
+	public void setIdCurDics(int idCurDics) {
+		this.idCurDics = idCurDics;
+	}
+	
+	public Chair getChair() {
+		return chair;
+	}
+	
+	public void setChair(Chair chair) {
+		this.chair = chair;
+	}
+	
+	public Discipline getDiscipline() {
+		return discipline;
+	}
+	
+	public void setDiscipline(Discipline discipline) {
+		this.discipline = discipline;
+	}
+	
+	public Curriculum getCurriculum() {
+		return curriculum;
+	}
+	
+	public void setCurriculum(Curriculum curriculum) {
+		this.curriculum = curriculum;
+	}
+	
+	public short getLectureHours() {
+		return lectureHours;
+	}
+	
+	public void setLectureHours(short lectureHours) {
+		this.lectureHours = lectureHours;
+	}
+	
+	public short getLabHours() {
+		return labHours;
+	}
+	
+	public void setLabHours(short labHours) {
+		this.labHours = labHours;
+	}
+	
+	public short getSeminarHours() {
+		return seminarHours;
+	}
+	
+	public void setSeminarHours(short seminarHours) {
+		this.seminarHours = seminarHours;
+	}
+	
+	public String getDiscCode() {
+		return discCode;
+	}
+	
+	public void setDiscCode(String discCode) {
+		this.discCode = discCode;
+	}
+	
+	public boolean isCommonProfile() {
+		return commonProfile;
+	}
+	
+	public void setCommonProfile(boolean commonProfile) {
+		this.commonProfile = commonProfile;
+	}
+	
+	public DisciplineVariability getVariability() {
+		return variability;
+	}
+	
+	public void setVariability(DisciplineVariability variability) {
+		this.variability = variability;
+	}
+	
+	public Set<DiscTerm> getDiscTerms() {
+		return discTerms;
+	}
+	
+	public void setDiscTerms(Set<DiscTerm> discTerms) {
+		this.discTerms = discTerms;
+	}
+	
+	public enum DisciplineVariability {
+		baz, var, vib;
+	}
 }

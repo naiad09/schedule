@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -22,17 +23,21 @@ import javax.persistence.Table;
 public class Exam extends GroupLessonType {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "consult_id_classroom", nullable = false)
+	@JoinColumn(name = "consult_id_classroom")
+	@NotNull
 	private Classroom consultClassroom;
 	
-	@Column(name = "consult_date", nullable = false, length = 19)
+	@NotNull
+	@Column(name = "consult_date")
 	private LocalDateTime consultDate;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "exam_id_classroom", nullable = false)
+	@JoinColumn(name = "exam_id_classroom")
+	@NotNull
 	private Classroom examClassroom;
 	
-	@Column(name = "exam_date", nullable = false, length = 19)
+	@NotNull
+	@Column(name = "exam_date")
 	private LocalDateTime examDate;
 	
 	public Classroom getConsultClassroom() {

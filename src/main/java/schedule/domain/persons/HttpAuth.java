@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -21,22 +23,24 @@ public class HttpAuth {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "auth_uid", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "auth_uid", updatable = false)
 	private Integer authUid;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@PrimaryKeyJoinColumn
 	private Person person;
 	
-	@Column(name = "login", unique = true, updatable = false, nullable = false,
-			length = 32)
+	@NotNull
+	@Column(name = "login", unique = true, updatable = false)
+	@Size(max = 32, min = 4)
 	private String login;
 	
-	@Column(name = "password", nullable = false, length = 32)
+	@NotNull
+	@Column(name = "password")
+	@Size(max = 32, min = 6)
 	private String password;
 	
-	@Column(name = "active", nullable = false)
+	@Column(name = "active")
 	private boolean active = true;
 	
 	public Integer getAuthUid() {

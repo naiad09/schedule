@@ -20,6 +20,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -34,39 +36,41 @@ public class Schedule {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_schedule", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_schedule", updatable = false)
 	private long idSchedule;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_lesson_types", updatable = false, nullable = false)
+	@JoinColumn(name = "id_lesson_types", updatable = false)
+	@NotNull
 	private GroupLessonType groupLessonType;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_twain", nullable = false)
+	@JoinColumn(name = "id_twain")
+	@NotNull
 	private Twain twain;
 	
-	@Column(name = "time_plan", nullable = false)
-	private int timePlan;
+	@Column(name = "time_plan")
+	@NotNull
+	private short timePlan = 255;
 	
 	@Enumerated(EnumType.ORDINAL)
-	@Column(name = "weekday", nullable = false, length = 4)
+	@NotNull
+	@Column(name = "weekday")
 	private DayOfWeek weekday;
 	
-	@Column(name = "note", length = 256)
+	@Column(name = "note")
+	@Size(max = 256)
 	private String note;
 	
-	@Column(name = "elective", nullable = false)
-	private boolean elective;
+	@Column(name = "elective")
+	@NotNull
+	private boolean elective = false;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(	name = "schedule_classroom",
 				joinColumns = {
-						@JoinColumn(name = "id_schedule", nullable = false,
-									updatable = false) },
-				inverseJoinColumns = {
-						@JoinColumn(name = "id_classroom", nullable = false,
-									updatable = false) })
+						@JoinColumn(name = "id_schedule", updatable = false) },
+				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule")
@@ -97,11 +101,11 @@ public class Schedule {
 		this.twain = twain;
 	}
 	
-	public int getTimePlan() {
+	public short getTimePlan() {
 		return timePlan;
 	}
 	
-	public void setTimePlan(int timePlan) {
+	public void setTimePlan(short timePlan) {
 		this.timePlan = timePlan;
 	}
 	

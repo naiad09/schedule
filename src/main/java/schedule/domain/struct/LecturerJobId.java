@@ -3,6 +3,7 @@ package schedule.domain.struct;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -12,10 +13,12 @@ import javax.persistence.Embeddable;
 public class LecturerJobId implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "id_lecturer", updatable = false, nullable = false)
+	@Column(name = "id_lecturer", updatable = false)
+	@NotNull
 	private int idLecturer;
 	
-	@Column(name = "id_chair", updatable = false, nullable = false)
+	@Column(name = "id_chair", updatable = false)
+	@NotNull
 	private int idChair;
 	
 	public int getIdLecturer() {

@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.persons.Lecturer;
 
@@ -23,29 +24,27 @@ import schedule.domain.persons.Lecturer;
 @Table(name = "lecturer_job")
 public class LecturerJob {
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_chair", nullable = false, insertable = false,
-				updatable = false)
-	private Chair chair;
-	
 	@EmbeddedId
 	@AttributeOverrides({
 			@AttributeOverride(	name = "idLecturer",
-								column = @Column(	name = "id_lecturer",
-													nullable = false)),
+								column = @Column(name = "id_lecturer")),
 			@AttributeOverride(	name = "idChair",
-								column = @Column(	name = "id_chair",
-													nullable = false)) })
-	
+								column = @Column(name = "id_chair")) })
 	private LecturerJobId id;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@NotNull
+	@JoinColumn(name = "id_chair", insertable = false, updatable = false)
+	private Chair chair;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_job", columnDefinition = "enum('pr','doc','stp')")
+	@NotNull
 	private JobType jobType;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_lecturer", nullable = false, insertable = false,
-				updatable = false)
+	@NotNull
+	@JoinColumn(name = "id_lecturer", insertable = false, updatable = false)
 	private Lecturer lecturer;
 	
 	public Chair getChair() {

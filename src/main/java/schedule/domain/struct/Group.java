@@ -15,9 +15,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import schedule.domain.persons.Student;
-import schedule.domain.schedule.GroupLessonType;
 
 
 /**
@@ -28,21 +29,18 @@ import schedule.domain.schedule.GroupLessonType;
 public class Group {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_group", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_group", updatable = false)
 	private Integer idGroup;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_curriculum", updatable = false, nullable = false)
+	@JoinColumn(name = "id_curriculum", updatable = false)
+	@NotNull
 	private Curriculum curriculum;
 	
-	@Column(name = "group_number", updatable = false, nullable = false,
-			length = 5)
+	@NotNull
+	@Column(name = "group_number", updatable = false)
+	@Size(max = 5, min = 2)
 	private String groupNumber;
-	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
-	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
-			0);
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "group")
 	private Set<Student> students = new HashSet<Student>(0);
@@ -69,14 +67,6 @@ public class Group {
 	
 	public void setGroupNumber(String groupNumber) {
 		this.groupNumber = groupNumber;
-	}
-	
-	public Set<GroupLessonType> getGroupLessonTypes() {
-		return groupLessonTypes;
-	}
-	
-	public void setGroupLessonTypes(Set<GroupLessonType> groupLessonTypes) {
-		this.groupLessonTypes = groupLessonTypes;
 	}
 	
 	public Set<Student> getStudents() {

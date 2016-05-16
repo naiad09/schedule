@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -21,15 +22,15 @@ public class Twain {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_twain", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_twain", updatable = false)
 	private int idTwain;
 	
-	@Column(name = "time_start", updatable = false, nullable = false,
-			length = 8)
+	@NotNull
+	@Column(name = "time_start", updatable = false)
 	private LocalTime timeStart;
 	
-	@Column(name = "time_end", updatable = false, nullable = false, length = 8)
+	@NotNull
+	@Column(name = "time_end", updatable = false)
 	private LocalTime timeEnd;
 	
 	public int getIdTwain() {

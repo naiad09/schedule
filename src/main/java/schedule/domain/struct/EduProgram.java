@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 /**
@@ -29,25 +31,27 @@ public class EduProgram {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_edu_prog", unique = true, updatable = false,
-			nullable = false)
+	@Column(name = "id_edu_prog", unique = true, updatable = false)
 	private int idEduProg;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "edu_prog_group_code", updatable = false,
-				nullable = false)
+	@JoinColumn(name = "edu_prog_group_code", updatable = false)
+	@NotNull
 	private EduProgGroup eduProgGroup;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "id_qual_type", updatable = false, nullable = false,
+	@NotNull
+	@Column(name = "id_qual_type", updatable = false,
 			columnDefinition = "enum('bac','mag','spec','asp')")
 	private EduQual eduQual = EduQual.bac;
 	
-	@Column(name = "edu_prog_code", updatable = false, nullable = false,
-			length = 8)
+	@NotNull
+	@Column(name = "edu_prog_code", updatable = false)
+	@Size(max = 8, min = 7)
 	private String eduProgCode;
 	
-	@Column(name = "edu_prog_name", updatable = false, nullable = false)
+	@Column(name = "edu_prog_name", updatable = false)
+	@NotNull
 	private String eduProgName;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduProgram")

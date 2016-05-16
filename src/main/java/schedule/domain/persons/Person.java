@@ -17,6 +17,11 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 
 /**
@@ -30,37 +35,45 @@ public abstract class Person {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "uid", unique = true, updatable = false, nullable = false)
+	@Column(name = "uid", unique = true, updatable = false)
 	private Integer uid;
 	
 	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
 				mappedBy = "person")
 	private HttpAuth httpAuth;
 	
-	@Column(name = "last_name", updatable = false, nullable = false,
-			length = 25)
+	@NotNull
+	@Column(name = "last_name", updatable = false)
+	@Size(max = 64, min = 5)
 	private String lastName;
 	
-	@Column(name = "first_name", updatable = false, nullable = false,
-			length = 15)
+	@NotNull
+	@Column(name = "first_name", updatable = false)
+	@Size(max = 32, min = 3)
 	private String firstName;
 	
-	@Column(name = "middle_name", updatable = false, nullable = false,
-			length = 20)
+	@NotNull
+	@Column(name = "middle_name", updatable = false)
+	@Size(max = 32, min = 5)
 	private String middleName;
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "gender", updatable = false, nullable = false,
+	@NotNull
+	@Column(name = "gender", updatable = false,
 			columnDefinition = "enum('m','f')")
 	private Gender gender;
 	
-	@Column(name = "birthday", updatable = false, length = 10)
+	@Column(name = "birthday", updatable = false)
+	@Past
 	private LocalDate birthday;
 	
-	@Column(name = "email", length = 256)
+	@Column(name = "email")
+	@Size(max = 255)
+	@Email
 	private String email;
 	
-	@Column(name = "submit", nullable = false)
+	@Column(name = "submit")
+	@NotNull
 	private boolean submit;
 	
 	public Integer getUid() {

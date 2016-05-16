@@ -15,6 +15,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.CurDiscipline;
@@ -30,22 +32,23 @@ public class Chair {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_chair", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_chair", updatable = false, unique = true)
 	private Integer idChair;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_faculty", updatable = false,
-			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)",
-			nullable = false, length = 5)
+			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
+	@NotNull
 	private Faculty faculty;
 	
-	@Column(name = "chair_name", updatable = false, nullable = false,
-			length = 100)
+	@NotNull
+	@Column(name = "chair_name", updatable = false)
+	@Size(max = 100, min = 5)
 	private String chairName;
 	
-	@Column(name = "chair_shortname", updatable = false, nullable = false,
-			length = 32)
+	@NotNull
+	@Column(name = "chair_shortname", updatable = false)
+	@Size(max = 32, min = 2)
 	private String chairShortname;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")

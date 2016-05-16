@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import schedule.domain.struct.LecturerJob;
 
@@ -25,8 +26,8 @@ import schedule.domain.struct.LecturerJob;
 public class Lecturer extends Person {
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "degree", columnDefinition = "enum(ctn,dtn)",
-			nullable = false, length = 5)
+	@Column(name = "degree", columnDefinition = "enum(ctn,dtn)")
+	@NotNull
 	private Degree degree;
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lecturer")

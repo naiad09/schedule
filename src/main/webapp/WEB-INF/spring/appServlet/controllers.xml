@@ -33,6 +33,7 @@
 			<list>
 				<value>page-titles</value>
 				<value>transcript</value>
+				<value>validation-error-messages</value>
 			</list>
 		</property>
 	</bean>

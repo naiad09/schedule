@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import schedule.domain.persons.EduDep;
 
@@ -33,26 +35,29 @@ public class ScheduleChangeJournal {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_schedule_change", updatable = false, unique = true,
-			nullable = false)
+	@Column(name = "id_schedule_change", updatable = false)
 	private Integer idScheduleChange;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_edu_dep", updatable = false, nullable = false)
+	@JoinColumn(name = "id_edu_dep", updatable = false)
+	@NotNull
 	private EduDep eduDep;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_schedule", updatable = false, nullable = false)
+	@JoinColumn(name = "id_schedule", updatable = false)
+	@NotNull
 	private Schedule schedule;
 	
-	@Column(name = "note", length = 200)
+	@Column(name = "note")
+	@Size(max = 200)
 	private String note;
 	
-	@Column(name = "commit_bool", nullable = false)
+	@Column(name = "commit_bool")
+	@NotNull
 	private boolean commitBool;
 	
-	@Column(name = "date_of_change", updatable = false, nullable = false,
-			length = 19)
+	@NotNull
+	@Column(name = "date_of_change", updatable = false)
 	private LocalDateTime dateOfChange;
 	
 }

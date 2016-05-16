@@ -28,7 +28,7 @@ import schedule.domain.struct.Chair.Faculty;
 public class EduDep extends Person {
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "id_faculty", length = 5, nullable = true, updatable = false,
+	@Column(name = "id_faculty", nullable = true, updatable = false,
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
 	private Faculty faculty;
 	
