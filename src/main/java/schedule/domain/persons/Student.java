@@ -26,7 +26,7 @@ public class Student extends Person {
 	@NotNull
 	private Group group;
 	
-	@Column(name = "record_book_number", updatable = false)
+	@Column(name = "record_book_number") // , updatable = false)
 	@NotNull
 	private int recordBookNumber;
 	

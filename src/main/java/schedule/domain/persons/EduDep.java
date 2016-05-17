@@ -36,6 +36,9 @@ public class EduDep extends Person {
 	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
 			0);
 	
+	@Column(name = "admin")
+	private boolean admin = false;
+	
 	public Faculty getFaculty() {
 		return faculty;
 	}
@@ -51,6 +54,14 @@ public class EduDep extends Person {
 	public void setScheduleChangeJournals(
 			Set<ScheduleChangeJournal> scheduleChangeJournals) {
 		this.scheduleChangeJournals = scheduleChangeJournals;
+	}
+	
+	public boolean isAdmin() {
+		return admin;
+	}
+	
+	public void setAdmin(boolean admin) {
+		this.admin = admin;
 	}
 	
 }

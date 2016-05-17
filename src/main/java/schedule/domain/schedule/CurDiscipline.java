@@ -70,7 +70,7 @@ public class CurDiscipline {
 	
 	@Column(name = "common_profile")
 	@NotNull
-	private boolean commonProfile;
+	private boolean commonProfile = false;
 	
 	@NotNull
 	@Column(name = "variability", columnDefinition = "enum('baz','var','vib')")

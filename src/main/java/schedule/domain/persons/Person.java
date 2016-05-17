@@ -18,7 +18,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
@@ -63,8 +62,7 @@ public abstract class Person {
 			columnDefinition = "enum('m','f')")
 	private Gender gender;
 	
-	@Column(name = "birthday", updatable = false)
-	@Past
+	@Column(name = "birthday")
 	private LocalDate birthday;
 	
 	@Column(name = "email")
@@ -74,7 +72,7 @@ public abstract class Person {
 	
 	@Column(name = "submit")
 	@NotNull
-	private boolean submit;
+	private boolean submit = true;
 	
 	public Integer getUid() {
 		return uid;

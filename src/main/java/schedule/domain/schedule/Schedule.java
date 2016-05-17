@@ -51,6 +51,7 @@ public class Schedule {
 	
 	@Column(name = "time_plan")
 	@NotNull
+	// TODO mapping and test
 	private short timePlan = 255;
 	
 	@Enumerated(EnumType.ORDINAL)

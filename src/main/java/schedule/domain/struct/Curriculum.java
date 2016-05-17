@@ -41,7 +41,8 @@ public class Curriculum {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_curriculum", unique = true, updatable = false)@NotNull
+	@Column(name = "id_curriculum", unique = true, updatable = false)
+	@NotNull
 	private Integer idCurriculum;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -66,7 +67,7 @@ public class Curriculum {
 	
 	@Column(name = "schedule_done")
 	@NotNull
-	private boolean scheduleDone;
+	private boolean scheduleDone = false;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
 	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);

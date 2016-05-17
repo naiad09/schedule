@@ -41,7 +41,7 @@ public class Classroom {
 	
 	@Column(name = "campus")
 	@NotNull
-	private int campus;
+	private int campus = 1;
 	
 	public Integer getIdClassroom() {
 		return idClassroom;

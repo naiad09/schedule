@@ -45,7 +45,6 @@ public class ScheduleChangeJournal {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_schedule", updatable = false)
-	@NotNull
 	private Schedule schedule;
 	
 	@Column(name = "note")
@@ -54,10 +53,59 @@ public class ScheduleChangeJournal {
 	
 	@Column(name = "commit_bool")
 	@NotNull
-	private boolean commitBool;
+	private boolean commitBool = false;
 	
 	@NotNull
 	@Column(name = "date_of_change", updatable = false)
+	@GeneratedValue
 	private LocalDateTime dateOfChange;
+	
+	public Integer getIdScheduleChange() {
+		return idScheduleChange;
+	}
+	
+	public void setIdScheduleChange(Integer idScheduleChange) {
+		this.idScheduleChange = idScheduleChange;
+	}
+	
+	public EduDep getEduDep() {
+		return eduDep;
+	}
+	
+	public void setEduDep(EduDep eduDep) {
+		this.eduDep = eduDep;
+	}
+	
+	public Schedule getSchedule() {
+		return schedule;
+	}
+	
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
+	
+	public String getNote() {
+		return note;
+	}
+	
+	public void setNote(String note) {
+		this.note = note;
+	}
+	
+	public boolean isCommitBool() {
+		return commitBool;
+	}
+	
+	public void setCommitBool(boolean commitBool) {
+		this.commitBool = commitBool;
+	}
+	
+	public LocalDateTime getDateOfChange() {
+		return dateOfChange;
+	}
+	
+	public void setDateOfChange(LocalDateTime dateOfChange) {
+		this.dateOfChange = dateOfChange;
+	}
 	
 }

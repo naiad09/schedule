@@ -41,6 +41,7 @@ public class HttpAuth {
 	private String password;
 	
 	@Column(name = "active")
+	@NotNull
 	private boolean active = true;
 	
 	public Integer getAuthUid() {
