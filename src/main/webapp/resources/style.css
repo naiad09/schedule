@@ -38,6 +38,9 @@ a {
 	text-decoration: none;
 }
 
-.alert {
+.error {
 	color: maroon;
+}
+.success {
+	color: green;
 }

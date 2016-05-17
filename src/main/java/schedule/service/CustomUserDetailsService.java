@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import schedule.dao.PersonDao;
+import schedule.domain.persons.EduDep;
 import schedule.domain.persons.HttpAuth;
 import schedule.domain.persons.Person;
 
@@ -43,6 +44,12 @@ public class CustomUserDetailsService implements UserDetailsService {
 		ArrayList<GrantedAuthority> ar = new ArrayList<GrantedAuthority>();
 		ar.add(new SimpleGrantedAuthority(
 				"ROLE_" + person.getRole().toUpperCase()));
+		
+		if (person instanceof EduDep) {
+			if (((EduDep) person).isAdmin())
+				ar.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+		
 		return ar;
 		
 	}

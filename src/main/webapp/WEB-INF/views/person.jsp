@@ -6,6 +6,9 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h1>${person.lastName}&nbsp;${person.firstName}&nbsp;${person.middleName}</h1>
+<c:if test="${param.saved == true}">
+	<p class="alert success">Профиль обновлен.</p>
+</c:if>
 <c:url value="/persons/uid${person.uid}/edit" var="editUrl" />
 <sec:authorize url="${editUrl}">
 	<div id="edit">

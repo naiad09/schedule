@@ -3,13 +3,11 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h1>Войти в систему</h1>
-
+<c:if test="${param.error == true}">
+	<p class="alert error">Неверные логин и пароль.</p>
+</c:if>
 <c:url var="loginUrl" value="/login" />
 <form action="${loginUrl}" method="post">
-	<c:if test="${param.error != null}">
-		<p class="alert">Неверные логин и пароль.</p>
-	</c:if>
-
 	<table>
 		<tr>
 			<td>Логин</td>
