@@ -17,9 +17,6 @@
 		<csrf disabled="true" />
 	</http>
 
-	<global-method-security pre-post-annotations="enabled"
-		secured-annotations="enabled" />
-
 	<authentication-manager>
 		<authentication-provider user-service-ref="customUserDetailsService">
 			<password-encoder hash="md5" />

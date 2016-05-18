@@ -37,7 +37,11 @@
 		<c:if test="${!empty currentUser.faculty}">
 		      диспетчер <spring:message
 				code="${currentUser.faculty}.shortName" />
+			<c:if test="${currentUser.admin}">
+				<br>
+			</c:if>
 		</c:if>
+		<c:if test="${currentUser.admin}">администратор</c:if>
 	</sec:authorize>
 
 	<br>

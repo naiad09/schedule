@@ -12,12 +12,12 @@
 		<tr>
 			<td>Логин</td>
 			<td><input type="text" id="username" name="j_username"
-				value="naiad" placeholder="Введите логин" required></td>
+				value="vanya" placeholder="Введите логин" required></td>
 		</tr>
 		<tr>
 			<td>Пароль</td>
 			<td><input type="password" id="password" name="j_password"
-				value="rfhfre12" placeholder="Введите пароль" required></td>
+				value="vanya" placeholder="Введите пароль" required></td>
 		</tr>
 		<tr>
 			<td></td>

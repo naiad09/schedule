@@ -4,13 +4,13 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import schedule.domain.persons.HttpAuth;
 import schedule.domain.persons.Person;
 
 
-@Component
+@Repository
 public class PersonDAO extends GenericDAO<Person, Integer> {
 	
 	public PersonDAO() {

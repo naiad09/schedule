@@ -44,8 +44,8 @@ public class EduProcGraphic {
 	@Column(name = "edu_start")
 	private LocalDate eduStart;
 	
-	@Column(name = "schedule_change_LocalDate")
-	private LocalDate scheduleChangeLocalDate;
+	@Column(name = "schedule_change_date")
+	private LocalDate scheduleChangeDate;
 	
 	@NotNull
 	@Column(name = "semestr_end")
@@ -90,12 +90,12 @@ public class EduProcGraphic {
 		this.eduStart = eduStart;
 	}
 	
-	public LocalDate getScheduleChangeLocalDate() {
-		return scheduleChangeLocalDate;
+	public LocalDate getScheduleChangeDate() {
+		return scheduleChangeDate;
 	}
 	
-	public void setScheduleChangeLocalDate(LocalDate scheduleChangeLocalDate) {
-		this.scheduleChangeLocalDate = scheduleChangeLocalDate;
+	public void setScheduleChangeDate(LocalDate scheduleChangeDate) {
+		this.scheduleChangeDate = scheduleChangeDate;
 	}
 	
 	public LocalDate getSemestrEnd() {

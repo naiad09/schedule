@@ -11,7 +11,7 @@ import schedule.domain.struct.Chair.Faculty;
 
 
 @Repository
-public class ChairDAO extends GenericDAO<Chair, Integer> {
+public class ChairDAO extends MinimalGenericDAO<Chair, Integer> {
 	
 	public ChairDAO() {
 		super(Chair.class);
