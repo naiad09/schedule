@@ -4,6 +4,8 @@ package schedule.domain.struct;
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -22,6 +24,7 @@ import schedule.domain.persons.Lecturer;
  */
 @Entity
 @Table(name = "lecturer_job")
+@Embeddable
 public class LecturerJob {
 	
 	@EmbeddedId
@@ -32,7 +35,7 @@ public class LecturerJob {
 								column = @Column(name = "id_chair")) })
 	private LecturerJobId id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull
 	@JoinColumn(name = "id_chair", insertable = false, updatable = false)
 	private Chair chair;
@@ -42,9 +45,10 @@ public class LecturerJob {
 	@NotNull
 	private JobType jobType;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull
 	@JoinColumn(name = "id_lecturer", insertable = false, updatable = false)
+	@Embedded
 	private Lecturer lecturer;
 	
 	public Chair getChair() {

@@ -6,9 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,7 +31,7 @@ public class DiscTerm {
 	@Column(name = "id_disc_sem", updatable = false)
 	private int idDiscSem;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_cur_dics", updatable = false)
 	@NotNull
 	private CurDiscipline curDiscipline;
@@ -48,7 +48,7 @@ public class DiscTerm {
 	@NotNull
 	private boolean exam;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "discTerm")
+	@OneToMany(mappedBy = "discTerm",fetch=FetchType.LAZY)
 	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
 			0);
 	

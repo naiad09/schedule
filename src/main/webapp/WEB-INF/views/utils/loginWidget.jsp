@@ -25,7 +25,7 @@
 	<sec:authorize access="hasRole('ROLE_LECTURER')">
 		<c:forEach items="${currentUser.lecturerJobs}" var="job"
 			varStatus="loop">
-                ${job.chair.chairShortname} (<spring:message
+                ${job.chair.shortName} (<spring:message
 				code="${job.jobType}.shortName" />)
             <c:if test="${!loop.last }">
 				<br>

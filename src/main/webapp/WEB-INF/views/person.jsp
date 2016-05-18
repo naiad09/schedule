@@ -31,7 +31,7 @@
 			<spring:message code="${person.degree}.fullName" />,<br>
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
 				<spring:message code="${job.jobType}.fullName" /> кафедры
-                   ${job.chair.chairShortname}
+                   ${job.chair.shortName}
                    <c:if test="${!loop.last }">
 					,<br>
 				</c:if>

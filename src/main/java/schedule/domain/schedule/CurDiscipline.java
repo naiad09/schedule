@@ -6,9 +6,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,7 +24,7 @@ import schedule.domain.struct.Curriculum;
 /**
  * Дисциплина в учебном плане. Имеет привязку к дисциплине, к кафедре и к
  * учебному плану. Хранит число часов лекций, лабораторных и семинаров
- * (практик), также имеет код дисциплины и важный параметр - флаг, является ли
+ * (практик, также имеет код дисциплины и важный параметр - флаг, является ли
  * дисциплина общей для всех профилей или принадлежит только одному профилю.
  */
 @Entity
@@ -37,16 +36,16 @@ public class CurDiscipline {
 	@Column(name = "id_cur_dics", updatable = false)
 	private int idCurDics;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_disc_name", updatable = false)
 	@NotNull
 	private Discipline discipline;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_curriculum", updatable = false)
 	@NotNull
 	private Curriculum curriculum;
@@ -76,7 +75,7 @@ public class CurDiscipline {
 	@Column(name = "variability", columnDefinition = "enum('baz','var','vib')")
 	private DisciplineVariability variability;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "curDiscipline")
+	@OneToMany(mappedBy = "curDiscipline",fetch=FetchType.LAZY)
 	private Set<DiscTerm> discTerms = new HashSet<DiscTerm>(0);
 	
 	public int getIdCurDics() {

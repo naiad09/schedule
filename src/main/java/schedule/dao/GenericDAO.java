@@ -1,19 +1,13 @@
 package schedule.dao;
 
-
 import java.io.Serializable;
-
 import java.util.List;
 
-
+import org.hibernate.Criteria;
 import org.hibernate.Session;
-
 import org.hibernate.SessionFactory;
-
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.stereotype.Repository;
-
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -31,15 +25,11 @@ public class GenericDAO<E, K extends Serializable> {
 		this.daoType = type;
 	}
 	
-	public Session currentSession() {
-		return sessionFactory.getCurrentSession();
-	}
-	
 	public void create(E entity) {
 		currentSession().save(entity);
 	}
 	
-	public E read(K key) {
+	public E find(K key) {
 		return currentSession().get(daoType, key);
 	}
 	
@@ -53,6 +43,14 @@ public class GenericDAO<E, K extends Serializable> {
 	
 	@SuppressWarnings("unchecked")
 	public List<E> getAll() {
-		return currentSession().createCriteria(daoType).list();
+		return getCriteriaDaoType().list();
+	}
+	
+	protected Session currentSession() {
+		return sessionFactory.getCurrentSession();
+	}
+
+	protected Criteria getCriteriaDaoType() {
+		return currentSession().createCriteria(daoType);
 	}
 }

@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
@@ -25,6 +27,7 @@ import schedule.domain.struct.Chair.Faculty;
 @Entity
 @Table(name = "edu_dep")
 @PrimaryKeyJoinColumn(name = "id_edu_dep", referencedColumnName = "uid")
+@Embeddable
 public class EduDep extends Person {
 	
 	@Enumerated(EnumType.STRING)
@@ -32,7 +35,8 @@ public class EduDep extends Person {
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
 	private Faculty faculty;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "eduDep")
+	@OneToMany(mappedBy = "eduDep", fetch = FetchType.LAZY)
+	@OrderBy("dateOfChange")
 	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
 			0);
 	

@@ -1,6 +1,8 @@
 package schedule.web;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -15,31 +17,35 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import schedule.dao.GenericDAO;
-import schedule.dao.PersonDao;
+import schedule.dao.ChairDAO;
+import schedule.dao.PersonDAO;
 import schedule.domain.persons.Person;
 import schedule.domain.struct.Chair;
+import schedule.domain.struct.Chair.Faculty;
 import schedule.service.CustomUserDetails;
+import schedule.service.ResourceNotFoundException;
 
 
 @Controller
 public class PersonController {
 	
 	@Autowired
-	private GenericDAO<Chair, Integer> chairDAO;
+	private ChairDAO chairDAO;
 	@Autowired
-	private PersonDao personDAO;
+	private PersonDAO personDAO;
 	
-	@RequestMapping("/")
+	@RequestMapping("")
 	public String home(Authentication auth, Model model, HttpSession ses) {
 		// TODO
 		if (auth != null) {
 			CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-			ses.setAttribute("currentUser", personDAO.read(cud.getUid()));
+			ses.setAttribute("currentUser", personDAO.find(cud.getUid()));
 		}
 		
 		List<Chair> all = chairDAO.getAll();
-		model.addAttribute("chairs", all);
+		Map<Faculty, List<Chair>> collect = all.stream()
+				.collect(Collectors.groupingBy(c -> c.getFaculty()));
+		model.addAttribute("chairsMap", collect);
 		
 		return "common/home";
 	}
@@ -47,7 +53,7 @@ public class PersonController {
 	@RequestMapping("/persons/uid{personId}")
 	public String getPerson(@PathVariable Integer personId, Model model) {
 		
-		Person find = personDAO.read(personId);
+		Person find = personDAO.find(personId);
 		if (find == null) throw new ResourceNotFoundException();
 		model.addAttribute("person", find);
 		
@@ -67,7 +73,7 @@ public class PersonController {
 	// + "(isAuthenticated() and principal.uid == #personId)")
 	@RequestMapping(path = "/persons/uid{personId}/edit",
 					method = RequestMethod.POST)
-	// TODO
+	// TODO @ModelAttribute not works, Person is abstract
 	public String editPersonPost(@PathVariable Integer personId,
 			@Valid @ModelAttribute("person") Person person,
 			BindingResult result) {

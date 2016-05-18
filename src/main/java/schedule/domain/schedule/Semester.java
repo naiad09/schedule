@@ -29,7 +29,8 @@ public class Semester {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_semester", unique = true, updatable = false)@NotNull
+	@Column(name = "id_semester", unique = true, updatable = false)
+	@NotNull
 	private int idSemester;
 	
 	@Column(name = "semester_year", updatable = false)
@@ -40,7 +41,7 @@ public class Semester {
 	@NotNull
 	private boolean fallSpring;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "semester")
+	@OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)
 	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
 			0);
 	

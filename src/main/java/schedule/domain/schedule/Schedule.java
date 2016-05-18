@@ -7,11 +7,10 @@ import java.time.DayOfWeek;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -39,12 +38,12 @@ public class Schedule {
 	@Column(name = "id_schedule", updatable = false)
 	private long idSchedule;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_lesson_types", updatable = false)
 	@NotNull
 	private GroupLessonType groupLessonType;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_twain")
 	@NotNull
 	private Twain twain;
@@ -67,14 +66,14 @@ public class Schedule {
 	@NotNull
 	private boolean elective = false;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(	name = "schedule_classroom",
 				joinColumns = {
 						@JoinColumn(name = "id_schedule", updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "schedule")
+	@OneToMany(mappedBy = "schedule",fetch=FetchType.LAZY)
 	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
 			0);
 	

@@ -63,7 +63,7 @@ public class EduProcGraphic {
 	@Column(name = "exams_session_end")
 	private LocalDate examsSessionEnd;
 	
-	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "eduProcGraphics")
+	@ManyToMany(mappedBy = "eduProcGraphics", fetch = FetchType.LAZY)
 	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
 	
 	public int getIdEduPeriod() {

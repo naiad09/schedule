@@ -3,47 +3,17 @@
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 
-<c:if test="${!empty studentList}">
-	<h3>Студенты</h3>
-	<table class="data">
-		<c:forEach items="${studentList}" var="student">
-			<tr>
-				<td>${student.lastName}${student.firstName}
-					${student.middleName}</td>
-				<td>${student.email}</td>
-				<td>${student.gender}</td>
-				<td>${student.birthday}</td>
-			</tr>
-		</c:forEach>
-	</table>
-</c:if>
-
-
-<c:if test="${!empty lecturerList}">
-	<h3>Преподаватели</h3>
-	<table class="data">
-		<c:forEach items="${lecturerList}" var="lecturer">
-			<tr>
-				<td>${lecturer.lastName}${lecturer.firstName}
-					${lecturer.middleName}</td>
-				<td>${lecturer.email}</td>
-				<td>${lecturer.gender}</td>
-				<td>${lecturer.birthday}</td>
-				<td>${lecturer.degree}</td>
-			</tr>
-		</c:forEach>
-	</table>
-</c:if>
-
-<h3>Кафедры</h3>
+<h1>Факультеты и кафедры</h1>
 <table class="data">
-	<c:forEach items="${chairs}" var="chair">
-		<tr>
-			<td><a href="${chair.faculty}"><spring:message
-						code="${chair.faculty}.shortName" /></a></td>
-			<td>${chair.chairName}</td>
-			<td>${chair.chairShortname}</td>
-		</tr>
+	<c:forEach items="${chairsMap}" var="faculty">
+		<h2>
+			<a href="${faculty.key}"><spring:message
+					code="${faculty.key}.fullName" /></a>
+		</h2>
+		<c:set var="chairs" value="${faculty.value}" scope="request" />
+		<t:insertTemplate template="level2/chairs.jsp" />
 	</c:forEach>
+
 </table>

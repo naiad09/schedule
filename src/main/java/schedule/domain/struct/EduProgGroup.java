@@ -30,7 +30,7 @@ public class EduProgGroup {
 	@NotNull
 	private String eduProgGroupName;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "eduProgGroup")
+	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.LAZY)
 	private Set<EduProgram> eduPrograms = new HashSet<EduProgram>(0);
 	
 	public int getEduProgGroupCode() {

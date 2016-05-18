@@ -5,9 +5,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,12 +38,12 @@ public class ScheduleChangeJournal {
 	@Column(name = "id_schedule_change", updatable = false)
 	private Integer idScheduleChange;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_edu_dep", updatable = false)
 	@NotNull
 	private EduDep eduDep;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_schedule", updatable = false)
 	private Schedule schedule;
 	

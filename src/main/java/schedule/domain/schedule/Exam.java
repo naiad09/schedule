@@ -3,9 +3,9 @@ package schedule.domain.schedule;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -22,7 +22,7 @@ import javax.validation.constraints.NotNull;
 						referencedColumnName = "id_lesson_types")
 public class Exam extends GroupLessonType {
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "consult_id_classroom")
 	@NotNull
 	private Classroom consultClassroom;
@@ -31,7 +31,7 @@ public class Exam extends GroupLessonType {
 	@Column(name = "consult_date")
 	private LocalDateTime consultDate;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "exam_id_classroom")
 	@NotNull
 	private Classroom examClassroom;

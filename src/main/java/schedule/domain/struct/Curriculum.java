@@ -32,7 +32,7 @@ import schedule.domain.schedule.CurDiscipline;
 
 /**
  * Класс учебного плана. Имеет профиль, год набора, тип обучения (очное,
- * заочное, очно-заочное), срок обучения, флаг составленного расписания. Имеет
+ * заочное, очно-заочное, срок обучения, флаг составленного расписания. Имеет
  * ссылки на массив предметов, на график учебного процесса и список групп.
  */
 @Entity
@@ -69,7 +69,7 @@ public class Curriculum {
 	@NotNull
 	private boolean scheduleDone = false;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
+	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
 	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
 	
 	@ManyToMany(fetch = FetchType.LAZY)
@@ -81,7 +81,7 @@ public class Curriculum {
 	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
 			0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "curriculum")
+	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
 	private Set<Group> groups = new HashSet<Group>(0);
 	
 	public Integer getIdCurriculum() {

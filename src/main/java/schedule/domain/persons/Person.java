@@ -3,8 +3,9 @@ package schedule.domain.persons;
 
 import java.time.LocalDate;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,6 +31,7 @@ import org.hibernate.validator.constraints.Email;
 @Entity
 @Table(name = "person")
 @Inheritance(strategy = InheritanceType.JOINED)
+@Embeddable
 public abstract class Person {
 	
 	@Id
@@ -37,8 +39,8 @@ public abstract class Person {
 	@Column(name = "uid", unique = true, updatable = false)
 	private Integer uid;
 	
-	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
-				mappedBy = "person")
+	@OneToOne(mappedBy = "person", fetch = FetchType.EAGER)
+	@Embedded
 	private HttpAuth httpAuth;
 	
 	@NotNull

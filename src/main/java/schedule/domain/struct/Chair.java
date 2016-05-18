@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -14,6 +15,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,25 +44,34 @@ public class Chair {
 	private Faculty faculty;
 	
 	@NotNull
-	@Column(name = "chair_name", updatable = false)
+	@Column(name = "chair_fullname", updatable = false, unique = true)
 	@Size(max = 100, min = 5)
-	private String chairName;
+	private String fullName;
 	
 	@NotNull
-	@Column(name = "chair_shortname", updatable = false)
+	@Column(name = "chair_shortname", updatable = false, unique = true)
 	@Size(max = 32, min = 2)
-	private String chairShortname;
+	private String shortName;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	@NotNull
+	@Column(name = "chair_shortname_eng", updatable = false, unique = true)
+	@Size(max = 8, min = 2)
+	private String shortNameEng;
+	
+	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
+	@OrderBy("jobType") // , lecturer.degree, lecturer.lastName,
+						// lecturer.firstName, lecturer.middleName")
+	// TODO order by not works...
+	@ElementCollection(targetClass = LecturerJob.class)
 	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
 	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
 	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "chair")
+	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
 	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
 	
 	public Integer getIdChair() {
@@ -79,20 +90,28 @@ public class Chair {
 		this.faculty = faculty;
 	}
 	
-	public String getChairName() {
-		return chairName;
+	public String getFullName() {
+		return fullName;
 	}
 	
-	public void setChairName(String chairName) {
-		this.chairName = chairName;
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
 	}
 	
-	public String getChairShortname() {
-		return chairShortname;
+	public String getShortName() {
+		return shortName;
 	}
 	
-	public void setChairShortname(String chairShortname) {
-		this.chairShortname = chairShortname;
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
+	}
+	
+	public String getShortNameEng() {
+		return shortNameEng;
+	}
+	
+	public void setShortNameEng(String shortNameEng) {
+		this.shortNameEng = shortNameEng;
 	}
 	
 	public Set<LecturerJob> getLecturerJobs() {
@@ -125,6 +144,14 @@ public class Chair {
 	
 	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {
 		this.curDisciplines = curDisciplines;
+	}
+	
+	public String getChairShortNameEng() {
+		return shortNameEng;
+	}
+	
+	public void setChairShortNameEng(String shortNameEng) {
+		this.shortNameEng = shortNameEng;
 	}
 	
 	public enum Faculty {

@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import schedule.dao.PersonDao;
+import schedule.dao.PersonDAO;
 import schedule.domain.persons.EduDep;
 import schedule.domain.persons.HttpAuth;
 import schedule.domain.persons.Person;
@@ -21,13 +21,13 @@ import schedule.domain.persons.Person;
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired
-	private PersonDao personDao;
+	private PersonDAO personDAO;
 	
 	@Override
 	public UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException {
 		
-		Person person = personDao.read(username);
+		Person person = personDAO.find(username);
 		if (person == null) throw new UsernameNotFoundException(username);
 		
 		// return null;

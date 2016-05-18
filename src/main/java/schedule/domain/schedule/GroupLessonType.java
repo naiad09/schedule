@@ -6,11 +6,11 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -42,12 +42,12 @@ public class GroupLessonType {
 	@Column(name = "id_lesson_types", updatable = false)
 	private Integer idLessonTypes;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_group", updatable = false)
 	@NotNull
 	private Group group;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_disc_sem", updatable = false)
 	@NotNull
 	private DiscTerm discTerm;
@@ -59,14 +59,14 @@ public class GroupLessonType {
 	@Enumerated(EnumType.STRING)
 	private LessonType lessonType;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(	name = "lecturers_lessons",
 				joinColumns = { @JoinColumn(name = "id_lesson_types",
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private Set<Lecturer> lecturers = new HashSet<Lecturer>(0);
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "groupLessonType")
+	@OneToMany(mappedBy = "groupLessonType",fetch=FetchType.LAZY)
 	private Set<Schedule> schedules = new HashSet<Schedule>(0);
 	
 	public Integer getIdLessonTypes() {

@@ -4,11 +4,11 @@ package schedule.domain.persons;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -23,14 +23,15 @@ import schedule.domain.struct.LecturerJob;
 @Entity
 @Table(name = "lecturer")
 @PrimaryKeyJoinColumn(name = "id_lecturer", referencedColumnName = "uid")
+@Embeddable
 public class Lecturer extends Person {
 	
 	@Enumerated(EnumType.STRING)
-	@Column(name = "degree", columnDefinition = "enum(ctn,dtn)")
+	@Column(name = "degree", columnDefinition = "enum(dtn,ctn)")
 	@NotNull
 	private Degree degree;
 	
-	@OneToMany(fetch = FetchType.EAGER, mappedBy = "lecturer")
+	@OneToMany(mappedBy = "lecturer",fetch=FetchType.LAZY)
 	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
 	
 	public Degree getDegree() {
@@ -50,7 +51,7 @@ public class Lecturer extends Person {
 	}
 	
 	public enum Degree {
-		ctn, dtn;
+		dtn, ctn;
 	}
 	
 }

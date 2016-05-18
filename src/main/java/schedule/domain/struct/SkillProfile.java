@@ -6,9 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,12 +34,12 @@ public class SkillProfile {
 	@Column(name = "id_profile", updatable = false)
 	private Integer idProfile;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_edu_prog", updatable = false)
 	@NotNull
 	private EduProgram eduProgram;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_chair", updatable = false)
 	@NotNull
 	private Chair chair;
@@ -48,7 +48,7 @@ public class SkillProfile {
 	@Size(max = 150, min = 10)
 	private String profileName;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "skillProfile")
+	@OneToMany(mappedBy = "skillProfile",fetch=FetchType.LAZY)
 	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
 	
 	public Integer getIdProfile() {

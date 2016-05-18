@@ -1,9 +1,9 @@
 package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import javax.persistence.Column;
+import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -19,9 +19,10 @@ import schedule.domain.struct.Group;
 @Entity
 @Table(name = "student")
 @PrimaryKeyJoinColumn(name = "id_student", referencedColumnName = "uid")
+@Embeddable
 public class Student extends Person {
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_group")
 	@NotNull
 	private Group group;
