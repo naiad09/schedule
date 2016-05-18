@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import schedule.dao.ChairDAO;
 import schedule.dao.PersonDAO;
 import schedule.domain.persons.Person;
+import schedule.domain.persons.Student;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Chair.Faculty;
 import schedule.service.CustomUserDetails;
@@ -75,10 +76,14 @@ public class PersonController {
 					method = RequestMethod.POST)
 	// TODO @ModelAttribute not works, Person is abstract
 	public String editPersonPost(@PathVariable Integer personId,
-			@Valid @ModelAttribute("person") Person person,
+			@Valid @ModelAttribute("person") Student person,
 			BindingResult result) {
 		
-		if (result.hasErrors()) return "common/editPerson?error=true";
+		if (result.hasErrors()) {
+			result.getAllErrors()
+					.forEach(e -> System.out.println(e.toString()));
+			return "common/editPerson";
+		}
 		
 		personDAO.update(person);
 		

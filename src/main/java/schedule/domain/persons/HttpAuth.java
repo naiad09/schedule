@@ -1,9 +1,10 @@
 package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.springframework.security.access.annotation.Secured;
 
 
 /**
@@ -27,7 +30,7 @@ public class HttpAuth {
 	@Column(name = "auth_uid", updatable = false)
 	private Integer authUid;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@PrimaryKeyJoinColumn
 	private Person person;
 	
@@ -81,6 +84,7 @@ public class HttpAuth {
 		return active;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setActive(boolean active) {
 		this.active = active;
 	}

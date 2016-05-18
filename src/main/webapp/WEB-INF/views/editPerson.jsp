@@ -5,9 +5,6 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 
 <h1>${person.lastName}&nbsp;${person.firstName}&nbsp;${person.middleName}</h1>
-<c:if test="${param.error != null}">
-	<p class="alert error">Исправьте следующие ошибки:</p>
-</c:if>
 
 <form:form action="edit" method="post" commandName="person">
 	<input type="hidden" value="${person.role}" name="person_type" />
