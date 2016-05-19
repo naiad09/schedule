@@ -16,6 +16,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.springframework.security.access.annotation.Secured;
 
 
 /**
@@ -77,6 +78,7 @@ public class AuthData {
 		return login;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -93,6 +95,7 @@ public class AuthData {
 		return active;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setActive(boolean active) {
 		this.active = active;
 	}

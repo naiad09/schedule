@@ -4,15 +4,18 @@ package schedule.domain.persons;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.security.access.annotation.Secured;
 
 import schedule.domain.struct.LecturerJob;
 
@@ -31,13 +34,14 @@ public class Lecturer extends Person {
 	@NotNull
 	private Degree degree;
 	
-	@OneToMany(mappedBy = "lecturer",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY)
 	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
 	
 	public Degree getDegree() {
 		return degree;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setDegree(Degree degree) {
 		this.degree = degree;
 	}
@@ -46,6 +50,7 @@ public class Lecturer extends Person {
 		return lecturerJobs;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {
 		this.lecturerJobs = lecturerJobs;
 	}

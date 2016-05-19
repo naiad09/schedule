@@ -15,6 +15,8 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import org.springframework.security.access.annotation.Secured;
+
 import schedule.domain.schedule.ScheduleChangeJournal;
 import schedule.domain.struct.Chair.Faculty;
 
@@ -47,6 +49,7 @@ public class EduDep extends Person {
 		return faculty;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setFaculty(Faculty faculty) {
 		this.faculty = faculty;
 	}
@@ -64,6 +67,7 @@ public class EduDep extends Person {
 		return admin;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setAdmin(boolean admin) {
 		this.admin = admin;
 	}

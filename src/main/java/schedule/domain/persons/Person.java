@@ -22,6 +22,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.springframework.security.access.annotation.Secured;
+
 
 /**
  * Суперкласс пользователя. Может быть либо студентом, либо преподавателем, либо
@@ -80,6 +82,7 @@ public abstract class Person {
 		return authData;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setAuthData(AuthData authData) {
 		this.authData = authData;
 	}
@@ -88,6 +91,7 @@ public abstract class Person {
 		return lastName;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -96,6 +100,7 @@ public abstract class Person {
 		return firstName;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -104,6 +109,7 @@ public abstract class Person {
 		return middleName;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
@@ -112,6 +118,7 @@ public abstract class Person {
 		return gender;
 	}
 	
+	@Secured("ROLE_ADMIN")
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
