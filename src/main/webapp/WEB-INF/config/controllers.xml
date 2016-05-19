@@ -1,0 +1,38 @@
+<?xml version="1.0"
+encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Бин конвертер типа пользователя в пользователя -->
+	<bean
+		class="org.springframework.context.support.ConversionServiceFactoryBean"
+		id="theConversionService">
+		<property name="converters">
+			<list>
+				<bean class="schedule.service.PersonConverter"></bean>
+			</list>
+		</property>
+	</bean>
+
+	<!-- Разрешаем использование аннотаций Spring MVC (то есть @Controller и.т.д) -->
+	<mvc:annotation-driven conversion-service="theConversionService"
+		validator="validator" />
+
+	<!-- Определяем папку, в которой будем искать веб компоненты (контроллеры) -->
+	<context:component-scan base-package="schedule.web" />
+	
+	<bean id="validator"
+		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.time.LocalDate" value="schedule.service.CustomLocalDateEditor" />
+			</map>
+		</property>
+	</bean>
+</beans>

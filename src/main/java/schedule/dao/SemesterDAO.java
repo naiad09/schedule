@@ -1,7 +1,6 @@
 package schedule.dao;
 
 import org.hibernate.criterion.Restrictions;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Repository;
 
 import schedule.domain.schedule.Semester;
@@ -14,7 +13,6 @@ public class SemesterDAO extends GenericDAO<Semester, Integer> {
 		super(Semester.class);
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public Semester getCurrent() {
 		
 		Semester currentSemester = Semester.getCurrentSemester();
