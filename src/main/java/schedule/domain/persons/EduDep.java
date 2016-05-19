@@ -68,4 +68,9 @@ public class EduDep extends Person {
 		this.admin = admin;
 	}
 	
+	// @NotNull
+	public AuthData getAuthData() {
+		return super.getAuthData();
+	}
+	
 }

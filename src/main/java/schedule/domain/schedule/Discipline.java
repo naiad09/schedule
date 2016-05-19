@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
@@ -30,7 +31,7 @@ public class Discipline {
 	private int discMod;
 	
 	@Column(name = "disc_name", updatable = false)
-	@NotNull
+	@Pattern(regexp = "[А-ЯЁA-Z][\\w\\s]+")
 	@Size(max = 255, min = 5)
 	private String discName;
 	

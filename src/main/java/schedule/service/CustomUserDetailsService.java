@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import schedule.dao.PersonDAO;
 import schedule.domain.persons.EduDep;
-import schedule.domain.persons.HttpAuth;
+import schedule.domain.persons.AuthData;
 import schedule.domain.persons.Person;
 
 
@@ -32,10 +32,10 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 		// return null;
 		
-		HttpAuth httpAuth = person.getHttpAuth();
-		return new CustomUserDetails(httpAuth.getLogin(),
-				httpAuth.getPassword(), getAuthorities(person),
-				httpAuth.isActive(), httpAuth.getAuthUid());
+		AuthData authData = person.getAuthData();
+		return new CustomUserDetails(authData.getLogin(),
+				authData.getPassword(), getAuthorities(person),
+				authData.isActive(), authData.getAuthUid());
 	}
 	
 	private Collection<? extends GrantedAuthority> getAuthorities(

@@ -18,7 +18,7 @@
 <p>
 	<c:choose>
 
-		<c:when test="${person.role == 'Student'}">
+		<c:when test="${person.role == 'student'}">
 			<c:set var="course" value="${person.group.curriculum.course}" />
 			<c:choose>
 				<c:when test="${course == null}">выпускник группы ${person.group.groupNumber},</c:when>
@@ -27,7 +27,7 @@
 
 				</c:when>
 
-		<c:when test="${person.role == 'Lecturer'}">
+		<c:when test="${person.role == 'lecturer'}">
 			<spring:message code="${person.degree}.fullName" />,<br>
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
 				<spring:message code="${job.jobType}.fullName" /> кафедры
@@ -38,7 +38,7 @@
 			</c:forEach>
 		</c:when>
 
-		<c:when test="${person.role == 'EduDep'}">
+		<c:when test="${person.role == 'edudep'}">
 		    учебный отдел
 		    <c:if test="${person.faculty != null}">
 				<br>диспетчер <spring:message

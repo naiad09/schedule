@@ -15,8 +15,8 @@
 	<table>
 		<tr>
 			<td>Пароль</td>
-			<td><form:input path="httpAuth.password" type="password" /></td>
-			<td><form:errors path="httpAuth.password" cssClass="error" /></td>
+			<td><form:input path="authData.password" type="password" /></td>
+			<td><form:errors path="authData.password" cssClass="error" /></td>
 		</tr>
 		<tr>
 			<td>Email</td>

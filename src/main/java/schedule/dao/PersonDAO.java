@@ -6,7 +6,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
-import schedule.domain.persons.HttpAuth;
+import schedule.domain.persons.AuthData;
 import schedule.domain.persons.Person;
 
 
@@ -19,7 +19,7 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 	
 	public Person find(String username) {
 		DetachedCriteria detCrit = DetachedCriteria
-				.forClass(HttpAuth.class, "ha")
+				.forClass(AuthData.class, "ha")
 				.add(Restrictions.eq("ha.login", username))
 				.setProjection(Projections.id());
 		

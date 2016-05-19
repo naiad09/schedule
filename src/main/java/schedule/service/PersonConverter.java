@@ -13,13 +13,13 @@ public class PersonConverter implements Converter<String, Person> {
 	public Person convert(String personType) {
 		Person person = null;
 		switch (personType) {
-			case "Student":
+			case "student":
 				person = new Student();
 				break;
-			case "Lecturer":
+			case "lecturer":
 				person = new Lecturer();
 				break;
-			case "EduDep":
+			case "edudep":
 				person = new EduDep();
 				break;
 			default:

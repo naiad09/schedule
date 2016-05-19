@@ -12,18 +12,19 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-import org.springframework.security.access.annotation.Secured;
+import org.hibernate.validator.constraints.Email;
 
 
 /**
  * Параметры авторизации: логин и пароль, а также привязка к пользователю.
  */
 @Entity
-@Table(name = "http_auth")
+@Table(name = "auth_data")
 @Embeddable
-public class HttpAuth {
+public class AuthData {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,12 +35,11 @@ public class HttpAuth {
 	@PrimaryKeyJoinColumn
 	private Person person;
 	
-	@NotNull
+	@Pattern(regexp = "[a-z]([a-z]|\\d)+")
 	@Column(name = "login", unique = true, updatable = false)
 	@Size(max = 32, min = 4)
 	private String login;
 	
-	@NotNull
 	@Column(name = "password")
 	@Size(max = 32, min = 6)
 	private String password;
@@ -47,6 +47,15 @@ public class HttpAuth {
 	@Column(name = "active")
 	@NotNull
 	private boolean active = true;
+	
+	@Column(name = "email")
+	@Size(max = 255)
+	@Email
+	private String email;
+	
+	@Column(name = "submit")
+	@NotNull
+	private boolean submit = true;
 	
 	public Integer getAuthUid() {
 		return authUid;
@@ -84,9 +93,24 @@ public class HttpAuth {
 		return active;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	public boolean isSubmit() {
+		return submit;
+	}
+	
+	public void setSubmit(boolean submit) {
+		this.submit = submit;
 	}
 	
 }

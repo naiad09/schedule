@@ -22,7 +22,8 @@
 	</bean>
 
 	<!-- Разрешаем использование аннотаций Spring MVC (то есть @Controller и.т.д) -->
-	<mvc:annotation-driven conversion-service="theConversionService" validator="validator"/>
+	<mvc:annotation-driven conversion-service="theConversionService"
+		validator="validator" />
 
 	<!-- Всю статику (изображения, css-файлы, javascript) положим в папку webapp/resources 
 		и замаппим их на урл вида /resources/** -->

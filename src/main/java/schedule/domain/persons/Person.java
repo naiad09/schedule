@@ -19,9 +19,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.hibernate.validator.constraints.Email;
 
 
 /**
@@ -34,6 +33,8 @@ import org.hibernate.validator.constraints.Email;
 @Embeddable
 public abstract class Person {
 	
+	private static final String CYRILLIC_PATTERN = "[А-ЯЁ][а-яё]+";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid", unique = true, updatable = false)
@@ -41,19 +42,19 @@ public abstract class Person {
 	
 	@OneToOne(mappedBy = "person", fetch = FetchType.EAGER)
 	@Embedded
-	private HttpAuth httpAuth;
+	private AuthData authData = new AuthData();
 	
-	@NotNull
+	@Pattern(regexp = "[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*")
 	@Column(name = "last_name", updatable = false)
-	@Size(max = 64, min = 5)
+	@Size(max = 64, min = 3)
 	private String lastName;
 	
-	@NotNull
+	@Pattern(regexp = CYRILLIC_PATTERN)
 	@Column(name = "first_name", updatable = false)
 	@Size(max = 32, min = 3)
 	private String firstName;
 	
-	@NotNull
+	@Pattern(regexp = CYRILLIC_PATTERN)
 	@Column(name = "middle_name", updatable = false)
 	@Size(max = 32, min = 5)
 	private String middleName;
@@ -67,15 +68,6 @@ public abstract class Person {
 	@Column(name = "birthday")
 	private LocalDate birthday;
 	
-	@Column(name = "email")
-	@Size(max = 255)
-	@Email
-	private String email;
-	
-	@Column(name = "submit")
-	@NotNull
-	private boolean submit = true;
-	
 	public Integer getUid() {
 		return uid;
 	}
@@ -84,12 +76,12 @@ public abstract class Person {
 		this.uid = uid;
 	}
 	
-	public HttpAuth getHttpAuth() {
-		return httpAuth;
+	public AuthData getAuthData() {
+		return authData;
 	}
 	
-	public void setHttpAuth(HttpAuth httpAuth) {
-		this.httpAuth = httpAuth;
+	public void setAuthData(AuthData authData) {
+		this.authData = authData;
 	}
 	
 	public String getLastName() {
@@ -132,22 +124,6 @@ public abstract class Person {
 		this.birthday = birthday;
 	}
 	
-	public String getEmail() {
-		return email;
-	}
-	
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	
-	public boolean isSubmit() {
-		return submit;
-	}
-	
-	public void setSubmit(boolean submit) {
-		this.submit = submit;
-	}
-	
 	@Transient
 	public String getFullName() {
 		return lastName + " " + firstName.charAt(0) + ". "
@@ -162,7 +138,7 @@ public abstract class Person {
 	
 	@Transient
 	public String getRole() {
-		return getClass().getSimpleName();
+		return getClass().getSimpleName().toLowerCase();
 	}
 	
 	public enum Gender {

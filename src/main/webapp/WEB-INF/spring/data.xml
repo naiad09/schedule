@@ -46,4 +46,11 @@
 		</property>
 	</bean>
 
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.time.LocalDate" value="schedule.service.CustomLocalDateEditor" />
+			</map>
+		</property>
+	</bean>
 </beans>
