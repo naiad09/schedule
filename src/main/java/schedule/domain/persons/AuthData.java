@@ -5,9 +5,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -16,7 +16,6 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
-import org.springframework.security.access.annotation.Secured;
 
 
 /**
@@ -28,15 +27,15 @@ import org.springframework.security.access.annotation.Secured;
 public class AuthData {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "auth_uid", updatable = false)
+	@PrimaryKeyJoinColumn(name = "auth_uid")
 	private Integer authUid;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@PrimaryKeyJoinColumn
+	@MapsId
+	@JoinColumn(name = "auth_uid", updatable = false)
 	private Person person;
 	
-	@Pattern(regexp = "[a-z]([a-z]|\\d)+")
+	@Pattern(regexp = "[a-z][a-z\\d_-]+")
 	@Column(name = "login", unique = true, updatable = false)
 	@Size(max = 32, min = 4)
 	private String login;
@@ -78,7 +77,6 @@ public class AuthData {
 		return login;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setLogin(String login) {
 		this.login = login;
 	}
@@ -95,7 +93,6 @@ public class AuthData {
 		return active;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setActive(boolean active) {
 		this.active = active;
 	}
@@ -114,6 +111,13 @@ public class AuthData {
 	
 	public void setSubmit(boolean submit) {
 		this.submit = submit;
+	}
+	
+	@Override
+	public String toString() {
+		return "AuthData [authUid=" + authUid + ", login=" + login
+				+ ", password=" + password + ", active=" + active + ", email="
+				+ email + ", submit=" + submit + "]";
 	}
 	
 }

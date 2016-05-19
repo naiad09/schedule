@@ -3,6 +3,7 @@ package schedule.domain.persons;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
@@ -18,11 +19,10 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
-import org.springframework.security.access.annotation.Secured;
 
 
 /**
@@ -42,9 +42,11 @@ public abstract class Person {
 	@Column(name = "uid", unique = true, updatable = false)
 	private Integer uid;
 	
-	@OneToOne(mappedBy = "person", fetch = FetchType.EAGER)
+	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
+				optional = true, mappedBy = "person")
 	@Embedded
-	private AuthData authData = new AuthData();
+	@Valid
+	private AuthData authData;
 	
 	@Pattern(regexp = "[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*")
 	@Column(name = "last_name", updatable = false)
@@ -82,7 +84,6 @@ public abstract class Person {
 		return authData;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setAuthData(AuthData authData) {
 		this.authData = authData;
 	}
@@ -91,7 +92,6 @@ public abstract class Person {
 		return lastName;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
@@ -100,7 +100,6 @@ public abstract class Person {
 		return firstName;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
@@ -109,7 +108,6 @@ public abstract class Person {
 		return middleName;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
 	}
@@ -118,7 +116,6 @@ public abstract class Person {
 		return gender;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}

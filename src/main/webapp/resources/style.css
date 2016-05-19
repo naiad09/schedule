@@ -70,7 +70,7 @@ input[type="text"], input[type="password"] {
 
 select {
 	height: 24px;
-	width: 207px;
+	min-width: 207px;
 }
 
 form table td {

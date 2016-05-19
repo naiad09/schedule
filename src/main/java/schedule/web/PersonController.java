@@ -2,6 +2,7 @@ package schedule.web;
 
 import javax.validation.Valid;
 
+import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.support.SessionStatus;
 
+import schedule.dao.LastInsertedIdDAO;
 import schedule.dao.PersonDAO;
 import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Lecturer;
@@ -27,6 +30,8 @@ public class PersonController {
 	
 	@Autowired
 	private PersonDAO personDAO;
+	@Autowired
+	private LastInsertedIdDAO lastInsertedIdDAO;
 	
 	@RequestMapping("uid{personId}")
 	public String getPerson(@PathVariable Integer personId, Model model) {
@@ -69,6 +74,7 @@ public class PersonController {
 	// @Secured("ROLE_ADMIN")
 	@RequestMapping(path = "new-{person}", method = RequestMethod.GET)
 	public String newPerson(@PathVariable Person person, Model model) {
+		model.addAttribute("returnHere", true);
 		if (person instanceof Student) {
 		} else if (person instanceof Lecturer) {
 		} else if (person instanceof EduDep) {
@@ -81,17 +87,36 @@ public class PersonController {
 	// @Secured("ROLE_ADMIN")
 	@RequestMapping(path = "new-{personType}", method = RequestMethod.POST)
 	public String newPersonPost(@Valid @ModelAttribute("person") Person person,
-			BindingResult result, Model model) {
-		newPerson(person, model);
+			BindingResult result, Model model, boolean returnHere,
+			SessionStatus ss) {
+		System.out.println(person.getAuthData());
 		if (result.hasErrors()) {
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
-			model.addAttribute("error", true);
-			return "common/newPerson";
+			return returnToEditPageWithError(person, result, model, returnHere);
 		}
-		personDAO.create(person);
+		try {
+			personDAO.create(person);
+		} catch (GenericJDBCException e) {
+			System.out.println(e.getSQLException());
+			
+			return returnToEditPageWithError(person, result, model, returnHere);
+		}
 		model.addAttribute("success", true);
+		ss.setComplete();
 		
-		return "redirect: common/newPerson";
+		String returnString = returnHere ? "redirect: new-" + person.getRole()
+				: "redirect: uid" + lastInsertedIdDAO.getLastInsertedId();
+		
+		System.out.println(returnString);
+		return returnString;
+	}
+	
+	private String returnToEditPageWithError(Person person,
+			BindingResult result, Model model, boolean returnHere) {
+		newPerson(person, model);
+		model.addAttribute("authData.password", null);
+		result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+		model.addAttribute("error", true);
+		model.addAttribute("returnHere", returnHere);
+		return "common/newPerson";
 	}
 }

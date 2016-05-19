@@ -14,6 +14,7 @@ encoding="UTF-8"?>
 		<property name="converters">
 			<list>
 				<bean class="schedule.service.PersonConverter"></bean>
+				<bean class="schedule.service.LocalDateConverter"></bean>
 			</list>
 		</property>
 	</bean>
@@ -28,11 +29,4 @@ encoding="UTF-8"?>
 	<bean id="validator"
 		class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
 
-	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-		<property name="customEditors">
-			<map>
-				<entry key="java.time.LocalDate" value="schedule.service.CustomLocalDateEditor" />
-			</map>
-		</property>
-	</bean>
 </beans>

@@ -42,7 +42,6 @@ public class Curriculum {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_curriculum", unique = true, updatable = false)
-	@NotNull
 	private Integer idCurriculum;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -43,17 +43,14 @@ public class Chair {
 	@NotNull
 	private Faculty faculty;
 	
-	@NotNull
 	@Column(name = "chair_fullname", updatable = false, unique = true)
 	@Size(max = 100, min = 5)
 	private String fullName;
 	
-	@NotNull
 	@Column(name = "chair_shortname", updatable = false, unique = true)
 	@Size(max = 32, min = 2)
 	private String shortName;
 	
-	@NotNull
 	@Column(name = "chair_shortname_eng", updatable = false, unique = true)
 	@Size(max = 8, min = 2)
 	private String shortNameEng;

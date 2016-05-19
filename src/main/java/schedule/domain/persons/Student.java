@@ -11,8 +11,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.access.annotation.Secured;
-
 import schedule.domain.struct.Group;
 
 
@@ -30,7 +28,7 @@ public class Student extends Person {
 	@NotNull
 	private Group group;
 	
-	@Column(name = "record_book_number") // , updatable = false)
+	@Column(name = "record_book_number", updatable = false)
 	@NotNull
 	private int recordBookNumber;
 	
@@ -38,7 +36,6 @@ public class Student extends Person {
 		return group;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setGroup(Group group) {
 		this.group = group;
 	}
@@ -47,7 +44,6 @@ public class Student extends Person {
 		return recordBookNumber;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setRecordBookNumber(int recordBookNumber) {
 		this.recordBookNumber = recordBookNumber;
 	}

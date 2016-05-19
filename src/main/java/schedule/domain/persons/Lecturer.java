@@ -15,8 +15,6 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.security.access.annotation.Secured;
-
 import schedule.domain.struct.LecturerJob;
 
 
@@ -41,7 +39,6 @@ public class Lecturer extends Person {
 		return degree;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setDegree(Degree degree) {
 		this.degree = degree;
 	}
@@ -50,7 +47,6 @@ public class Lecturer extends Person {
 		return lecturerJobs;
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {
 		this.lecturerJobs = lecturerJobs;
 	}
