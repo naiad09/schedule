@@ -19,11 +19,14 @@
 
 	<global-method-security pre-post-annotations="enabled"
 		secured-annotations="enabled" />
- 
+
 	<authentication-manager>
 		<authentication-provider user-service-ref="customUserDetailsService">
-			<password-encoder hash="md5" />
+			<password-encoder ref="pswEncoder" />
 		</authentication-provider>
 	</authentication-manager>
+
+	<beans:bean name="pswEncoder"
+		class="org.springframework.security.authentication.encoding.Md5PasswordEncoder" />
 
 </beans:beans>

@@ -9,7 +9,7 @@
 	<spring:message code="newPerson" />
 </h1>
 
-<c:if test="${error != null}">
+<c:if test="${error == true}">
 	<p class="alert error">Исправьте следующие ошибки:</p>
 </c:if>
 
@@ -103,14 +103,16 @@
 	<div id="authForm">
 		<c:if test="${person.authData != null}">
 			<table>
-				<tr>
+				<tr class="required">
 					<td>Логин</td>
-					<td><form:input path="authData.login" type="text" /></td>
+					<td><form:input path="authData.login" required="required"
+							type="text" /></td>
 					<td><form:errors path="authData.login" cssClass="error" /></td>
 				</tr>
-				<tr>
+				<tr class="required">
 					<td>Пароль</td>
-					<td><form:input path="authData.password" type="password" /></td>
+					<td><form:input path="authData.password" required="required"
+							type="password" /></td>
 					<td><form:errors path="authData.password" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -130,9 +132,10 @@
 	</div>
 
 	<script>
-		authForm = '<table><tr><td>Логин</td><td><input id="authData.login"'+
-        ' name="authData.login" type="text" value=""/></td><td></td></tr>'
-				+ '<tr><td>Пароль</td><td><input id="authData.password" name="authData.password"'+
+		authForm = '<table><tr class="required"><td>Логин</td><td><input id="authData.login"'+
+        ' name="authData.login" required="required" type="text" value=""/></td><td></td></tr>'
+				+ '<tr class="required"><td>Пароль</td><td><input id="authData.password" '+
+				'required="required" name="authData.password"'+
         ' type="password" value=""/></td><td></td></tr><tr><td>Email</td><td><input'+
         ' id="authData.email" name="authData.email" type="text" value=""/></td><td></td></tr>'
 	</script>

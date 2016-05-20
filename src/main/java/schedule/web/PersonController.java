@@ -1,9 +1,11 @@
 package schedule.web;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
-import org.hibernate.exception.GenericJDBCException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,9 +14,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import schedule.dao.LastInsertedIdDAO;
 import schedule.dao.PersonDAO;
 import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Lecturer;
@@ -26,12 +28,12 @@ import schedule.service.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("persons")
+@SessionAttributes(	types = { Chair.Faculty[].class, List.class },
+					names = { "returnHere", "error" })
 public class PersonController {
 	
 	@Autowired
 	private PersonDAO personDAO;
-	@Autowired
-	private LastInsertedIdDAO lastInsertedIdDAO;
 	
 	@RequestMapping("uid{personId}")
 	public String getPerson(@PathVariable Integer personId, Model model) {
@@ -90,33 +92,35 @@ public class PersonController {
 			BindingResult result, Model model, boolean returnHere,
 			SessionStatus ss) {
 		System.out.println(person.getAuthData());
+		
 		if (result.hasErrors()) {
-			return returnToEditPageWithError(person, result, model, returnHere);
+			model.addAttribute("error", true);
+			return returnWithError(person);
 		}
 		try {
 			personDAO.create(person);
-		} catch (GenericJDBCException e) {
-			System.out.println(e.getSQLException());
-			
-			return returnToEditPageWithError(person, result, model, returnHere);
+		} catch (DataIntegrityViolationException e) {
+			result.rejectValue("authData.login", "Unique.login");
+			return returnWithError(person);
 		}
-		model.addAttribute("success", true);
+		
 		ss.setComplete();
 		
-		String returnString = returnHere ? "redirect: new-" + person.getRole()
-				: "redirect: uid" + lastInsertedIdDAO.getLastInsertedId();
+		String returnString = returnHere ? "redirect: /nesw-" + person.getRole()
+				: "redirect: /usid" + person.getUid();
 		
 		System.out.println(returnString);
 		return returnString;
 	}
 	
-	private String returnToEditPageWithError(Person person,
-			BindingResult result, Model model, boolean returnHere) {
-		newPerson(person, model);
-		model.addAttribute("authData.password", null);
-		result.getAllErrors().forEach(e -> System.out.println(e.toString()));
-		model.addAttribute("error", true);
-		model.addAttribute("returnHere", returnHere);
+	@RequestMapping("test")
+	public String test() {
+		return "redirect: /uid1";
+	}
+	
+	private String returnWithError(Person person) {
+		if (person.getAuthData() != null)
+			person.getAuthData().setPassword(null);
 		return "common/newPerson";
 	}
 }
