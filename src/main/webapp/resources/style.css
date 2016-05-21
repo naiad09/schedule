@@ -63,7 +63,7 @@ form table tr.required td:nth-child(1) {
 	color: maroon;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"], input[type="password"], input[type="email"] {
 	height: 20px;
 	width: 200px;
 }
