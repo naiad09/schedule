@@ -6,9 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,14 +31,14 @@ public class DiscTerm {
 	@Column(name = "id_disc_sem", updatable = false)
 	private int idDiscSem;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_cur_dics", updatable = false)
 	@NotNull
 	private CurDiscipline curDiscipline;
 	
 	@NotNull
 	@Column(name = "hours_her_week")
-	private float hoursHerWeek;
+	private Float hoursHerWeek;
 	
 	@Column(name = "term_num")
 	@NotNull
@@ -48,7 +48,7 @@ public class DiscTerm {
 	@NotNull
 	private boolean exam;
 	
-	@OneToMany(mappedBy = "discTerm",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "discTerm", fetch = FetchType.LAZY)
 	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
 			0);
 	
@@ -68,11 +68,11 @@ public class DiscTerm {
 		this.curDiscipline = curDiscipline;
 	}
 	
-	public float getHoursHerWeek() {
+	public Float getHoursHerWeek() {
 		return hoursHerWeek;
 	}
 	
-	public void setHoursHerWeek(float hoursHerWeek) {
+	public void setHoursHerWeek(Float hoursHerWeek) {
 		this.hoursHerWeek = hoursHerWeek;
 	}
 	

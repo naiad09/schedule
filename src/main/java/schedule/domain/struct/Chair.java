@@ -20,6 +20,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.CurDiscipline;
 
@@ -35,7 +37,7 @@ public class Chair {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_chair", updatable = false, unique = true)
-	private Integer idChair;
+	private int idChair;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_faculty", updatable = false,
@@ -45,14 +47,17 @@ public class Chair {
 	
 	@Column(name = "chair_fullname", updatable = false, unique = true)
 	@Size(max = 100, min = 5)
+	@NotEmpty
 	private String fullName;
 	
 	@Column(name = "chair_shortname", updatable = false, unique = true)
 	@Size(max = 32, min = 2)
+	@NotEmpty
 	private String shortName;
 	
 	@Column(name = "chair_shortname_eng", updatable = false, unique = true)
 	@Size(max = 8, min = 2)
+	@NotEmpty
 	private String shortNameEng;
 	
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
@@ -71,11 +76,11 @@ public class Chair {
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
 	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
 	
-	public Integer getIdChair() {
+	public int getIdChair() {
 		return idChair;
 	}
 	
-	public void setIdChair(Integer idChair) {
+	public void setIdChair(int idChair) {
 		this.idChair = idChair;
 	}
 	

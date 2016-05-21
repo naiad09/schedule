@@ -42,6 +42,7 @@ public class EduDep extends Person {
 			0);
 	
 	@Column(name = "admin")
+	@NotNull
 	private boolean admin = false;
 	
 	public Faculty getFaculty() {

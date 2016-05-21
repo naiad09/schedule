@@ -32,7 +32,7 @@ public class SkillProfile {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_profile", updatable = false)
-	private Integer idProfile;
+	private int idProfile;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_edu_prog", updatable = false)
@@ -51,11 +51,11 @@ public class SkillProfile {
 	@OneToMany(mappedBy = "skillProfile",fetch=FetchType.LAZY)
 	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
 	
-	public Integer getIdProfile() {
+	public int getIdProfile() {
 		return idProfile;
 	}
 	
-	public void setIdProfile(Integer idProfile) {
+	public void setIdProfile(int idProfile) {
 		this.idProfile = idProfile;
 	}
 	

@@ -12,6 +12,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 /**
  * Группа образовательных программ. Имеет код и название, а также ссылку на
@@ -27,7 +29,7 @@ public class EduProgGroup {
 	private int eduProgGroupCode;
 	
 	@Column(name = "edu_prog_group_name", updatable = false)
-	@NotNull
+	@NotEmpty
 	private String eduProgGroupName;
 	
 	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.LAZY)

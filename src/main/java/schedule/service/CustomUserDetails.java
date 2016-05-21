@@ -9,16 +9,16 @@ import org.springframework.security.core.userdetails.User;
 public class CustomUserDetails extends User {
 	private static final long serialVersionUID = 1L;
 	
-	private final Integer uid;
+	private final int uid;
 	
 	public CustomUserDetails(String username, String password,
 			Collection<? extends GrantedAuthority> authorities, boolean active,
-			Integer uid) {
+			int uid) {
 		super(username, password, active, active, active, active, authorities);
 		this.uid = uid;
 	}
 	
-	public Integer getUid() {
+	public int getUid() {
 		return uid;
 	}
 	

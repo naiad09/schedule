@@ -24,6 +24,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 /**
  * Суперкласс пользователя. Может быть либо студентом, либо преподавателем, либо
@@ -35,12 +37,10 @@ import javax.validation.constraints.Size;
 @Embeddable
 public abstract class Person {
 	
-	private static final String CYRILLIC_PATTERN = "[А-ЯЁ][а-яё]+";
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid", unique = true, updatable = false)
-	private Integer uid;
+	private int uid;
 	
 	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
 				optional = true, mappedBy = "person")
@@ -51,16 +51,19 @@ public abstract class Person {
 	@Pattern(regexp = "[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*")
 	@Column(name = "last_name", updatable = false)
 	@Size(max = 64, min = 3)
+	@NotEmpty
 	private String lastName;
 	
-	@Pattern(regexp = CYRILLIC_PATTERN)
+	@Pattern(regexp = "[А-ЯЁ][а-яё]+")
 	@Column(name = "first_name", updatable = false)
 	@Size(max = 32, min = 3)
+	@NotEmpty
 	private String firstName;
 	
-	@Pattern(regexp = CYRILLIC_PATTERN)
+	@Pattern(regexp = "[А-ЯЁ][а-яё]+")
 	@Column(name = "middle_name", updatable = false)
 	@Size(max = 32, min = 5)
+	@NotEmpty
 	private String middleName;
 	
 	@Enumerated(EnumType.STRING)
@@ -72,11 +75,11 @@ public abstract class Person {
 	@Column(name = "birthday")
 	private LocalDate birthday;
 	
-	public Integer getUid() {
+	public int getUid() {
 		return uid;
 	}
 	
-	public void setUid(Integer uid) {
+	public void setUid(int uid) {
 		this.uid = uid;
 	}
 	

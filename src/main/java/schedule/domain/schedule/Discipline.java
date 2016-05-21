@@ -12,6 +12,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 
 /**
  * Дисциплина. Имеет название и номер модуля (гуманитарные, естественно-научные
@@ -24,7 +26,7 @@ public class Discipline {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_name", updatable = false)
-	private Integer idDiscName;
+	private int idDiscName;
 	
 	@Column(name = "id_disc_mod", updatable = false)
 	@NotNull
@@ -33,13 +35,14 @@ public class Discipline {
 	@Column(name = "disc_name", updatable = false)
 	@Pattern(regexp = "[А-ЯЁA-Z][\\w\\s]+")
 	@Size(max = 255, min = 5)
+	@NotEmpty
 	private String discName;
 	
-	public Integer getIdDiscName() {
+	public int getIdDiscName() {
 		return idDiscName;
 	}
 	
-	public void setIdDiscName(Integer idDiscName) {
+	public void setIdDiscName(int idDiscName) {
 		this.idDiscName = idDiscName;
 	}
 	

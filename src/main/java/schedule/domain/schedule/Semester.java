@@ -41,7 +41,7 @@ public class Semester {
 	
 	@Column(name = "semester_year", updatable = false)
 	@NotNull
-	private Integer semesterYear;
+	private int semesterYear;
 	
 	@Column(name = "fall_spring", updatable = false)
 	@NotNull
@@ -59,11 +59,11 @@ public class Semester {
 		this.idSemester = idSemester;
 	}
 	
-	public Integer getSemesterYear() {
+	public int getSemesterYear() {
 		return semesterYear;
 	}
 	
-	public void setSemesterYear(Integer semesterYear) {
+	public void setSemesterYear(int semesterYear) {
 		this.semesterYear = semesterYear;
 	}
 	

@@ -30,7 +30,7 @@ public class Student extends Person {
 	
 	@Column(name = "record_book_number", updatable = false)
 	@NotNull
-	private int recordBookNumber;
+	private Integer recordBookNumber;
 	
 	public Group getGroup() {
 		return group;
@@ -40,11 +40,11 @@ public class Student extends Person {
 		this.group = group;
 	}
 	
-	public int getRecordBookNumber() {
+	public Integer getRecordBookNumber() {
 		return recordBookNumber;
 	}
 	
-	public void setRecordBookNumber(int recordBookNumber) {
+	public void setRecordBookNumber(Integer recordBookNumber) {
 		this.recordBookNumber = recordBookNumber;
 	}
 	

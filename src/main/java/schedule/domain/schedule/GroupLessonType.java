@@ -40,7 +40,7 @@ public class GroupLessonType {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_lesson_types", updatable = false)
-	private Integer idLessonTypes;
+	private int idLessonTypes;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_group", updatable = false)
@@ -69,11 +69,11 @@ public class GroupLessonType {
 	@OneToMany(mappedBy = "groupLessonType",fetch=FetchType.LAZY)
 	private Set<Schedule> schedules = new HashSet<Schedule>(0);
 	
-	public Integer getIdLessonTypes() {
+	public int getIdLessonTypes() {
 		return idLessonTypes;
 	}
 	
-	public void setIdLessonTypes(Integer idLessonTypes) {
+	public void setIdLessonTypes(int idLessonTypes) {
 		this.idLessonTypes = idLessonTypes;
 	}
 	

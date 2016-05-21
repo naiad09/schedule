@@ -28,7 +28,7 @@ public class Classroom {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_classroom", unique = true, updatable = false)
-	private Integer idClassroom;
+	private int idClassroom;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name = "id_chair", updatable = false)
@@ -43,11 +43,11 @@ public class Classroom {
 	@NotNull
 	private int campus = 1;
 	
-	public Integer getIdClassroom() {
+	public int getIdClassroom() {
 		return idClassroom;
 	}
 	
-	public void setIdClassroom(Integer idClassroom) {
+	public void setIdClassroom(int idClassroom) {
 		this.idClassroom = idClassroom;
 	}
 	

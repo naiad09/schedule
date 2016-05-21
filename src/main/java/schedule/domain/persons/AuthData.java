@@ -16,6 +16,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
@@ -28,7 +29,7 @@ public class AuthData {
 	
 	@Id
 	@PrimaryKeyJoinColumn(name = "auth_uid")
-	private Integer authUid;
+	private int authUid;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@MapsId
@@ -38,10 +39,12 @@ public class AuthData {
 	@Pattern(regexp = "[a-z][a-z\\d_-]+")
 	@Column(name = "login", unique = true, updatable = false)
 	@Size(max = 32, min = 4)
+	@NotEmpty
 	private String login;
 	
 	@Column(name = "password")
 	@Size(max = 32, min = 6)
+	@NotEmpty
 	private String password;
 	
 	@Column(name = "active")
@@ -57,11 +60,11 @@ public class AuthData {
 	@NotNull
 	private boolean submit = true;
 	
-	public Integer getAuthUid() {
+	public int getAuthUid() {
 		return authUid;
 	}
 	
-	public void setAuthUid(Integer authUid) {
+	public void setAuthUid(int authUid) {
 		this.authUid = authUid;
 	}
 	

@@ -5,9 +5,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDateTime;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -36,14 +36,14 @@ public class ScheduleChangeJournal {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_change", updatable = false)
-	private Integer idScheduleChange;
+	private int idScheduleChange;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_edu_dep", updatable = false)
 	@NotNull
 	private EduDep eduDep;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_schedule", updatable = false)
 	private Schedule schedule;
 	
@@ -55,16 +55,15 @@ public class ScheduleChangeJournal {
 	@NotNull
 	private boolean commitBool = false;
 	
-	@NotNull
 	@Column(name = "date_of_change", updatable = false)
 	@GeneratedValue
 	private LocalDateTime dateOfChange;
 	
-	public Integer getIdScheduleChange() {
+	public int getIdScheduleChange() {
 		return idScheduleChange;
 	}
 	
-	public void setIdScheduleChange(Integer idScheduleChange) {
+	public void setIdScheduleChange(int idScheduleChange) {
 		this.idScheduleChange = idScheduleChange;
 	}
 	

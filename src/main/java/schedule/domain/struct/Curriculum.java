@@ -57,7 +57,7 @@ public class Curriculum {
 	
 	@Column(name = "year_start", updatable = false)
 	@NotNull
-	private int yearStart;
+	private Integer yearStart;
 	
 	@Convert(converter = TrainingPeriodAttributeConverter.class)
 	@Column(name = "training_period", updatable = false)
@@ -107,11 +107,11 @@ public class Curriculum {
 		this.eduMode = eduMode;
 	}
 	
-	public int getYearStart() {
+	public Integer getYearStart() {
 		return yearStart;
 	}
 	
-	public void setYearStart(int yearStart) {
+	public void setYearStart(Integer yearStart) {
 		this.yearStart = yearStart;
 	}
 	
