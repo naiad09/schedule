@@ -1,4 +1,4 @@
-package schedule.service;
+package schedule.service.converters;
 
 import java.time.LocalDate;
 
