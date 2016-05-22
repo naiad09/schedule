@@ -6,8 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,7 +32,7 @@ public class Group {
 	@Column(name = "id_group", updatable = false)
 	private int idGroup;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_curriculum", updatable = false)
 	@NotNull
 	private Curriculum curriculum;
@@ -41,7 +42,7 @@ public class Group {
 	@Size(max = 5, min = 2)
 	private String groupNumber;
 	
-	@OneToMany(mappedBy = "group",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
 	private Set<Student> students = new HashSet<Student>(0);
 	
 	public int getIdGroup() {

@@ -4,6 +4,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 
 <h1>Создать ${person.role == 'student' ? 'студента' : person.role == 'lecturer'
  ? 'преподавателя' : 'работника учебного отдела'}
@@ -70,27 +71,26 @@
 				<tr>
 					<td>Группа</td>
 					<td><form:select required="required"
-							path="${!empty group? 'group.idGroup':''}"
-							name="${empty group? 'group.idGroup':''}">
+							path="${person.group!=null? 'group.idGroup':''}"
+							name="${person.group==null? 'group.idGroup':''}">
 							<form:option value=""> -- Выберите группу -- </form:option>
 							<c:forEach items="${groups}" var="group">
-								<option value="${group.idGroup}">${group.groupNumber}</option>
+								<c:set var="course" value="${group.curriculum.course}" />
+								<form:option value="${group.idGroup}">
+								    ${group.groupNumber},
+									<c:if test="${course != null}">${course}-ый курс,</c:if>
+									выпуск ${group.curriculum.yearEnd}
+								</form:option>
 							</c:forEach>
 						</form:select></td>
-					<td><form:errors path="group" cssClass="error" /></td>
+					<td><form:errors
+							path="${person.group!=null?'group.idGroup':''}" cssClass="error" /></td>
 				</tr>
 			</c:when>
 			<c:when test="${person.role == 'lecturer'}">
 				<tr>
 					<td>Научная степень</td>
-					<td><form:select required="required" path="degree">
-							<form:option value=""> -- Выберите научную степень --</form:option>
-							<c:forEach items="${degrees}" var="degree">
-								<form:option value="${degree}">
-									<spring:message code="${degree}.fullName" />
-								</form:option>
-							</c:forEach>
-						</form:select></td>
+					<td><t:insertTemplate template="level2/degreeSelector.jsp" /></td>
 					<td><form:errors path="degree" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -113,16 +113,10 @@
 									<td><form:input type="hidden"
 											path="lecturerJobs[${i.index}].chair.idChair" /> <spring:message
 											code="${chair.faculty}.shortName" />, ${chair.fullName}</td>
-									<td><form:errors path="lecturerJobs[${i.index}].jobType"
-											cssClass="error" /> <form:select required="required"
-											path="lecturerJobs[${i.index}].jobType">
-											<form:option value="">-- Выберите должность --</form:option>
-											<c:forEach items="${jobTypes}" var="jobType">
-												<form:option value="${jobType}">
-													<spring:message code="${jobType}.fullName" />
-												</form:option>
-											</c:forEach>
-										</form:select></td>
+									<td><c:set var="tempPath" scope="request"
+											value="lecturerJobs[${i.index}].jobType" /> <form:errors
+											path="${tempPath}" cssClass="error" /> <t:insertTemplate
+											template="level2/jobTypeSelector.jsp" /></td>
 									<td><a id="deleteChairLink" onclick="deleteRow(this)">Удалить</a></td>
 								</tr>
 							</c:forEach>
@@ -142,14 +136,7 @@
 			<c:when test="${person.role == 'edudep'}">
 				<tr>
 					<td>Выберите факультет</td>
-					<td><form:select path="faculty">
-							<form:option value=""> -- Без факультета --</form:option>
-							<c:forEach items="${faculties}" var="faculty">
-								<form:option value="${faculty}">
-									<spring:message code="${faculty}.shortName" />
-								</form:option>
-							</c:forEach>
-						</form:select></td>
+					<td><t:insertTemplate template="level2/facultySelector.jsp" /></td>
 					<td><form:errors path="faculty" cssClass="error" /></td>
 				</tr>
 				<tr>
@@ -203,8 +190,12 @@
 	</div>
 
 	<script>
-		authForm = '_$tag___$ta_$taЛогин_$tag_$ta_$tag______________________________________________________________________________________________________________________'
-				+ '_$tag_$ta_$tag_$tag_$ta_$taПароль_$tag_$ta_$tag_____________________________________________________________________________________________________________________$tag_$ta_$tag_$tag_$ta_$taEmail_$tag_$ta_$tag_________________________________________________________________________$tag_$ta_$tag_$tag'
+		authForm = '<table><tr><td>Логин</td><td><input id="authData.login"'+
+        ' name="authData.login" required="required" type="text" pattern="[a-z][a-z\\d_-]+" />'
+				+ '</td><td></td></tr><tr><td>Пароль</td><td><input id="authData.password" '+
+        'required="required" name="authData.password"'+
+        ' type="password" value=""/></td><td></td></tr><tr><td>Email</td><td><input'+
+        ' id="authData.email" name="authData.email" type="email" /></td><td></td></tr>'
 	</script>
 
 	<c:if test="${person.role != 'edudep'}">
@@ -255,12 +246,10 @@
 		<tr>
 			<td><h3>После сохранения:</h3></td>
 			<td><select name="returnHere">
-					<option value="true"
-						<c:if test="${returnHere}">selected="selected"</c:if>>Вернуться
-						на эту страницу</option>
-					<option value="false"
-						<c:if test="${!returnHere}">selected="selected"</c:if>>Открыть
-						страницу нового пользователя</option>
+					<option value="true" ${returnHere == true ?'selected':''}>
+						Вернуться на эту страницу</option>
+					<option value="false" ${returnHere == false ?'selected':''}>
+						Открыть страницу нового пользователя</option>
 			</select></td>
 			<td></td>
 		</tr>

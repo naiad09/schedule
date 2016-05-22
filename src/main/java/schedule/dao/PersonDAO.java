@@ -3,6 +3,7 @@ package schedule.dao;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -14,9 +15,13 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import schedule.domain.persons.AuthData;
+import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;
+import schedule.domain.persons.Student;
 import schedule.domain.struct.LecturerJob;
+import schedule.service.PersonConverter;
+import schedule.web.PersonFinder;
 
 
 @Repository
@@ -29,7 +34,7 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 		super(Person.class);
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	@Secured("ROLE_ADMIN")
 	public void create(Person entity) {
 		prepare(entity);
 		currentSession().persist(entity);
@@ -47,6 +52,9 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 		super.delete(entity);
 	}
 	
+	/**
+	 * Возвращает пользователя по конкретному логину, или null, если такого нет
+	 */
 	public Person find(String username) {
 		DetachedCriteria detCrit = DetachedCriteria
 				.forClass(AuthData.class, "ha")
@@ -57,6 +65,10 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 				.add(Subqueries.propertyEq("per.uid", detCrit)).uniqueResult();
 	}
 	
+	/**
+	 * Подготавливает пользователя к записи в базу: проставляет двойные
+	 * ассоциации, кодирует пароль.
+	 */
 	private void prepare(Person entity) {
 		AuthData authData = entity.getAuthData();
 		if (authData != null) {
@@ -71,5 +83,46 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 					.collect(Collectors.toList());
 			lecturer.setLecturerJobs(lecturerJobs);
 		}
+	}
+	
+	/**
+	 * Выполняет поиск пользователей в соответсвии с критериями, изложенными в
+	 * классе PersonFinder. Используя Criteria API, добавляет критерии и
+	 * составляет запрос. Крутая штука вышла.
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Person> getAll(PersonFinder pf) {
+		Criteria crit;
+		if (pf.getRole() == null) crit = getCriteriaDaoType();
+		else {
+			Class<? extends Person> class1 = new PersonConverter()
+					.convert(pf.getRole()).getClass();
+			crit = currentSession().createCriteria(class1);
+			
+			if (class1 == Student.class) {
+				if (pf.getRecordBookNumber() != null) {
+					crit.add(Restrictions.eq("recordBookNumber",
+							pf.getRecordBookNumber()));
+				}
+			} else if (class1 == Lecturer.class) {
+				if (pf.getDegree() != null)
+					crit.add(Restrictions.eq("degree", pf.getDegree()));
+				if (pf.getJobType() != null) {
+					DetachedCriteria dc = DetachedCriteria
+							.forClass(LecturerJob.class)
+							.add(Restrictions.eq("jobType", pf.getJobType()))
+							.setProjection(Projections.property("id.lecturer"));
+					crit.add(Subqueries.propertyIn("uid", dc));
+				}
+			} else if (class1 == EduDep.class) {
+				if (pf.getFaculty() != null)
+					crit.add(Restrictions.eq("faculty", pf.getFaculty()));
+			}
+		}
+		if (pf.getName() != null) {
+			crit.add(Restrictions.like("fullTextName",
+					"%" + pf.getName() + "%"));
+		}
+		return crit.list();
 	}
 }

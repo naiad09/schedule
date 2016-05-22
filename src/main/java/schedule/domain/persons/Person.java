@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Formula;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
@@ -59,6 +60,9 @@ public abstract class Person {
 	@Size(max = 32, min = 3)
 	@NotEmpty
 	private String firstName;
+	
+	@Formula(value = "concat(last_name,' ',first_name,' ',middle_name)")
+	private String fullTextName;
 	
 	@Pattern(regexp = "[А-ЯЁ][а-яё]+")
 	@Column(name = "middle_name", updatable = false)
@@ -113,6 +117,11 @@ public abstract class Person {
 	
 	public void setMiddleName(String middleName) {
 		this.middleName = middleName;
+	}
+	
+	@Transient
+	public String getFullTextName() {
+		return fullTextName;
 	}
 	
 	public Gender getGender() {

@@ -62,12 +62,12 @@ form table td:nth-child(1) {
 
 input[type="text"], input[type="password"], input[type="email"] {
 	height: 20px;
-	width: 200px;
+	width: 230px;
 }
 
 select {
-	height: 24px;
-	min-width: 207px;
+	height: 26px;
+	min-width: 237px;
 }
 
 form table td {

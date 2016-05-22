@@ -1,5 +1,6 @@
 package schedule.web;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 
 import schedule.dao.ChairDAO;
 import schedule.dao.GenericDAO;
@@ -43,7 +46,7 @@ import schedule.service.ResourceNotFoundException;
 @Controller
 @RequestMapping("persons")
 @SessionAttributes(names = { "faculties", "jobTypes", "chairs", "groups",
-		"degrees", "returnHere" })
+		"degrees" })
 public class PersonController {
 	
 	@Autowired
@@ -52,6 +55,16 @@ public class PersonController {
 	private GenericDAO<Group, Integer> groupDAO;
 	@Autowired
 	private ChairDAO chairDAO;
+	
+	@RequestMapping(path = "", method = RequestMethod.GET)
+	public String getPersons(Model model,
+			@ModelAttribute PersonFinder personFinder) {
+		model.addAttribute("persons", personDAO.getAll(personFinder));
+		addJobTypes(model);
+		addDegrees(model);
+		addFaculties(model);
+		return "common/persons";
+	}
 	
 	/**
 	 * Просмотр профиля пользователя. Добавляет объект пользователя в модель.
@@ -103,13 +116,12 @@ public class PersonController {
 		return "redirect: /uid-" + personId + "?saved=true";
 	}
 	
-	// @Secured("ROLE_ADMIN")
-	// TODO
 	/**
 	 * Новый пользователь, доступ сюда ограничен правами админа. Грузит и
 	 * добавляет необходимые данные в зависимости от роли нового пользователя:
 	 * для студента группы, для препода - кафедры, для учотдела - факультеты.
 	 */
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = "new-{person}", method = RequestMethod.GET)
 	public String newPerson(@PathVariable Person person, Model model) {
 		model.addAttribute("returnHere", true);
@@ -117,17 +129,28 @@ public class PersonController {
 			model.addAttribute("groups", groupDAO.getAll());
 		} else if (person instanceof Lecturer) {
 			model.addAttribute("chairs", chairDAO.getAll());
-			model.addAttribute("jobTypes", LecturerJob.JobType.values());
-			model.addAttribute("degrees", Lecturer.Degree.values());
+			addJobTypes(model);
+			addDegrees(model);
 		} else if (person instanceof EduDep) {
-			model.addAttribute("faculties", Chair.Faculty.values());
+			addFaculties(model);
 		}
 		
 		return "common/newPerson";
 	}
 	
-	// @Secured("ROLE_ADMIN")
-	// TODO
+	private void addFaculties(Model model) {
+		model.addAttribute("faculties", Arrays.asList(Chair.Faculty.values()));
+	}
+	
+	private void addDegrees(Model model) {
+		model.addAttribute("degrees", Arrays.asList(Lecturer.Degree.values()));
+	}
+	
+	private void addJobTypes(Model model) {
+		model.addAttribute("jobTypes",
+				Arrays.asList(LecturerJob.JobType.values()));
+	}
+	
 	/**
 	 * Пост нового профиля. Валидирует объект, если невалиден, возвращает на
 	 * страницу редактирования с помеченными ошибками. Далее, после добавление
@@ -136,15 +159,16 @@ public class PersonController {
 	 * зависисомти от от флага returnHere редаректит на страницу редактирования
 	 * или на новый созданный профиль.
 	 */
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = "new-{personType}", method = RequestMethod.POST)
 	public String newPersonPost(@Valid @ModelAttribute("person") Person person,
-			BindingResult result, Model model,
-			@RequestParam boolean returnHere) {
+			BindingResult result, Model model, @RequestParam boolean returnHere,
+			SessionStatus ss) {
 		
 		if (result.hasErrors()) {
 			result.getAllErrors()
 					.forEach(e -> System.out.println(e.toString()));
-			return returnWithError(person, model);
+			return returnWithError(person, model, returnHere);
 		}
 		try {
 			personDAO.create(person);
@@ -154,11 +178,12 @@ public class PersonController {
 			matcher.find();
 			String group = matcher.group();
 			result.rejectValue("authData." + group, "Unique." + group);
-			return returnWithError(person, model);
+			return returnWithError(person, model, returnHere);
 		} catch (RuntimeException e) {
 			System.out.println(e);
-			return returnWithError(person, model);
+			return returnWithError(person, model, returnHere);
 		}
+		ss.setComplete();
 		
 		String returnString = returnHere ? "redirect:new-" + person.getRole()
 				: "redirect:uid-" + person.getUid();
@@ -170,10 +195,12 @@ public class PersonController {
 	 * Возвращает на тсраницу редактирования с ошибкой. Обнуляет пароль для
 	 * того, чтобы он не передавался обратно в нешифрованном виде.
 	 */
-	private String returnWithError(Person person, Model model) {
+	private String returnWithError(Person person, Model model,
+			boolean returnHere) {
 		if (person.getAuthData() != null)
 			person.getAuthData().setPassword(null);
 		model.addAttribute("error", true);
+		model.addAttribute("returnHere", returnHere);
 		return "common/newPerson";
 	}
 	

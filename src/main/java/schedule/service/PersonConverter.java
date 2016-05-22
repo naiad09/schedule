@@ -11,6 +11,7 @@ import schedule.domain.persons.Student;
 public class PersonConverter implements Converter<String, Person> {
 	
 	public Person convert(String personType) {
+		if (personType == null) return null;
 		Person person = null;
 		switch (personType) {
 			case "student":
