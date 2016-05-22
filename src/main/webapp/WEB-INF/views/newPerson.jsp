@@ -5,70 +5,141 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<h1>
-	<spring:message code="newPerson" />
+<h1>Создать ${person.role == 'student' ? 'студента' : person.role == 'lecturer'
+ ? 'преподавателя' : 'работника учебного отдела'}
 </h1>
 
 <c:if test="${error == true}">
 	<p class="alert error">Исправьте следующие ошибки:</p>
 </c:if>
+<c:if test="${!empty param.success}">
+	<p class="alert success">
+		Новый пользователь <a href="uid-${param.success}">создан</a>.
+	</p>
+</c:if>
 
 <form:form action="new-${person.role}" method="post"
-	commandName="person">
+	commandName="person"
+	onsubmit="${person.role == 'lecturer' ? 'prerareChairs()' : ''}">
 	<input type="hidden" value="${person.role}" name="person" />
 	<h2>Шаг 1: общая информация</h2>
 	<table>
-		<tr class="required">
+		<tr>
 			<td>Фамилия</td>
-			<td><form:input path="lastName" required="required" /></td>
+			<td><form:input path="lastName" required="required"
+					pattern="[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*" /></td>
 			<td><form:errors path="lastName" cssClass="error" /></td>
 		</tr>
-		<tr class="required">
+		<tr>
 			<td>Имя</td>
-			<td><form:input path="firstName" required="required" /></td>
+			<td><form:input path="firstName" required="required"
+					pattern="[А-ЯЁ][а-яё]+" /></td>
 			<td><form:errors path="firstName" cssClass="error" /></td>
 		</tr>
-		<tr class="required">
+		<tr>
 			<td>Отчество</td>
-			<td><form:input path="middleName" required="required" /></td>
+			<td><form:input path="middleName" required="required"
+					pattern="[А-ЯЁ][а-яё]+" /></td>
 			<td><form:errors path="middleName" cssClass="error" /></td>
 		</tr>
-		<tr class="required">
+		<tr>
 			<td>Пол</td>
-			<td><form:radiobutton path="gender" value="m" />Мужской <form:radiobutton
-					path="gender" value="f" /> Женский</td>
+			<td><form:radiobutton path="gender" value="m"
+					required="required" />Мужской <form:radiobutton path="gender"
+					value="f" /> Женский</td>
 			<td><form:errors path="gender" cssClass="error" /></td>
 		</tr>
 		<tr>
-			<td>Дата рождения</td>
-			<td><form:input path="birthday" /></td>
+			<td>Дата рождения<br /> <small>например, 2012-05-07</small>
+			</td>
+			<td><form:input path="birthday" pattern="\d{4}-\d{2}-\d{2}" /></td>
 			<td><form:errors path="birthday" cssClass="error" /></td>
 		</tr>
 	</table>
 
 	<h2>Шаг 2: детальная информация</h2>
-
-	<c:choose>
-		<c:when test="${person.role == 'student'}">
-			<table>
-				<tr class="required">
+	<table>
+		<c:choose>
+			<c:when test="${person.role == 'student'}">
+				<tr>
 					<td>Номер зачетной книжки</td>
-					<td><form:input path="recordBookNumber" /></td>
+					<td><form:input path="recordBookNumber" required="required"
+							pattern="\d{5}" /></td>
 					<td><form:errors path="recordBookNumber" cssClass="error" /></td>
 				</tr>
-				<tr class="required">
+				<tr>
 					<td>Группа</td>
-					<td><form:select path="group">
-							<form:options items="${groupList}" itemValue="idGroup"
-								itemLabel="groupNumber" />
+					<td><form:select required="required"
+							path="${!empty group? 'group.idGroup':''}"
+							name="${empty group? 'group.idGroup':''}">
+							<form:option value=""> -- Выберите группу -- </form:option>
+							<c:forEach items="${groups}" var="group">
+								<option value="${group.idGroup}">${group.groupNumber}</option>
+							</c:forEach>
 						</form:select></td>
 					<td><form:errors path="group" cssClass="error" /></td>
 				</tr>
-			</table>
-		</c:when>
-		<c:when test="${person.role == 'lecturer'}"></c:when>
-		<c:when test="${person.role == 'edudep'}">
-			<table>
+			</c:when>
+			<c:when test="${person.role == 'lecturer'}">
+				<tr>
+					<td>Научная степень</td>
+					<td><form:select required="required" path="degree">
+							<form:option value=""> -- Выберите научную степень --</form:option>
+							<c:forEach items="${degrees}" var="degree">
+								<form:option value="${degree}">
+									<spring:message code="${degree}.fullName" />
+								</form:option>
+							</c:forEach>
+						</form:select></td>
+					<td><form:errors path="degree" cssClass="error" /></td>
+				</tr>
+				<tr>
+					<td colspan="3"><h3 style="text-align: center;">Кафедры</h3> <form:errors
+							path="lecturerJobs" cssClass="error" />
+						<table
+							style="margin-bottom: 20px; 
+						        ${empty person.lecturerJobs ? 'display:none' : ''}"
+							id="chairs">
+							<tr>
+								<th style="width: 600px;">Кафедра</th>
+								<th style="width: 210px;">Должность</th>
+								<th></th>
+							</tr>
+							<c:forEach items="${person.lecturerJobs}" var="job" varStatus="i">
+								<spring:eval
+									expression="chairs.^[idChair == ${job.chair.idChair}]"
+									var="chair" />
+								<tr class="chair">
+									<td><form:input type="hidden"
+											path="lecturerJobs[${i.index}].chair.idChair" /> <spring:message
+											code="${chair.faculty}.shortName" />, ${chair.fullName}</td>
+									<td><form:errors path="lecturerJobs[${i.index}].jobType"
+											cssClass="error" /> <form:select required="required"
+											path="lecturerJobs[${i.index}].jobType">
+											<form:option value="">-- Выберите должность --</form:option>
+											<c:forEach items="${jobTypes}" var="jobType">
+												<form:option value="${jobType}">
+													<spring:message code="${jobType}.fullName" />
+												</form:option>
+											</c:forEach>
+										</form:select></td>
+									<td><a id="deleteChairLink" onclick="deleteRow(this)">Удалить</a></td>
+								</tr>
+							</c:forEach>
+						</table>Добавить: <select id="chairSelector">
+							<option>-- Выберите кафедру --</option>
+							<c:forEach items="${chairs}" var="chair">
+								<option value="${chair.idChair}">
+									<spring:message code="${chair.faculty}.shortName" />,
+									${chair.fullName}
+								</option>
+							</c:forEach>
+					</select></td>
+				</tr>
+				<c:url var="jsUrl" value="../resources/js/new-lecturer.js" />
+				<script src="${jsUrl}"></script>
+			</c:when>
+			<c:when test="${person.role == 'edudep'}">
 				<tr>
 					<td>Выберите факультет</td>
 					<td><form:select path="faculty">
@@ -86,15 +157,15 @@
 					<td><form:checkbox path="admin" /></td>
 					<td>администратор имеет полные права на редактирование системы</td>
 				</tr>
-			</table>
-		</c:when>
-	</c:choose>
+			</c:when>
+		</c:choose>
+	</table>
 
 	<h2>
 		Шаг 3: создать логин
 		<c:if test="${person.role != 'edudep'}">? 
             <input type="button" id="authFormAddButton"
-				value="Создать логин" />
+				value="${(person.authData == null) ? 'Создать логин' : 'Удалить логин'}" />
 		</c:if>
 	</h2>
 
@@ -103,13 +174,13 @@
 	<div id="authForm">
 		<c:if test="${person.authData != null}">
 			<table>
-				<tr class="required">
+				<tr>
 					<td>Логин</td>
 					<td><form:input path="authData.login" required="required"
-							type="text" /></td>
+							pattern="[a-z][a-z\\d_-]+" /></td>
 					<td><form:errors path="authData.login" cssClass="error" /></td>
 				</tr>
-				<tr class="required">
+				<tr>
 					<td>Пароль</td>
 					<td><form:input path="authData.password" required="required"
 							type="password" /></td>
@@ -117,7 +188,7 @@
 				</tr>
 				<tr>
 					<td>Email</td>
-					<td><form:input path="authData.email" /></td>
+					<td><form:input path="authData.email" type="email" /></td>
 					<td><form:errors path="authData.email" cssClass="error" /></td>
 				</tr>
 				<c:if test="${person.role != 'edudep'}">
@@ -132,17 +203,14 @@
 	</div>
 
 	<script>
-		authForm = '<table><tr class="required"><td>Логин</td><td><input id="authData.login"'+
-        ' name="authData.login" required="required" type="text" value=""/></td><td></td></tr>'
-				+ '<tr class="required"><td>Пароль</td><td><input id="authData.password" '+
-				'required="required" name="authData.password"'+
-        ' type="password" value=""/></td><td></td></tr><tr><td>Email</td><td><input'+
-        ' id="authData.email" name="authData.email" type="text" value=""/></td><td></td></tr>'
+		authForm = '_$tag___$ta_$taЛогин_$tag_$ta_$tag______________________________________________________________________________________________________________________'
+				+ '_$tag_$ta_$tag_$tag_$ta_$taПароль_$tag_$ta_$tag_____________________________________________________________________________________________________________________$tag_$ta_$tag_$tag_$ta_$taEmail_$tag_$ta_$tag_________________________________________________________________________$tag_$ta_$tag_$tag'
 	</script>
 
 	<c:if test="${person.role != 'edudep'}">
 		<script>
-			authForm += '<tr><td>Получать рассылку</td><td><input type="checkbox" name="authData.submit" />'
+			authForm += '<tr><td>Получать рассылку</td><td><input type="checkbox" '+
+			'checked="checked"name="authData.submit" />'
 					+ '</td><td>Получать письма о внеплановом обновлении расписания</td></tr>'
 		</script>
 	</c:if>
@@ -168,6 +236,13 @@
 	<c:if test="${person.role == 'edudep' && person.authData == null}">
 		<script>
 			$("#authForm").html(authForm)
+		</script>
+	</c:if>
+
+
+	<c:if test="${person.authData != null}">
+		<script>
+			authFormAdded = true
 		</script>
 	</c:if>
 

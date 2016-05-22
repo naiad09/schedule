@@ -1,15 +1,13 @@
 <?xml  version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
-	xmlns:tx="http://www.springframework.org/schema/tx"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans 
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-        http://www.springframework.org/schema/tx 
-        http://www.springframework.org/schema/tx/spring-tx.xsd">
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:c="http://www.springframework.org/schema/c"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 	<!-- Настраивает управление транзакциями с помощью аннотации @Transactional -->
 	<tx:annotation-driven transaction-manager="transactionManager" />
- 
+
 	<!-- Менеджер транзакций -->
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager"
@@ -39,4 +37,5 @@
 		</property>
 	</bean>
 
+	<bean id="groupDAO" class="schedule.dao.GenericDAO" c:type="schedule.domain.struct.Group" />
 </beans>

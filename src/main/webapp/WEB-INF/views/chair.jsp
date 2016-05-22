@@ -14,7 +14,7 @@
 		<c:forEach items="${chair.lecturerJobs}" var="job">
 			<tr>
 				<td><h3>
-						<a href="/persons/uid${job.lecturer.uid}">${job.lecturer.fullName}</a>
+						<a href="../persons/uid-${job.lecturer.uid}">${job.lecturer.fullName}</a>
 					</h3>
 					<p>
 						<spring:message code="${job.lecturer.degree}.fullName" />

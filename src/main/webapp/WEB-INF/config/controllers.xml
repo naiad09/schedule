@@ -13,8 +13,8 @@ encoding="UTF-8"?>
 		id="theConversionService">
 		<property name="converters">
 			<list>
-				<bean class="schedule.service.PersonConverter"></bean>
-				<bean class="schedule.service.LocalDateConverter"></bean>
+				<bean class="schedule.service.PersonConverter"/>
+                <bean class="schedule.service.LocalDateConverter"/>
 			</list>
 		</property>
 	</bean>

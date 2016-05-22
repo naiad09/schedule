@@ -16,6 +16,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -43,6 +44,7 @@ public class Chair {
 	@Column(name = "id_faculty", updatable = false,
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
 	@NotNull
+	@OrderColumn
 	private Faculty faculty;
 	
 	@Column(name = "chair_fullname", updatable = false, unique = true)
@@ -60,7 +62,7 @@ public class Chair {
 	@NotEmpty
 	private String shortNameEng;
 	
-	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "id.chair", fetch = FetchType.LAZY)
 	@OrderBy("jobType") // , lecturer.degree, lecturer.lastName,
 						// lecturer.firstName, lecturer.middleName")
 	// TODO order by not works...
@@ -157,7 +159,7 @@ public class Chair {
 	}
 	
 	public enum Faculty {
-		vf, frt, fe, faitu, fvt, ief, hi, vi;
+		frt, fe, faitu, fvt, ief, hi, vi, vf;
 	}
 	
 }

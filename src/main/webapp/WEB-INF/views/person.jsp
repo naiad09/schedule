@@ -9,8 +9,9 @@
 <c:if test="${param.saved == true}">
 	<p class="alert success">Профиль обновлен.</p>
 </c:if>
-<c:url value="/persons/uid${person.uid}/edit" var="editUrl" />
-<sec:authorize url="${editUrl}">
+<c:url value="/persons/uid-${person.uid}/edit" var="editUrl" />
+<sec:authorize
+	access="hasRole('ROLE_ADMIN') or (isAuthenticated() and principal.uid==#personId)">
 	<div id="edit">
 		<a href="${editUrl}">Редактировать</a>
 	</div>
@@ -28,7 +29,7 @@
 				</c:when>
 
 		<c:when test="${person.role == 'lecturer'}">
-			<spring:message code="${person.degree}.fullName" />,<br>
+			<spring:message code="${person.degree}.fullName" /><br>
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
 				<spring:message code="${job.jobType}.fullName" /> кафедры
                    ${job.chair.shortName}

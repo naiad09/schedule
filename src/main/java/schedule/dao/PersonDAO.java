@@ -1,5 +1,8 @@
 package schedule.dao;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -11,7 +14,9 @@ import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import schedule.domain.persons.AuthData;
+import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;
+import schedule.domain.struct.LecturerJob;
 
 
 @Repository
@@ -26,27 +31,15 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 	
 	// @Secured("ROLE_ADMIN")
 	public void create(Person entity) {
-		AuthData authData = entity.getAuthData();
-		if (authData != null) {
-			authData.setPerson(entity);
-			encodePassword(authData);
-		}
-		super.create(entity);
+		prepare(entity);
+		currentSession().persist(entity);
 	}
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN') or "
 			+ "(isAuthenticated() and principal.uid == #entity.uid)")
 	public void update(Person entity) {
-		AuthData authData = entity.getAuthData();
-		if (authData != null) {
-			encodePassword(authData);
-		}
+		prepare(entity);
 		super.update(entity);
-	}
-	
-	private void encodePassword(AuthData authData) {
-		authData.setPassword(
-				pswEncoder.encodePassword(authData.getPassword(), null));
 	}
 	
 	@Secured("ROLE_ADMIN")
@@ -62,5 +55,21 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 		
 		return (Person) currentSession().createCriteria(Person.class, "per")
 				.add(Subqueries.propertyEq("per.uid", detCrit)).uniqueResult();
+	}
+	
+	private void prepare(Person entity) {
+		AuthData authData = entity.getAuthData();
+		if (authData != null) {
+			authData.setPerson(entity);
+			authData.setPassword(
+					pswEncoder.encodePassword(authData.getPassword(), null));
+		}
+		if (entity instanceof Lecturer) {
+			Lecturer lecturer = (Lecturer) entity;
+			List<LecturerJob> lecturerJobs = lecturer.getLecturerJobs().stream()
+					.distinct().peek(j -> j.setLecturer(lecturer))
+					.collect(Collectors.toList());
+			lecturer.setLecturerJobs(lecturerJobs);
+		}
 	}
 }

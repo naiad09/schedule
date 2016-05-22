@@ -15,7 +15,7 @@
 
 <sec:authorize access="isAuthenticated()">
 
-	<c:url value="/persons/uid${currentUser.uid}" var="profileUrl" />
+	<c:url value="/persons/uid-${currentUser.uid}" var="profileUrl" />
 	<a href="${profileUrl}">${currentUser.fullName}</a>
 	<br>
 

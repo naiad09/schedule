@@ -3,6 +3,7 @@ package schedule.dao;
 import java.util.List;
 
 import org.hibernate.FetchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
@@ -15,6 +16,11 @@ public class ChairDAO extends MinimalGenericDAO<Chair, Integer> {
 	
 	public ChairDAO() {
 		super(Chair.class);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Chair> getAll() {
+		return getCriteriaDaoType().addOrder(Order.asc("faculty")).list();
 	}
 	
 	@SuppressWarnings("unchecked")

@@ -1,10 +1,12 @@
 package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +15,10 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotEmpty;
 
 import schedule.domain.struct.LecturerJob;
 
@@ -32,8 +37,12 @@ public class Lecturer extends Person {
 	@NotNull
 	private Degree degree;
 	
-	@OneToMany(mappedBy = "lecturer", fetch = FetchType.LAZY)
-	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
+	@OneToMany(	mappedBy = "id.lecturer", fetch = FetchType.LAZY,
+				cascade = CascadeType.ALL)
+	@Valid
+	@ElementCollection(targetClass = LecturerJob.class)
+	@NotEmpty
+	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>();
 	
 	public Degree getDegree() {
 		return degree;
@@ -43,11 +52,11 @@ public class Lecturer extends Person {
 		this.degree = degree;
 	}
 	
-	public Set<LecturerJob> getLecturerJobs() {
+	public List<LecturerJob> getLecturerJobs() {
 		return lecturerJobs;
 	}
 	
-	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {
+	public void setLecturerJobs(List<LecturerJob> lecturerJobs) {
 		this.lecturerJobs = lecturerJobs;
 	}
 	

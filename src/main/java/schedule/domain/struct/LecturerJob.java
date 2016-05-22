@@ -1,19 +1,14 @@
 package schedule.domain.struct;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import javax.persistence.AttributeOverride;
-import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.persistence.Embedded;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
 import schedule.domain.persons.Lecturer;
@@ -28,36 +23,12 @@ import schedule.domain.persons.Lecturer;
 public class LecturerJob {
 	
 	@EmbeddedId
-	@AttributeOverrides({
-			@AttributeOverride(	name = "idLecturer",
-								column = @Column(name = "id_lecturer")),
-			@AttributeOverride(	name = "idChair",
-								column = @Column(name = "id_chair")) })
-	private LecturerJobId id;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@NotNull
-	@JoinColumn(name = "id_chair", insertable = false, updatable = false)
-	private Chair chair;
+	private LecturerJobId id = new LecturerJobId();
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "id_job", columnDefinition = "enum('pr','doc','stp')")
 	@NotNull
 	private JobType jobType;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@NotNull
-	@JoinColumn(name = "id_lecturer", insertable = false, updatable = false)
-	@Embedded
-	private Lecturer lecturer;
-	
-	public Chair getChair() {
-		return chair;
-	}
-	
-	public void setChair(Chair chair) {
-		this.chair = chair;
-	}
 	
 	public LecturerJobId getId() {
 		return id;
@@ -65,6 +36,24 @@ public class LecturerJob {
 	
 	public void setId(LecturerJobId id) {
 		this.id = id;
+	}
+	
+	@Transient
+	public Chair getChair() {
+		return getId().getChair();
+	}
+	
+	public void setChair(Chair chair) {
+		getId().setChair(chair);
+	}
+	
+	@Transient
+	public Lecturer getLecturer() {
+		return getId().getLecturer();
+	}
+	
+	public void setLecturer(Lecturer lecturer) {
+		getId().setLecturer(lecturer);
 	}
 	
 	public JobType getJobType() {
@@ -75,16 +64,8 @@ public class LecturerJob {
 		this.jobType = jobType;
 	}
 	
-	public Lecturer getLecturer() {
-		return lecturer;
-	}
-	
-	public void setLecturer(Lecturer lecturer) {
-		this.lecturer = lecturer;
-	}
-	
 	public enum JobType {
-		doc, pr, stp;
+		pr, doc, stp;
 	}
 	
 }

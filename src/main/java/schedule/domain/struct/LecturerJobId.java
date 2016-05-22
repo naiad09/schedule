@@ -1,9 +1,14 @@
 package schedule.domain.struct;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import schedule.domain.persons.Lecturer;
 
 
 /**
@@ -13,46 +18,54 @@ import javax.validation.constraints.NotNull;
 public class LecturerJobId implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@Column(name = "id_lecturer", updatable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@NotNull
-	private int idLecturer;
+	@JoinColumn(name = "id_chair")
+	private Chair chair;
 	
-	@Column(name = "id_chair", updatable = false)
-	@NotNull
-	private int idChair;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_lecturer", updatable = false)
+	@Embedded
+	private Lecturer lecturer;
 	
-	public int getIdLecturer() {
-		return idLecturer;
+	public Chair getChair() {
+		return chair;
 	}
 	
-	public void setIdLecturer(int idLecturer) {
-		this.idLecturer = idLecturer;
+	public void setChair(Chair chair) {
+		this.chair = chair;
 	}
 	
-	public int getIdChair() {
-		return idChair;
+	public Lecturer getLecturer() {
+		return lecturer;
 	}
 	
-	public void setIdChair(int idChair) {
-		this.idChair = idChair;
+	public void setLecturer(Lecturer lecturer) {
+		this.lecturer = lecturer;
 	}
 	
-	public boolean equals(Object other) {
-		if ((this == other)) return true;
-		if ((other == null)) return false;
-		if (!(other instanceof LecturerJobId)) return false;
-		LecturerJobId castOther = (LecturerJobId) other;
-		
-		return (this.getIdLecturer() == castOther.getIdLecturer())
-				&& (this.getIdChair() == castOther.getIdChair());
-	}
-	
+	@Override
 	public int hashCode() {
-		int result = 17;
-		
-		result = 37 * result + this.getIdLecturer();
-		result = 37 * result + this.getIdChair();
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((chair == null) ? 0 : chair.hashCode());
+		result = prime * result
+				+ ((lecturer == null) ? 0 : lecturer.hashCode());
 		return result;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (getClass() != obj.getClass()) return false;
+		LecturerJobId other = (LecturerJobId) obj;
+		if (chair == null) {
+			if (other.chair != null) return false;
+		} else if (!chair.equals(other.chair)) return false;
+		if (lecturer == null) {
+			if (other.lecturer != null) return false;
+		} else if (!lecturer.equals(other.lecturer)) return false;
+		return true;
+	}
 }
