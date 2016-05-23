@@ -21,7 +21,7 @@ import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
 import schedule.domain.struct.LecturerJob;
 import schedule.service.PersonConverter;
-import schedule.web.PersonFinder;
+import schedule.service.PersonFinder;
 
 
 @Repository

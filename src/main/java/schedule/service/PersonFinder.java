@@ -1,4 +1,4 @@
-package schedule.web;
+package schedule.service;
 
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;

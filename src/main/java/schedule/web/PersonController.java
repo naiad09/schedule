@@ -34,6 +34,7 @@ import schedule.domain.persons.Student;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Group;
 import schedule.domain.struct.LecturerJob;
+import schedule.service.PersonFinder;
 import schedule.service.ResourceNotFoundException;
 
 
