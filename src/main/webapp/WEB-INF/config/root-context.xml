@@ -20,4 +20,27 @@
 
 	<import resource="controllers.xml" />
 
+
+
+	<!-- Configure Apache Tiles for the view -->
+	<bean id="tilesConfigurer"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
+		p:definitions="/WEB-INF/views/conf/tiles.xml"
+		p:preparerFactoryClass="org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory" />
+
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
+		p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView" />
+
+
+	<bean id="messageSource"
+		class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="basenames">
+			<list>
+				<value>page-titles</value>
+				<value>transcript</value>
+				<value>validation-error-messages</value>
+			</list>
+		</property>
+	</bean>
 </beans>

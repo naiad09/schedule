@@ -17,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.Valid;
@@ -155,6 +157,12 @@ public abstract class Person {
 	@Transient
 	public String getRole() {
 		return getClass().getSimpleName().toLowerCase();
+	}
+	
+	@PrePersist
+	@PreUpdate
+	private void prePersist() {
+		System.out.println("121212");
 	}
 	
 	public enum Gender {

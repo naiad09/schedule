@@ -138,19 +138,6 @@ public class PersonController {
 		return "common/newPerson";
 	}
 	
-	private void addFaculties(Model model) {
-		model.addAttribute("faculties", Arrays.asList(Chair.Faculty.values()));
-	}
-	
-	private void addDegrees(Model model) {
-		model.addAttribute("degrees", Arrays.asList(Lecturer.Degree.values()));
-	}
-	
-	private void addJobTypes(Model model) {
-		model.addAttribute("jobTypes",
-				Arrays.asList(LecturerJob.JobType.values()));
-	}
-	
 	/**
 	 * Пост нового профиля. Валидирует объект, если невалиден, возвращает на
 	 * страницу редактирования с помеченными ошибками. Далее, после добавление
@@ -179,9 +166,6 @@ public class PersonController {
 			String group = matcher.group();
 			result.rejectValue("authData." + group, "Unique." + group);
 			return returnWithError(person, model, returnHere);
-		} catch (RuntimeException e) {
-			System.out.println(e);
-			return returnWithError(person, model, returnHere);
 		}
 		ss.setComplete();
 		
@@ -189,6 +173,19 @@ public class PersonController {
 				: "redirect:uid-" + person.getUid();
 		if (returnHere) model.addAttribute("success", person.getUid());
 		return returnString;
+	}
+	
+	private void addFaculties(Model model) {
+		model.addAttribute("faculties", Arrays.asList(Chair.Faculty.values()));
+	}
+	
+	private void addDegrees(Model model) {
+		model.addAttribute("degrees", Arrays.asList(Lecturer.Degree.values()));
+	}
+	
+	private void addJobTypes(Model model) {
+		model.addAttribute("jobTypes",
+				Arrays.asList(LecturerJob.JobType.values()));
 	}
 	
 	/**

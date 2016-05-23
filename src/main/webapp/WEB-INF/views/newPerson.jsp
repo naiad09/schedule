@@ -45,9 +45,7 @@
 		</tr>
 		<tr>
 			<td>Пол</td>
-			<td><form:radiobutton path="gender" value="m"
-					required="required" />Мужской <form:radiobutton path="gender"
-					value="f" /> Женский</td>
+			<td><t:insertTemplate template="level2/genderSelector.jsp" /></td>
 			<td><form:errors path="gender" cssClass="error" /></td>
 		</tr>
 		<tr>
@@ -240,7 +238,7 @@
 	<table>
 		<tr>
 			<td></td>
-			<td><input type="submit" value="Отправить"></td>
+			<td><button>Отправить</button></td>
 			<td></td>
 		</tr>
 		<tr>

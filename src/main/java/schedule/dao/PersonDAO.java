@@ -119,9 +119,21 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 					crit.add(Restrictions.eq("faculty", pf.getFaculty()));
 			}
 		}
+		if (pf.getGender() != null)
+			crit.add(Restrictions.eq("gender", pf.getGender()));
 		if (pf.getName() != null) {
 			crit.add(Restrictions.like("fullTextName",
 					"%" + pf.getName() + "%"));
+		}
+		if (pf.getLoginExists() != null) {
+			DetachedCriteria detCrit = DetachedCriteria
+					.forClass(AuthData.class);
+			detCrit.setProjection(Projections.id());
+			if (pf.getLoginExists()) {
+				if (pf.getLogin() != null) detCrit.add(
+						Restrictions.like("login", "%" + pf.getLogin() + "%"));
+				crit.add(Subqueries.propertyIn("uid", detCrit));
+			} else crit.add(Subqueries.propertyNotIn("uid", detCrit));
 		}
 		return crit.list();
 	}

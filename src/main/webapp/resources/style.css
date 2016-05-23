@@ -35,7 +35,7 @@ h2 {
 	font-size: 20px;
 }
 
-#login {
+div#login {
 	width: 270px;
 	text-align: center;
 }
@@ -67,7 +67,11 @@ input[type="text"], input[type="password"], input[type="email"] {
 
 select {
 	height: 26px;
-	min-width: 237px;
+	min-width: 237 px;
+}
+
+button {
+	height: 28px;
 }
 
 form table td {

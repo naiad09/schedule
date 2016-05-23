@@ -30,7 +30,7 @@ public class Group {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_group", updatable = false)
-	private int idGroup;
+	private Integer idGroup;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_curriculum", updatable = false)
@@ -45,11 +45,11 @@ public class Group {
 	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
 	private Set<Student> students = new HashSet<Student>(0);
 	
-	public int getIdGroup() {
+	public Integer getIdGroup() {
 		return idGroup;
 	}
 	
-	public void setIdGroup(int idGroup) {
+	public void setIdGroup(Integer idGroup) {
 		this.idGroup = idGroup;
 	}
 	

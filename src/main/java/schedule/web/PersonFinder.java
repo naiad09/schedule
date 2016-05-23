@@ -1,6 +1,7 @@
 package schedule.web;
 
 import schedule.domain.persons.Lecturer;
+import schedule.domain.persons.Person;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.LecturerJob;
 
@@ -8,15 +9,17 @@ import schedule.domain.struct.LecturerJob;
 /**
  * Критерии для поиска пользователей: часть имени, роль, и специфические
  * характеристики для ролей: для студента номер зачетки, для преподавателя
- * ученая степень и(или) должность, для учебного отдела факультет. Также задает
- * параметры отображения: число пользователей на странице и номер страницы (не
- * поставляются в запрос, используются на jsp для отображения).
+ * ученая степень и(или) должность, для учебного отдела факультет. Также можно
+ * задать поиск по логину: нет логина, есть логин, конкретный логин. Также
+ * задает параметры отображения: число пользователей на странице и номер
+ * страницы (не поставляются в запрос, используются на jsp для отображения).
  */
 public class PersonFinder {
 	private String role;
 	private String name;
+	private Person.Gender gender;
 	
-	private int perPage = 20;
+	private int perPage = 10;
 	private int page = 1;
 	
 	private Chair.Faculty faculty;
@@ -24,7 +27,8 @@ public class PersonFinder {
 	private LecturerJob.JobType jobType;
 	private Integer recordBookNumber;
 	
-	// TODO с логином: есть, нет, без разницы, конкретный логин
+	private String login;
+	private Boolean loginExists;
 	
 	public String getRole() {
 		return role;
@@ -88,6 +92,30 @@ public class PersonFinder {
 	
 	public void setRecordBookNumber(Integer recordBookNumber) {
 		this.recordBookNumber = recordBookNumber;
+	}
+	
+	public Person.Gender getGender() {
+		return gender;
+	}
+	
+	public void setGender(Person.Gender gender) {
+		this.gender = gender;
+	}
+	
+	public String getLogin() {
+		return login;
+	}
+	
+	public void setLogin(String login) {
+		this.login = login;
+	}
+	
+	public Boolean getLoginExists() {
+		return loginExists;
+	}
+	
+	public void setLoginExists(Boolean loginExists) {
+		this.loginExists = loginExists;
 	}
 	
 }

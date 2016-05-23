@@ -10,8 +10,7 @@
 	<p class="alert success">Профиль обновлен.</p>
 </c:if>
 <c:url value="/persons/uid-${person.uid}/edit" var="editUrl" />
-<sec:authorize
-	access="hasRole('ROLE_ADMIN') or (isAuthenticated() and principal.uid==#personId)">
+<sec:authorize url="${editUrl}">
 	<div id="edit">
 		<a href="${editUrl}">Редактировать</a>
 	</div>

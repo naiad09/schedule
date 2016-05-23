@@ -23,7 +23,7 @@ import schedule.domain.struct.Group;
 @Embeddable
 public class Student extends Person {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_group")
 	@NotNull
 	private Group group;
