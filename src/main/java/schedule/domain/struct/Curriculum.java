@@ -6,8 +6,8 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -24,6 +24,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import schedule.domain.converters.TrainingPeriodAttributeConverter;
@@ -36,7 +37,9 @@ import schedule.domain.schedule.CurDiscipline;
  * ссылки на массив предметов, на график учебного процесса и список групп.
  */
 @Entity
-@Table(name = "curriculum")
+@Table(	name = "curriculum",
+		uniqueConstraints = @UniqueConstraint(columnNames = { "edu_mode",
+				"id_profile", "year_start" }))
 public class Curriculum {
 	
 	@Id
@@ -69,7 +72,8 @@ public class Curriculum {
 	private boolean scheduleDone = false;
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
-	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
+	private List<CurDiscipline> curDisciplines = new ArrayList<CurDiscipline>(
+			0);
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(	name = "curriculum_semester",
@@ -77,11 +81,11 @@ public class Curriculum {
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(	name = "id_edu_period",
 													updatable = false) })
-	private Set<EduProcGraphic> eduProcGraphics = new HashSet<EduProcGraphic>(
+	private List<EduProcGraphic> eduProcGraphics = new ArrayList<EduProcGraphic>(
 			0);
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
-	private Set<Group> groups = new HashSet<Group>(0);
+	private List<Group> groups = new ArrayList<Group>(0);
 	
 	public Integer getIdCurriculum() {
 		return idCurriculum;
@@ -131,27 +135,27 @@ public class Curriculum {
 		this.scheduleDone = scheduleDone;
 	}
 	
-	public Set<CurDiscipline> getCurDisciplines() {
+	public List<CurDiscipline> getCurDisciplines() {
 		return curDisciplines;
 	}
 	
-	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {
+	public void setCurDisciplines(List<CurDiscipline> curDisciplines) {
 		this.curDisciplines = curDisciplines;
 	}
 	
-	public Set<EduProcGraphic> getEduProcGraphics() {
+	public List<EduProcGraphic> getEduProcGraphics() {
 		return eduProcGraphics;
 	}
 	
-	public void setEduProcGraphics(Set<EduProcGraphic> eduProcGraphics) {
+	public void setEduProcGraphics(List<EduProcGraphic> eduProcGraphics) {
 		this.eduProcGraphics = eduProcGraphics;
 	}
 	
-	public Set<Group> getGroups() {
+	public List<Group> getGroups() {
 		return groups;
 	}
 	
-	public void setGroups(Set<Group> groups) {
+	public void setGroups(List<Group> groups) {
 		this.groups = groups;
 	}
 	

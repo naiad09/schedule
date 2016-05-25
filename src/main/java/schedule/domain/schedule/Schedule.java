@@ -4,8 +4,8 @@ package schedule.domain.schedule;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.DayOfWeek;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
@@ -71,10 +71,10 @@ public class Schedule {
 				joinColumns = {
 						@JoinColumn(name = "id_schedule", updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
-	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
+	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
 	@OneToMany(mappedBy = "schedule",fetch=FetchType.LAZY)
-	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
+	private List<ScheduleChangeJournal> scheduleChangeJournals = new ArrayList<ScheduleChangeJournal>(
 			0);
 	
 	public long getIdSchedule() {
@@ -133,20 +133,20 @@ public class Schedule {
 		this.elective = elective;
 	}
 	
-	public Set<Classroom> getClassrooms() {
+	public List<Classroom> getClassrooms() {
 		return classrooms;
 	}
 	
-	public void setClassrooms(Set<Classroom> classrooms) {
+	public void setClassrooms(List<Classroom> classrooms) {
 		this.classrooms = classrooms;
 	}
 	
-	public Set<ScheduleChangeJournal> getScheduleChangeJournals() {
+	public List<ScheduleChangeJournal> getScheduleChangeJournals() {
 		return scheduleChangeJournals;
 	}
 	
 	public void setScheduleChangeJournals(
-			Set<ScheduleChangeJournal> scheduleChangeJournals) {
+			List<ScheduleChangeJournal> scheduleChangeJournals) {
 		this.scheduleChangeJournals = scheduleChangeJournals;
 	}
 	

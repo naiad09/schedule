@@ -3,8 +3,8 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,7 +49,7 @@ public class DiscTerm {
 	private boolean exam;
 	
 	@OneToMany(mappedBy = "discTerm", fetch = FetchType.LAZY)
-	private Set<GroupLessonType> groupLessonTypes = new HashSet<GroupLessonType>(
+	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>(
 			0);
 	
 	public int getIdDiscSem() {
@@ -92,11 +92,11 @@ public class DiscTerm {
 		this.exam = exam;
 	}
 	
-	public Set<GroupLessonType> getGroupLessonTypes() {
+	public List<GroupLessonType> getGroupLessonTypes() {
 		return groupLessonTypes;
 	}
 	
-	public void setGroupLessonTypes(Set<GroupLessonType> groupLessonTypes) {
+	public void setGroupLessonTypes(List<GroupLessonType> groupLessonTypes) {
 		this.groupLessonTypes = groupLessonTypes;
 	}
 	

@@ -3,8 +3,8 @@ package schedule.domain.struct;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -43,7 +43,7 @@ public class Group {
 	private String groupNumber;
 	
 	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
-	private Set<Student> students = new HashSet<Student>(0);
+	private List<Student> students = new ArrayList<Student>(0);
 	
 	public Integer getIdGroup() {
 		return idGroup;
@@ -69,11 +69,11 @@ public class Group {
 		this.groupNumber = groupNumber;
 	}
 	
-	public Set<Student> getStudents() {
+	public List<Student> getStudents() {
 		return students;
 	}
 	
-	public void setStudents(Set<Student> students) {
+	public void setStudents(List<Student> students) {
 		this.students = students;
 	}
 	

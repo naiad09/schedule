@@ -3,8 +3,8 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
@@ -64,10 +64,10 @@ public class GroupLessonType {
 				joinColumns = { @JoinColumn(name = "id_lesson_types",
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
-	private Set<Lecturer> lecturers = new HashSet<Lecturer>(0);
+	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
 	@OneToMany(mappedBy = "groupLessonType",fetch=FetchType.LAZY)
-	private Set<Schedule> schedules = new HashSet<Schedule>(0);
+	private List<Schedule> schedules = new ArrayList<Schedule>(0);
 	
 	public int getIdLessonTypes() {
 		return idLessonTypes;
@@ -101,19 +101,19 @@ public class GroupLessonType {
 		this.lessonType = lessonType;
 	}
 	
-	public Set<Lecturer> getLecturers() {
+	public List<Lecturer> getLecturers() {
 		return lecturers;
 	}
 	
-	public void setLecturers(Set<Lecturer> lecturers) {
+	public void setLecturers(List<Lecturer> lecturers) {
 		this.lecturers = lecturers;
 	}
 	
-	public Set<Schedule> getSchedules() {
+	public List<Schedule> getSchedules() {
 		return schedules;
 	}
 	
-	public void setSchedules(Set<Schedule> schedules) {
+	public void setSchedules(List<Schedule> schedules) {
 		this.schedules = schedules;
 	}
 	

@@ -3,8 +3,8 @@ package schedule.domain.struct;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;import javax.persistence.FetchType;
 import javax.persistence.Entity;
@@ -49,7 +49,7 @@ public class SkillProfile {
 	private String profileName;
 	
 	@OneToMany(mappedBy = "skillProfile",fetch=FetchType.LAZY)
-	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
+	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
 	public int getIdProfile() {
 		return idProfile;
@@ -83,11 +83,11 @@ public class SkillProfile {
 		this.profileName = profileName;
 	}
 	
-	public Set<Curriculum> getCurriculums() {
+	public List<Curriculum> getCurriculums() {
 		return curriculums;
 	}
 	
-	public void setCurriculums(Set<Curriculum> curriculums) {
+	public void setCurriculums(List<Curriculum> curriculums) {
 		this.curriculums = curriculums;
 	}
 	

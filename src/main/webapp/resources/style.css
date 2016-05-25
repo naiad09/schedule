@@ -89,3 +89,7 @@ th {
 table#chairs tr td {
 	text-align: left !important;
 }
+
+tr.default {
+	display: none;
+}

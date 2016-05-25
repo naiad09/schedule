@@ -21,7 +21,7 @@ public class SemesterDAO extends GenericDAO<Semester, Integer> {
 				.add(Restrictions.eq("semesterYear",
 						currentSemester.getSemesterYear()))
 				.add(Restrictions.eq("fallSpring",
-						currentSemester.isFallSpring()))
+						currentSemester.getFallSpring()))
 				.uniqueResult();
 	}
 	

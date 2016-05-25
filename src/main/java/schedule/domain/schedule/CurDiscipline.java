@@ -3,8 +3,8 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -77,7 +77,7 @@ public class CurDiscipline {
 	private DisciplineVariability variability;
 	
 	@OneToMany(mappedBy = "curDiscipline", fetch = FetchType.LAZY)
-	private Set<DiscTerm> discTerms = new HashSet<DiscTerm>(0);
+	private List<DiscTerm> discTerms = new ArrayList<DiscTerm>(0);
 	
 	public int getIdCurDics() {
 		return idCurDics;
@@ -159,11 +159,11 @@ public class CurDiscipline {
 		this.variability = variability;
 	}
 	
-	public Set<DiscTerm> getDiscTerms() {
+	public List<DiscTerm> getDiscTerms() {
 		return discTerms;
 	}
 	
-	public void setDiscTerms(Set<DiscTerm> discTerms) {
+	public void setDiscTerms(List<DiscTerm> discTerms) {
 		this.discTerms = discTerms;
 	}
 	

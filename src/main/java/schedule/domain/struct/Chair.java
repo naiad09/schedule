@@ -3,8 +3,8 @@ package schedule.domain.struct;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -16,7 +16,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
-import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -44,7 +43,6 @@ public class Chair {
 	@Column(name = "id_faculty", updatable = false,
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
 	@NotNull
-	@OrderColumn
 	private Faculty faculty;
 	
 	@Column(name = "chair_fullname", updatable = false, unique = true)
@@ -67,16 +65,17 @@ public class Chair {
 						// lecturer.firstName, lecturer.middleName")
 	// TODO order by not works...
 	@ElementCollection(targetClass = LecturerJob.class)
-	private Set<LecturerJob> lecturerJobs = new HashSet<LecturerJob>(0);
+	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>(0);
 	
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
-	private Set<Classroom> classrooms = new HashSet<Classroom>(0);
+	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
-	private Set<SkillProfile> skillProfiles = new HashSet<SkillProfile>(0);
+	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
-	private Set<CurDiscipline> curDisciplines = new HashSet<CurDiscipline>(0);
+	private List<CurDiscipline> curDisciplines = new ArrayList<CurDiscipline>(
+			0);
 	
 	public int getIdChair() {
 		return idChair;
@@ -118,35 +117,35 @@ public class Chair {
 		this.shortNameEng = shortNameEng;
 	}
 	
-	public Set<LecturerJob> getLecturerJobs() {
+	public List<LecturerJob> getLecturerJobs() {
 		return lecturerJobs;
 	}
 	
-	public void setLecturerJobs(Set<LecturerJob> lecturerJobs) {
+	public void setLecturerJobs(List<LecturerJob> lecturerJobs) {
 		this.lecturerJobs = lecturerJobs;
 	}
 	
-	public Set<Classroom> getClassrooms() {
+	public List<Classroom> getClassrooms() {
 		return classrooms;
 	}
 	
-	public void setClassrooms(Set<Classroom> classrooms) {
+	public void setClassrooms(List<Classroom> classrooms) {
 		this.classrooms = classrooms;
 	}
 	
-	public Set<SkillProfile> getSkillProfiles() {
+	public List<SkillProfile> getSkillProfiles() {
 		return skillProfiles;
 	}
 	
-	public void setSkillProfiles(Set<SkillProfile> skillProfiles) {
+	public void setSkillProfiles(List<SkillProfile> skillProfiles) {
 		this.skillProfiles = skillProfiles;
 	}
 	
-	public Set<CurDiscipline> getCurDisciplines() {
+	public List<CurDiscipline> getCurDisciplines() {
 		return curDisciplines;
 	}
 	
-	public void setCurDisciplines(Set<CurDiscipline> curDisciplines) {
+	public void setCurDisciplines(List<CurDiscipline> curDisciplines) {
 		this.curDisciplines = curDisciplines;
 	}
 	

@@ -1,8 +1,8 @@
 package schedule.domain.struct;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,7 +33,7 @@ public class EduProgGroup {
 	private String eduProgGroupName;
 	
 	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.LAZY)
-	private Set<EduProgram> eduPrograms = new HashSet<EduProgram>(0);
+	private List<EduProgram> eduPrograms = new ArrayList<EduProgram>(0);
 	
 	public int getEduProgGroupCode() {
 		return eduProgGroupCode;
@@ -51,11 +51,11 @@ public class EduProgGroup {
 		this.eduProgGroupName = eduProgGroupName;
 	}
 	
-	public Set<EduProgram> getEduPrograms() {
+	public List<EduProgram> getEduPrograms() {
 		return eduPrograms;
 	}
 	
-	public void setEduPrograms(Set<EduProgram> eduPrograms) {
+	public void setEduPrograms(List<EduProgram> eduPrograms) {
 		this.eduPrograms = eduPrograms;
 	}
 	

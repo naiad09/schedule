@@ -1,8 +1,8 @@
 package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -38,7 +38,7 @@ public class EduDep extends Person {
 	
 	@OneToMany(mappedBy = "eduDep", fetch = FetchType.LAZY)
 	@OrderBy("dateOfChange")
-	private Set<ScheduleChangeJournal> scheduleChangeJournals = new HashSet<ScheduleChangeJournal>(
+	private List<ScheduleChangeJournal> scheduleChangeJournals = new ArrayList<ScheduleChangeJournal>(
 			0);
 	
 	@Column(name = "admin")
@@ -53,12 +53,12 @@ public class EduDep extends Person {
 		this.faculty = faculty;
 	}
 	
-	public Set<ScheduleChangeJournal> getScheduleChangeJournals() {
+	public List<ScheduleChangeJournal> getScheduleChangeJournals() {
 		return scheduleChangeJournals;
 	}
 	
 	public void setScheduleChangeJournals(
-			Set<ScheduleChangeJournal> scheduleChangeJournals) {
+			List<ScheduleChangeJournal> scheduleChangeJournals) {
 		this.scheduleChangeJournals = scheduleChangeJournals;
 	}
 	

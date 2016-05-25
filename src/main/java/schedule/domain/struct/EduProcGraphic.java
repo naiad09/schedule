@@ -4,8 +4,8 @@ package schedule.domain.struct;
 import static javax.persistence.GenerationType.IDENTITY;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -64,7 +64,7 @@ public class EduProcGraphic {
 	private LocalDate examsSessionEnd;
 	
 	@ManyToMany(mappedBy = "eduProcGraphics", fetch = FetchType.LAZY)
-	private Set<Curriculum> curriculums = new HashSet<Curriculum>(0);
+	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
 	public int getIdEduPeriod() {
 		return idEduPeriod;
@@ -138,11 +138,11 @@ public class EduProcGraphic {
 		this.examsSessionEnd = examsSessionEnd;
 	}
 	
-	public Set<Curriculum> getCurriculums() {
+	public List<Curriculum> getCurriculums() {
 		return curriculums;
 	}
 	
-	public void setCurriculums(Set<Curriculum> curriculums) {
+	public void setCurriculums(List<Curriculum> curriculums) {
 		this.curriculums = curriculums;
 	}
 	
