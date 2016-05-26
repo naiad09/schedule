@@ -64,7 +64,7 @@ public class EduProcGraphic {
 	private LocalDate examsSessionEnd;
 	
 	@ManyToMany(mappedBy = "eduProcGraphics", fetch = FetchType.LAZY)
-	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
+	private List<Enrollment> curriculums = new ArrayList<Enrollment>(0);
 	
 	public int getIdEduPeriod() {
 		return idEduPeriod;
@@ -138,11 +138,11 @@ public class EduProcGraphic {
 		this.examsSessionEnd = examsSessionEnd;
 	}
 	
-	public List<Curriculum> getCurriculums() {
+	public List<Enrollment> getCurriculums() {
 		return curriculums;
 	}
 	
-	public void setCurriculums(List<Curriculum> curriculums) {
+	public void setCurriculums(List<Enrollment> curriculums) {
 		this.curriculums = curriculums;
 	}
 	
