@@ -25,7 +25,7 @@ import schedule.service.PersonFinder;
 
 
 @Repository
-public class PersonDAO extends GenericDAO<Person, Integer> {
+public class PersonDAO extends GenericDAO<Person> {
 	
 	@Autowired
 	private Md5PasswordEncoder pswEncoder;
@@ -34,8 +34,12 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 		super(Person.class);
 	}
 	
+	public Person get(Integer key) {
+		return currentSession().get(daoType, key);
+	}
+	
 	@Secured("ROLE_ADMIN")
-	public void create(Person entity) {
+	public void saveOrUpdate(Person entity) {
 		prepare(entity);
 		currentSession().persist(entity);
 	}
@@ -44,7 +48,7 @@ public class PersonDAO extends GenericDAO<Person, Integer> {
 			+ "(isAuthenticated() and principal.uid == #entity.uid)")
 	public void update(Person entity) {
 		prepare(entity);
-		super.update(entity);
+		currentSession().update(entity);
 	}
 	
 	@Secured("ROLE_ADMIN")

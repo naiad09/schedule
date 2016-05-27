@@ -41,7 +41,7 @@ public class CurDiscipline {
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_disc_name", updatable = false)
 	@NotNull
 	private Discipline discipline;
@@ -76,7 +76,7 @@ public class CurDiscipline {
 	@Column(name = "variability", columnDefinition = "enum('baz','var','vib')")
 	private DisciplineVariability variability;
 	
-	@OneToMany(mappedBy = "curDiscipline", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "curDiscipline", fetch = FetchType.EAGER)
 	private List<DiscTerm> discTerms = new ArrayList<DiscTerm>(0);
 	
 	public int getIdCurDics() {

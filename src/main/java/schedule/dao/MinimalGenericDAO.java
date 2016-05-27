@@ -1,6 +1,5 @@
 package schedule.dao;
 
-import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -11,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Transactional
-public class MinimalGenericDAO<E, K extends Serializable> {
+public class MinimalGenericDAO<E> {
 	
 	@Autowired
 	private SessionFactory sessionFactory;

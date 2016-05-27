@@ -6,9 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,15 +31,15 @@ public class SkillProfile {
 	
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_profile", updatable = false)
+	@Column(name = "id_profile", updatable = false, unique = true)
 	private int idProfile;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_edu_prog", updatable = false)
 	@NotNull
 	private EduProgram eduProgram;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_chair", updatable = false)
 	@NotNull
 	private Chair chair;
@@ -48,7 +48,7 @@ public class SkillProfile {
 	@Size(max = 150, min = 10)
 	private String profileName;
 	
-	@OneToMany(mappedBy = "skillProfile",fetch=FetchType.LAZY)
+	@OneToMany(mappedBy = "skillProfile", fetch = FetchType.LAZY)
 	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
 	public int getIdProfile() {

@@ -65,9 +65,9 @@ input[type="text"], input[type="password"], input[type="email"] {
 	width: 230px;
 }
 
-select {
+select:not([multiple]) {
 	height: 26px;
-	min-width: 237 px;
+	min-width: 237px;
 }
 
 button {

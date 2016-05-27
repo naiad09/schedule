@@ -34,7 +34,7 @@ public class EduProgram {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_prog", unique = true, updatable = false)
-	private int idEduProg;
+	private Integer idEduProg;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "edu_prog_group_code", updatable = false)
@@ -48,22 +48,22 @@ public class EduProgram {
 	private EduQual eduQual = EduQual.bac;
 	
 	@NotEmpty
-	@Column(name = "edu_prog_code", updatable = false)
+	@Column(name = "edu_prog_code", updatable = false, unique = true)
 	@Size(max = 8, min = 7)
 	private String eduProgCode;
 	
-	@Column(name = "edu_prog_name", updatable = false)
+	@Column(name = "edu_prog_name", updatable = false, unique = true)
 	@NotEmpty
 	private String eduProgName;
 	
 	@OneToMany(mappedBy = "eduProgram", fetch = FetchType.LAZY)
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
-	public int getIdEduProg() {
+	public Integer getIdEduProg() {
 		return idEduProg;
 	}
 	
-	public void setIdEduProg(int idEduProg) {
+	public void setIdEduProg(Integer idEduProg) {
 		this.idEduProg = idEduProg;
 	}
 	

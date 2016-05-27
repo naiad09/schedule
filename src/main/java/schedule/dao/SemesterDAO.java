@@ -7,7 +7,7 @@ import schedule.domain.schedule.Semester;
 
 
 @Repository
-public class SemesterDAO extends GenericDAO<Semester, Integer> {
+public class SemesterDAO extends GenericDAO<Semester> {
 	
 	public SemesterDAO() {
 		super(Semester.class);

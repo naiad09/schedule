@@ -18,6 +18,7 @@ import schedule.domain.schedule.Semester;
 
 @Controller
 @RequestMapping("ed")
+@Deprecated
 public class SemesterController {
 	
 	@Autowired
@@ -41,7 +42,7 @@ public class SemesterController {
 			return "common/semester";
 		}
 		try {
-			semesterDAO.create(semester);
+			semesterDAO.saveOrUpdate(semester);
 		} catch (ConstraintViolationException exc) {
 			result.rejectValue("semesterYear", "Unique");
 			result.getAllErrors()

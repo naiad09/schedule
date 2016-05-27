@@ -53,7 +53,7 @@ public class PersonController {
 	@Autowired
 	private PersonDAO personDAO;
 	@Autowired
-	private GenericDAO<Group, Integer> groupDAO;
+	private GenericDAO<Group> groupDAO;
 	@Autowired
 	private ChairDAO chairDAO;
 	
@@ -159,7 +159,7 @@ public class PersonController {
 			return returnWithError(person, model, returnHere);
 		}
 		try {
-			personDAO.create(person);
+			personDAO.saveOrUpdate(person);
 		} catch (DataIntegrityViolationException e) {
 			Matcher matcher = Pattern.compile("(login|email)")
 					.matcher(e.getRootCause().toString());
