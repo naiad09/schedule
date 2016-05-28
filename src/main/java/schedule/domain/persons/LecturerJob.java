@@ -1,4 +1,4 @@
-package schedule.domain.struct;
+package schedule.domain.persons;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import javax.persistence.Column;
@@ -11,7 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.persons.Lecturer;
+import schedule.domain.struct.Chair;
 
 
 /**

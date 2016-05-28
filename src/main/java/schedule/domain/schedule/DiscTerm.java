@@ -34,9 +34,9 @@ public class DiscTerm {
 	private int idDiscSem;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_cur_dics", updatable = false)
+	@JoinColumn(name = "id_com_dics", updatable = false)
 	@NotNull
-	private CurDiscipline curDiscipline;
+	private CommonDiscipline commonDiscipline;
 	
 	@NotNull
 	@Column(name = "hours_her_week")
@@ -64,12 +64,12 @@ public class DiscTerm {
 		this.idDiscSem = idDiscSem;
 	}
 	
-	public CurDiscipline getCurDiscipline() {
-		return curDiscipline;
+	public CommonDiscipline getCommonDiscipline() {
+		return commonDiscipline;
 	}
 	
-	public void setCurDiscipline(CurDiscipline curDiscipline) {
-		this.curDiscipline = curDiscipline;
+	public void setCommonDiscipline(CommonDiscipline commonDiscipline) {
+		this.commonDiscipline = commonDiscipline;
 	}
 	
 	public Float getHoursHerWeek() {

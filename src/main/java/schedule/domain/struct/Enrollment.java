@@ -22,7 +22,6 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.struct.Curriculum.EduMode;
 import schedule.domain.struct.EduProgram.EduQual;
 
 
@@ -74,7 +73,7 @@ public class Enrollment {
 	private List<EduProcGraphic> eduProcGraphics;
 	
 	@OneToMany(mappedBy = "enrollment", fetch = FetchType.LAZY)
-	private List<Curriculum> curriculums;
+	private List<CommonCurriculum> commonCurriculums;
 	
 	public Integer getIdEnroll() {
 		return idEnroll;
@@ -92,12 +91,12 @@ public class Enrollment {
 		this.eduProcGraphics = eduProcGraphics;
 	}
 	
-	public List<Curriculum> getCurriculums() {
-		return curriculums;
+	public List<CommonCurriculum> getCommonCurriculums() {
+		return commonCurriculums;
 	}
 	
-	public void setCurriculums(List<Curriculum> curriculums) {
-		this.curriculums = curriculums;
+	public void setCommonCurriculums(List<CommonCurriculum> commonCurriculums) {
+		this.commonCurriculums = commonCurriculums;
 	}
 	
 	public Integer getYearStart() {
@@ -151,4 +150,7 @@ public class Enrollment {
 		return periodYears * 2 + (periodMonths > 0 ? 1 : 0);
 	}
 	
+	public enum EduMode {
+		och, zao, oz
+	}
 }

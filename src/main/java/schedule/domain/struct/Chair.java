@@ -22,8 +22,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import schedule.domain.persons.LecturerJob;
 import schedule.domain.schedule.Classroom;
-import schedule.domain.schedule.CurDiscipline;
+import schedule.domain.schedule.ProfileDiscipline;
 
 
 /**
@@ -74,7 +75,7 @@ public class Chair {
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
 	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
-	private List<CurDiscipline> curDisciplines = new ArrayList<CurDiscipline>(
+	private List<ProfileDiscipline> curDisciplines = new ArrayList<ProfileDiscipline>(
 			0);
 	
 	public int getIdChair() {
@@ -141,11 +142,11 @@ public class Chair {
 		this.skillProfiles = skillProfiles;
 	}
 	
-	public List<CurDiscipline> getCurDisciplines() {
+	public List<ProfileDiscipline> getCurDisciplines() {
 		return curDisciplines;
 	}
 	
-	public void setCurDisciplines(List<CurDiscipline> curDisciplines) {
+	public void setCurDisciplines(List<ProfileDiscipline> curDisciplines) {
 		this.curDisciplines = curDisciplines;
 	}
 	

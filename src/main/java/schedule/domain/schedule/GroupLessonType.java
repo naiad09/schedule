@@ -23,8 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
-import schedule.domain.struct.Group;
 
 
 /**

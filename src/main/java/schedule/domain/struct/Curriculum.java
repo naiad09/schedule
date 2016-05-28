@@ -21,7 +21,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import schedule.domain.schedule.CurDiscipline;
+import schedule.domain.persons.Group;
+import schedule.domain.schedule.ProfileDiscipline;
 
 
 /**
@@ -32,7 +33,7 @@ import schedule.domain.schedule.CurDiscipline;
 @Entity
 @Table(	name = "curriculum",
 		uniqueConstraints = @UniqueConstraint(columnNames = { "id_profile",
-				"id_enroll" }))
+				"id_common_curriculum" }))
 public class Curriculum {
 	
 	@Id
@@ -45,18 +46,14 @@ public class Curriculum {
 	@NotNull
 	private SkillProfile skillProfile;
 	
-	@Column(name = "schedule_done")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_common_curriculum", updatable = false)
 	@NotNull
-	private boolean scheduleDone = false;
-	
-	@JoinColumn(name = "id_enroll", updatable = false)
-	@ManyToOne(fetch = FetchType.EAGER)
-	@NotNull
-	private Enrollment enrollment;
+	private CommonCurriculum commonCurriculum = new CommonCurriculum();
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
 	@Fetch(FetchMode.SELECT)
-	private List<CurDiscipline> curDisciplines = new ArrayList<CurDiscipline>(
+	private List<ProfileDiscipline> profileDisciplines = new ArrayList<ProfileDiscipline>(
 			0);
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
@@ -97,28 +94,21 @@ public class Curriculum {
 		this.skillProfile = skillProfile;
 	}
 	
-	public boolean isScheduleDone() {
-		return scheduleDone;
+	public CommonCurriculum getCommonCurriculum() {
+		return commonCurriculum;
 	}
 	
-	public void setScheduleDone(boolean scheduleDone) {
-		this.scheduleDone = scheduleDone;
+	public void setCommonCurriculum(CommonCurriculum commonCurriculum) {
+		this.commonCurriculum = commonCurriculum;
 	}
 	
-	public Enrollment getEnrollment() {
-		return enrollment;
+	public List<ProfileDiscipline> getProfileDisciplines() {
+		return profileDisciplines;
 	}
 	
-	public void setEnrollment(Enrollment enrollment) {
-		this.enrollment = enrollment;
-	}
-	
-	public List<CurDiscipline> getCurDisciplines() {
-		return curDisciplines;
-	}
-	
-	public void setCurDisciplines(List<CurDiscipline> curDisciplines) {
-		this.curDisciplines = curDisciplines;
+	public void setProfileDisciplines(
+			List<ProfileDiscipline> profileDisciplines) {
+		this.profileDisciplines = profileDisciplines;
 	}
 	
 	public List<Group> getGroups() {
@@ -129,7 +119,4 @@ public class Curriculum {
 		this.groups = groups;
 	}
 	
-	public enum EduMode {
-		och, zao, oz
-	}
 }
