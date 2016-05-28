@@ -15,6 +15,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 
@@ -38,6 +40,8 @@ public class DiscTerm {
 	
 	@NotNull
 	@Column(name = "hours_her_week")
+	@Min(1)
+	@Max(20)
 	private Float hoursHerWeek;
 	
 	@Column(name = "term_num")

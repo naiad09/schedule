@@ -12,8 +12,8 @@
         <put-attribute name="title" expression="${person.fullName}" />
     </definition>
     
-    <definition name="curriculum" extends="main">
-        <put-attribute name="content" value="/WEB-INF/views/curriculum.jsp" />
+    <definition name="eduProg" extends="main">
+        <put-attribute name="content" value="/WEB-INF/views/eduProg.jsp" />
         <put-attribute name="title" expression="Учебный план" />
     </definition>
 

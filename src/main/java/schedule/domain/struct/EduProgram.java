@@ -43,7 +43,7 @@ public class EduProgram {
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull
-	@Column(name = "id_qual_type", updatable = false,
+	@Column(name = "qual_type", updatable = false,
 			columnDefinition = "enum('bac','mag','spec','asp')")
 	private EduQual eduQual = EduQual.bac;
 	

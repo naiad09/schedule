@@ -46,7 +46,21 @@
 		<c:forEach items="${eduProgGroups}" var='epg'>
 			<option disabled="disabled">${epg.eduProgGroupCode<10?'0':''}${epg.eduProgGroupCode}.00.00
 				${epg.eduProgGroupName}</option>
-			
+			<c:forEach items="${epg.eduPrograms}" var="ep">
+				<c:choose>
+					<c:when test="${ep.skillProfiles.size() == 1}">
+						<form:option value="${ep.skillProfiles[0].idProfile}">${ep.eduProgCode} ${ep.eduProgName}</form:option>
+					</c:when>
+					<c:otherwise>
+						<option disabled="disabled">${ep.eduProgCode}
+							${ep.eduProgName}</option>
+						<c:forEach items="${ep.skillProfiles}" var="sp">
+							<option value="${sp.idProfile}">Направление
+								"${sp.profileName}"</option>
+						</c:forEach>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
 		</c:forEach>
 	</select>
 

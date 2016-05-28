@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,6 +19,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Curriculum;
@@ -37,7 +42,7 @@ public class CurDiscipline {
 	@Column(name = "id_cur_dics", updatable = false)
 	private int idCurDics;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
@@ -64,19 +69,21 @@ public class CurDiscipline {
 	private Short seminarHours;
 	
 	@NotNull
-	@Column(name = "disc_code", updatable = false)
+	@Column(name = "disc_code")
 	@Size(max = 16, min = 10)
 	private String discCode;
 	
 	@Column(name = "common_profile")
 	@NotNull
-	private boolean commonProfile = false;
+	private boolean commonProfile;
 	
 	@NotNull
 	@Column(name = "variability", columnDefinition = "enum('baz','var','vib')")
+	@Enumerated(EnumType.STRING)
 	private DisciplineVariability variability;
 	
 	@OneToMany(mappedBy = "curDiscipline", fetch = FetchType.EAGER)
+	@Fetch(FetchMode.SUBSELECT)
 	private List<DiscTerm> discTerms = new ArrayList<DiscTerm>(0);
 	
 	public int getIdCurDics() {

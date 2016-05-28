@@ -16,6 +16,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -72,7 +73,7 @@ public class Enrollment {
 	@ManyToMany(fetch = FetchType.LAZY)
 	private List<EduProcGraphic> eduProcGraphics;
 	
-	@OneToMany(mappedBy = "enrollment", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "enrollment", fetch = FetchType.LAZY)
 	private List<Curriculum> curriculums;
 	
 	public Integer getIdEnroll() {
@@ -143,6 +144,11 @@ public class Enrollment {
 	
 	public void setPeriodMonths(Integer periodMonths) {
 		this.periodMonths = periodMonths;
+	}
+	
+	@Transient
+	public Integer getSemesterCount() {
+		return periodYears * 2 + (periodMonths > 0 ? 1 : 0);
 	}
 	
 }

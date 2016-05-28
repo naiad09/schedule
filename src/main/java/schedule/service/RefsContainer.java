@@ -3,6 +3,7 @@ package schedule.service;
 import org.springframework.stereotype.Service;
 
 import schedule.domain.persons.Lecturer.Degree;
+import schedule.domain.schedule.CurDiscipline.DisciplineVariability;
 import schedule.domain.struct.Chair.Faculty;
 import schedule.domain.struct.Curriculum.EduMode;
 import schedule.domain.struct.EduProgram.EduQual;
@@ -32,4 +33,7 @@ public class RefsContainer {
 		return Faculty.values();
 	}
 	
+	public DisciplineVariability[] getDiscVars() {
+		return DisciplineVariability.values();
+	}
 }

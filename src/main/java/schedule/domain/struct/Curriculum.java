@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import schedule.domain.schedule.CurDiscipline;
 
 
@@ -46,12 +49,13 @@ public class Curriculum {
 	@NotNull
 	private boolean scheduleDone = false;
 	
-	@JoinColumn(name = "id_enroll")
-	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_enroll", updatable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@NotNull
 	private Enrollment enrollment;
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
+	@Fetch(FetchMode.SELECT)
 	private List<CurDiscipline> curDisciplines = new ArrayList<CurDiscipline>(
 			0);
 	
