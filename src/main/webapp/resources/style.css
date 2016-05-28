@@ -1,4 +1,8 @@
 /* General */
+body {
+	background: url("pattern.png") repeat-x #F5F8FA fixed;
+}
+
 #page {
 	width: 900px;
 	margin: auto;
@@ -65,11 +69,47 @@ input[type="text"], input[type="password"], input[type="email"] {
 	width: 230px;
 }
 
-select:not([multiple]) {
-	height: 26px;
-	min-width: 237px;
-}
+select
 
+
+:not
+
+ 
+
+(
+[
+multiple
+]
+
+ 
+
+)
+{
+height
+
+
+:
+
+ 
+
+26
+px
+
+
+;
+min-width
+
+
+:
+
+ 
+
+237
+px
+
+
+;
+}
 button {
 	height: 28px;
 }
