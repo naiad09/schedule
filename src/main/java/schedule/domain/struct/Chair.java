@@ -34,7 +34,8 @@ import schedule.domain.schedule.ProfileDiscipline;
 @Table(name = "chair")
 public class Chair {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_chair", updatable = false, unique = true)
 	private int idChair;
@@ -52,7 +53,6 @@ public class Chair {
 	
 	@Column(name = "chair_shortname", updatable = false, unique = true)
 	@Size(max = 32, min = 2)
-	@NotEmpty
 	private String shortName;
 	
 	@Column(name = "chair_shortname_eng", updatable = false, unique = true)

@@ -115,32 +115,46 @@
 											value="lecturerJobs[${i.index}].jobType" /> <form:errors
 											path="${tempPath}" cssClass="error" /> <t:insertTemplate
 											template="level2/jobTypeSelector.jsp" /></td>
-									<td><a class="deleteChairLink">Удалить</a></td>
+									<td><img class="deleteChairLink button"
+										src="../resources/cross.png" title="Удалить"></td>
 								</tr>
 							</c:forEach>
 							<tr class="default">
 								<td class="chairName"></td>
 								<td><input type="hidden" /> <t:insertTemplate
 										template="level2/jobTypeSelector.jsp" /></td>
-								<td><a class="deleteChairLink">Удалить</a></td>
+								<td><img class="deleteChairLink button"
+									src="../resources/cross.png" title="Удалить"></td>
 							</tr>
-						</table>Добавить: <select id="chairSelector">
-							<option>-- Выберите кафедру --</option>
+						</table></td>
+				</tr>
+				<tr>
+					<td>Добавить:</td>
+					<td colspan="2"><input id="chairSelectorInput"
+						placeholder="Найти кафедру по названию" /><img class="button"
+						id="clearSelection" src="../resources/cross.png" title="Удалить"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td colspan="2"><select id="chairSelector">
 							<c:forEach items="${chairs}" var="chair">
 								<option value="${chair.idChair}">
 									<spring:message code="${chair.faculty}.shortName" />,
 									${chair.fullName}
+									<c:if test="${chair.shortName != null}">(${chair.shortName})</c:if>
 								</option>
 							</c:forEach>
 					</select></td>
 				</tr>
+				<script src="../resources/js/selectorFinder.js"></script>
 				<script>
 					// Убирает из chairSelector option-ы, которые уже выбраны в таблице
 					$("#chairs tr.chair input[type='hidden']").each(
 							function() {
 								$(
 										"#chairSelector option[value="
-												+ $(this).val() + "]").hide()
+												+ $(this).val() + "]").attr(
+										"disabled", "true")
 							})
 
 					// Удаляет строку при нажатии на кнопку Удалить, а также скрывает option
@@ -151,21 +165,21 @@
 										.attr("value")
 								$("#chairSelector").find(
 										"option[value='" + idChair + "']")
-										.show()
+										.removeAttr("disabled")
 								row.remove()
-								if ($("#chairs .chairs").size() == 0)
+								if ($("#chairs .chair").size() == 0)
 									$("#chairs").hide();
 							})
 
 					// Обработчик нажатия на option в селекторе. Добавляет стрку в
 					// таблицу с выбранной кафедрой: названием, номером и селектором должности
-					$("#chairSelector option:not(:first-child)").click(
+					$("#chairSelector option").click(
 							function() {
 								if ($("#chairs .chair").size() == 0)
 									$("#chairs").show();
-								$(this).hide()
+								$(this).attr("disabled", "true")
 								$("#chairSelector").val("")
-								var row = $("#chairs .default").clone()
+								var row = $("#chairs .default").clone(true)
 										.removeClass("default").addClass(
 												"chair").insertBefore(
 												"#chairs .default")
@@ -187,6 +201,9 @@
 											j + "jobType")
 								})
 					}
+
+					selectorFindHelper($("#chairSelectorInput"),
+							$("#chairSelector"), $("#clearSelection"), 160)
 				</script>
 			</c:when>
 			<c:when test="${person.role == 'edudep'}">

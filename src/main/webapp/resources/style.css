@@ -95,6 +95,19 @@ th {
 	text-align: center;
 }
 
+.button {
+    margin: 6px;
+    vertical-align: bottom;
+    opacity: 0.5;
+    transition-duration: 1s;
+}
+
+.button:hover {
+    opacity: 1;
+}
+
+/*Chairs*/
+
 table#chairs tr td {
 	text-align: left !important;
 }
