@@ -10,16 +10,22 @@ import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
+import schedule.domain.struct.CommonCurriculum;
 import schedule.domain.struct.Curriculum;
 import schedule.domain.struct.EduProgram;
 
 
 @Repository
-public class CurriculumDAO extends GenericDAO<Curriculum> {
+public class CurriculumDAO extends GenericDAO<CommonCurriculum> {
 	public CurriculumDAO() {
-		super(Curriculum.class);
+		super(CommonCurriculum.class);
 	}
 	
+	public CommonCurriculum get(Integer id) {
+		return currentSession().get(daoType, id);
+	}
+	
+	@Deprecated
 	@SuppressWarnings("unchecked")
 	public List<Curriculum> getCurriculumsById(Integer key) {
 		SimpleExpression eq = Restrictions.eq("idCurriculum", key);

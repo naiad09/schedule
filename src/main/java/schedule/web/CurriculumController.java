@@ -1,7 +1,5 @@
 package schedule.web;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import schedule.dao.CurriculumDAO;
-import schedule.domain.struct.Curriculum;
+import schedule.domain.struct.CommonCurriculum;
 import schedule.service.ResourceNotFoundException;
 
 
@@ -22,11 +20,10 @@ public class CurriculumController {
 	
 	@RequestMapping("id-{idCur}")
 	public String getCurriculum(@PathVariable Integer idCur, Model model) {
-		List<Curriculum> curs = curriculumDAO.getCurriculumsById(idCur);
-		if (curs.isEmpty()) throw new ResourceNotFoundException();
-		curs.get(0).getCurDisciplines().size();
-		model.addAttribute("curs", curs);
-		return "eduProg";
+		CommonCurriculum cur = curriculumDAO.get(idCur);
+		if (cur == null) throw new ResourceNotFoundException();
+		model.addAttribute("cur", cur);
+		return "curriculum";
 	}
 	
 }

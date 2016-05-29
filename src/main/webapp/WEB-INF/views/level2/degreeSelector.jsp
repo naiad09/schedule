@@ -6,7 +6,7 @@
 
 <form:select path="degree">
 	<form:option value=""> -- Выберите научную степень --</form:option>
-	<c:forEach items="${degrees}" var="degree">
+	<c:forEach items="${refsContainer.degrees}" var="degree">
 		<form:option value="${degree}">
 			<spring:message code="${degree}.fullName" />
 		</form:option>

@@ -37,6 +37,6 @@
 		</property>
 	</bean>
 
-	<bean id="groupDAO" class="schedule.dao.GenericDAO" c:type="schedule.domain.struct.Group" />
+	<bean id="groupDAO" class="schedule.dao.GenericDAO" c:type="schedule.domain.persons.Group" />
 	
 </beans>

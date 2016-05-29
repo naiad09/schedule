@@ -64,14 +64,19 @@ form table td:nth-child(1) {
 	width: 200px;
 }
 
-input[type="text"], input[type="password"], input[type="email"] {
+input {
 	height: 20px;
 	width: 230px;
 }
 
-select:not ([multiple] ){
-	height: 26 px;
-	min-width: 237 px;
+input[type="radio"], input[type="checkbox"] {
+	width: auto;
+	height: auto;
+}
+
+select {
+	height: 26px;
+	min-width: 237px;
 }
 
 button {
@@ -107,12 +112,12 @@ table#curriculum {
 	border: 2px solid #808080;
 	border-right: 1px;
 	border-top: 1px;
-	}
+}
 
 #curriculum td, #curriculum th {
-    border: 1px solid #808080;
-    border-left: 0px;
-    border-bottom: 0px;
+	border: 1px solid #808080;
+	border-left: 0px;
+	border-bottom: 0px;
 }
 
 #curriculum td {

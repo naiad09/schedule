@@ -1,9 +1,9 @@
 package schedule.service;
 
 import schedule.domain.persons.Lecturer;
+import schedule.domain.persons.LecturerJob;
 import schedule.domain.persons.Person;
 import schedule.domain.struct.Chair;
-import schedule.domain.struct.LecturerJob;
 
 
 /**

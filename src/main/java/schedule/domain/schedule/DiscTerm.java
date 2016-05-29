@@ -34,7 +34,7 @@ public class DiscTerm {
 	private int idDiscSem;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_com_dics", updatable = false)
+	@JoinColumn(name = "id_com_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;
 	
@@ -46,6 +46,8 @@ public class DiscTerm {
 	
 	@Column(name = "term_num")
 	@NotNull
+	@Min(1)
+	@Max(12)
 	private int termNum;
 	
 	@Column(name = "exam")

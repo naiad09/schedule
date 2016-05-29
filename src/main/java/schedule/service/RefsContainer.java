@@ -3,11 +3,11 @@ package schedule.service;
 import org.springframework.stereotype.Service;
 
 import schedule.domain.persons.Lecturer.Degree;
-import schedule.domain.schedule.CurDiscipline.DisciplineVariability;
+import schedule.domain.persons.LecturerJob.JobType;
+import schedule.domain.schedule.CommonDiscipline.DisciplineVariability;
 import schedule.domain.struct.Chair.Faculty;
-import schedule.domain.struct.Curriculum.EduMode;
 import schedule.domain.struct.EduProgram.EduQual;
-import schedule.domain.struct.LecturerJob.JobType;
+import schedule.domain.struct.Enrollment.EduMode;
 
 
 @Service

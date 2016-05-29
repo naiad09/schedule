@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import schedule.domain.struct.Chair;
-import schedule.domain.struct.Curriculum;
 
 
 /**
@@ -44,12 +43,10 @@ public class ProfileDiscipline {
 	@NotNull
 	private Discipline discipline;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_curriculum", updatable = false)
-	@NotNull
-	private Curriculum curriculum;
+	@Column(name = "id_curriculum", updatable = false)
+	private Integer curriculum;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_common_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;
@@ -78,11 +75,11 @@ public class ProfileDiscipline {
 		this.discipline = discipline;
 	}
 	
-	public Curriculum getCurriculum() {
+	public Integer getCurriculum() {
 		return curriculum;
 	}
 	
-	public void setCurriculum(Curriculum curriculum) {
+	public void setCurriculum(Integer curriculum) {
 		this.curriculum = curriculum;
 	}
 	

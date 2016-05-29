@@ -17,9 +17,9 @@ import org.springframework.stereotype.Repository;
 import schedule.domain.persons.AuthData;
 import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Lecturer;
+import schedule.domain.persons.LecturerJob;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
-import schedule.domain.struct.LecturerJob;
 import schedule.service.PersonConverter;
 import schedule.service.PersonFinder;
 

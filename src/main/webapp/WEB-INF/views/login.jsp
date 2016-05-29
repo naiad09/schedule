@@ -21,7 +21,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td><input type="submit" value="Войти"></td>
+			<td><button>Войти</button></td>
 		</tr>
 	</table>
 </form>

@@ -18,11 +18,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
-
 import schedule.domain.persons.Group;
-import schedule.domain.schedule.ProfileDiscipline;
 
 
 /**
@@ -46,37 +42,13 @@ public class Curriculum {
 	@NotNull
 	private SkillProfile skillProfile;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "id_common_curriculum", updatable = false)
 	@NotNull
-	private CommonCurriculum commonCurriculum = new CommonCurriculum();
-	
-	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
-	@Fetch(FetchMode.SELECT)
-	private List<ProfileDiscipline> profileDisciplines = new ArrayList<ProfileDiscipline>(
-			0);
+	private CommonCurriculum commonCurriculum;
 	
 	@OneToMany(mappedBy = "curriculum", fetch = FetchType.LAZY)
 	private List<Group> groups = new ArrayList<Group>(0);
-	
-	// @Transient
-	// public Integer getYearEnd() {
-	// return LocalDate.of(getYearStart(), Month.AUGUST, 1)
-	// .plus(getTrainingPeriod()).getYear();
-	// }
-	
-	// @Transient
-	// public Integer getCourse() {
-	// LocalDate start = LocalDate.of(getYearStart(), Month.AUGUST, 1);
-	// LocalDate now = LocalDate.now();
-	// Period dif = Period.between(start, now);
-	//
-	// Period trainingPeriod = getTrainingPeriod();
-	//
-	// LocalDate end = start.plus(trainingPeriod);
-	//
-	// return now.isBefore(end) ? Integer.valueOf(dif.getYears() + 1) : null;
-	// }
 	
 	public Integer getIdCurriculum() {
 		return idCurriculum;
@@ -100,15 +72,6 @@ public class Curriculum {
 	
 	public void setCommonCurriculum(CommonCurriculum commonCurriculum) {
 		this.commonCurriculum = commonCurriculum;
-	}
-	
-	public List<ProfileDiscipline> getProfileDisciplines() {
-		return profileDisciplines;
-	}
-	
-	public void setProfileDisciplines(
-			List<ProfileDiscipline> profileDisciplines) {
-		this.profileDisciplines = profileDisciplines;
 	}
 	
 	public List<Group> getGroups() {

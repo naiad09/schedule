@@ -27,7 +27,7 @@
 	<table>
 		<tr>
 			<td>Фамилия</td>
-			<td><form:input path="lastName" required="required"
+			<td><form:input path="lastName" required="required" 
 					pattern="[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*" /></td>
 			<td><form:errors path="lastName" cssClass="error" /></td>
 		</tr>
@@ -73,11 +73,12 @@
 							name="${person.group==null? 'group.idGroup':''}">
 							<form:option value=""> -- Выберите группу -- </form:option>
 							<c:forEach items="${groups}" var="group">
-								<c:set var="course" value="${group.curriculum.course}" />
+								<c:set var="enroll"
+									value="${group.curriculum.commonCurriculum.enrollment}" />
 								<form:option value="${group.idGroup}">
 								    ${group.groupNumber},
-									<c:if test="${course != null}">${course}-ый курс,</c:if>
-									выпуск ${group.curriculum.yearEnd}
+									<c:if test="${enroll.course != null}">${enroll.course}-ый курс,</c:if>
+									выпуск ${enroll.yearEnd}
 								</form:option>
 							</c:forEach>
 						</form:select></td>
@@ -123,7 +124,7 @@
 								<td class="chairName"></td>
 								<td><input type="hidden" /> <t:insertTemplate
 										template="level2/jobTypeSelector.jsp" /></td>
-								<td><a id="deleteChairLink">Удалить</a></td>
+								<td><a class="deleteChairLink">Удалить</a></td>
 							</tr>
 						</table>Добавить: <select id="chairSelector">
 							<option>-- Выберите кафедру --</option>
@@ -208,8 +209,8 @@
 	<h2>
 		Шаг 3: создать логин
 		<c:if test="${person.role != 'edudep'}">? 
-            <input type="button" id="authFormAddButton"
-				value="${(person.authData == null) ? 'Создать логин' : 'Удалить логин'}" />
+            <button type="button" id="authFormAddButton">${(person.authData == null) ? 'Создать логин' : 'Удалить логин'}
+			</button>
 		</c:if>
 	</h2>
 
@@ -272,11 +273,11 @@
 			if (authFormAdded) {
 				authFormAdded = false
 				$("#authForm").empty()
-				$("#authFormAddButton").attr("value", "Создать логин")
+				$("#authFormAddButton").html("Создать логин")
 			} else {
 				authFormAdded = true
 				$("#authForm").html(authForm)
-				$("#authFormAddButton").attr("value", "Удалить логин")
+				$("#authFormAddButton").html("Удалить логин")
 			}
 		})
 	</script>

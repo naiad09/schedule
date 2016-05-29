@@ -2,6 +2,9 @@ package schedule.domain.struct;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.Period;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -148,6 +151,30 @@ public class Enrollment {
 	@Transient
 	public Integer getSemesterCount() {
 		return periodYears * 2 + (periodMonths > 0 ? 1 : 0);
+	}
+	
+	@Transient
+	public Integer getYearEnd() {
+		return LocalDate.of(getYearStart(), Month.AUGUST, 1)
+				.plus(getTrainingPeriod()).getYear();
+	}
+	
+	@Transient
+	private Period getTrainingPeriod() {
+		return Period.ofYears(getPeriodYears()).plusMonths(getPeriodMonths());
+	}
+	
+	@Transient
+	public Integer getCourse() {
+		LocalDate start = LocalDate.of(getYearStart(), Month.AUGUST, 1);
+		LocalDate now = LocalDate.now();
+		Period dif = Period.between(start, now);
+		
+		Period trainingPeriod = getTrainingPeriod();
+		
+		LocalDate end = start.plus(trainingPeriod);
+		
+		return now.isBefore(end) ? Integer.valueOf(dif.getYears() + 1) : null;
 	}
 	
 	public enum EduMode {

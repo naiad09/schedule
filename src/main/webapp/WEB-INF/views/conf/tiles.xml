@@ -7,15 +7,15 @@
 			value="/WEB-INF/views/utils/loginWidget.jsp" />
 	</definition>
 
-    <definition name="person" extends="main">
-        <put-attribute name="content" value="/WEB-INF/views/person.jsp" />
-        <put-attribute name="title" expression="${person.fullName}" />
-    </definition>
-    
-    <definition name="eduProg" extends="main">
-        <put-attribute name="content" value="/WEB-INF/views/eduProg.jsp" />
-        <put-attribute name="title" expression="Учебный план" />
-    </definition>
+	<definition name="person" extends="main">
+		<put-attribute name="content" value="/WEB-INF/views/person.jsp" />
+		<put-attribute name="title" expression="${person.fullName}" />
+	</definition>
+
+	<definition name="curriculum" extends="main">
+		<put-attribute name="content" value="/WEB-INF/views/curriculum.jsp" />
+		<put-attribute name="title" expression="Учебный план" />
+	</definition>
 
 	<definition name="chair" extends="main">
 		<put-attribute name="content" value="/WEB-INF/views/chair.jsp" />

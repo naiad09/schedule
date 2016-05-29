@@ -6,7 +6,7 @@
 
 <form:select path="faculty">
 	<form:option value=""> -- Без факультета --</form:option>
-	<c:forEach items="${faculties}" var="faculty">
+	<c:forEach items="${refsContainer.faculties}" var="faculty">
 		<form:option value="${faculty}">
 			<spring:message code="${faculty}.shortName" />
 		</form:option>

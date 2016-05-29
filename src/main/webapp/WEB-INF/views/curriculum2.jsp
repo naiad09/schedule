@@ -17,13 +17,13 @@
 	</p>
 </c:if>
 
+        <c:set var="enroll" value="${curs[0].enrollment}" scope="request" />
 <table>
 	<tr>
 		<td><small>Обучение <spring:message
-					code="${curs[0].enrollment.eduMode}" /><br>Набор
-				${curs[0].enrollment.yearStart} года
+					code="${enroll.eduMode}" /><br>Набор
+				${enroll.yearStart} года
 		</small></td>
-		<c:set var="enroll" value="${curs[0].enrollment}" scope="request" />
 		<td><small>Квалификация выпускника - <spring:message
 					code="${enroll.eduQual}.qual" /><br>Срок обучения -
 				${enroll.periodYears} ${enroll.periodYears>4?'лет':'года'}<c:if

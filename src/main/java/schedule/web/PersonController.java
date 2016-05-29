@@ -1,6 +1,5 @@
 package schedule.web;
 
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,13 +26,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import schedule.dao.ChairDAO;
 import schedule.dao.GenericDAO;
 import schedule.dao.PersonDAO;
-import schedule.domain.persons.EduDep;
+import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
-import schedule.domain.struct.Chair;
-import schedule.domain.struct.Group;
-import schedule.domain.struct.LecturerJob;
 import schedule.service.PersonFinder;
 import schedule.service.ResourceNotFoundException;
 
@@ -46,8 +42,7 @@ import schedule.service.ResourceNotFoundException;
  */
 @Controller
 @RequestMapping("persons")
-@SessionAttributes(names = { "faculties", "jobTypes", "chairs", "groups",
-		"degrees" })
+@SessionAttributes(names = { "faculties", "chairs", "groups", })
 public class PersonController {
 	
 	@Autowired
@@ -61,9 +56,6 @@ public class PersonController {
 	public String getPersons(Model model,
 			@ModelAttribute PersonFinder personFinder) {
 		model.addAttribute("persons", personDAO.getAll(personFinder));
-		addJobTypes(model);
-		addDegrees(model);
-		addFaculties(model);
 		return "common/persons";
 	}
 	
@@ -130,10 +122,6 @@ public class PersonController {
 			model.addAttribute("groups", groupDAO.getAll());
 		} else if (person instanceof Lecturer) {
 			model.addAttribute("chairs", chairDAO.getAll());
-			addJobTypes(model);
-			addDegrees(model);
-		} else if (person instanceof EduDep) {
-			addFaculties(model);
 		}
 		
 		return "common/newPerson";
@@ -174,19 +162,6 @@ public class PersonController {
 				: "redirect:uid-" + person.getUid();
 		if (returnHere) model.addAttribute("success", person.getUid());
 		return returnString;
-	}
-	
-	private void addFaculties(Model model) {
-		model.addAttribute("faculties", Arrays.asList(Chair.Faculty.values()));
-	}
-	
-	private void addDegrees(Model model) {
-		model.addAttribute("degrees", Arrays.asList(Lecturer.Degree.values()));
-	}
-	
-	private void addJobTypes(Model model) {
-		model.addAttribute("jobTypes",
-				Arrays.asList(LecturerJob.JobType.values()));
 	}
 	
 	/**

@@ -6,7 +6,7 @@
 
 <form:select path="${tempPath}">
 	<form:option value="">-- Выберите должность --</form:option>
-	<c:forEach items="${jobTypes}" var="jobType">
+	<c:forEach items="${refsContainer.jobTypes}" var="jobType">
 		<form:option value="${jobType}">
 			<spring:message code="${jobType}.fullName" />
 		</form:option>
