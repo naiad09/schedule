@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -43,7 +42,7 @@ public class Semester {
 	@NotNull
 	private Boolean fallSpring;
 	
-	@OneToMany(mappedBy = "semester", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "semester")
 	private List<EduProcGraphic> eduProcGraphics = new ArrayList<EduProcGraphic>(
 			0);
 	

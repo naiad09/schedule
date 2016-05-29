@@ -4,7 +4,6 @@ package schedule.domain.persons;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -21,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Student extends Person {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_group")
 	@NotNull
 	private Group group;

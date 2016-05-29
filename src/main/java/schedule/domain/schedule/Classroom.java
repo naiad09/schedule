@@ -3,9 +3,8 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -25,12 +24,12 @@ import schedule.domain.struct.Chair;
 @Table(name = "classroom")
 public class Classroom {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_classroom", unique = true, updatable = false)
 	private int idClassroom;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	

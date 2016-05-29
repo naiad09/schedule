@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,17 +28,17 @@ import javax.validation.constraints.Size;
 		uniqueConstraints = @UniqueConstraint(columnNames = "profile_name"))
 public class SkillProfile {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_profile", updatable = false, unique = true)
 	private int idProfile;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_edu_prog", updatable = false)
 	@NotNull
 	private EduProgram eduProgram;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_chair", updatable = false)
 	@NotNull
 	private Chair chair;
@@ -48,7 +47,7 @@ public class SkillProfile {
 	@Size(max = 150, min = 10)
 	private String profileName;
 	
-	@OneToMany(mappedBy = "skillProfile", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "skillProfile")
 	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
 	public int getIdProfile() {

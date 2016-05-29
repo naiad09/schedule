@@ -8,7 +8,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -32,13 +31,13 @@ import schedule.domain.struct.CommonCurriculum;
 				"disc_code" }))
 public class CommonDiscipline {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_com_disc", updatable = false)
 	private int idComDisc;
 	
 	@JoinColumn(name = "id_com_cur", updatable = false)
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	private CommonCurriculum commonCurriculum;
 	
 	@NotNull
@@ -63,11 +62,11 @@ public class CommonDiscipline {
 	@NotNull
 	private DisciplineVariability variability;
 	
-	@OneToMany(mappedBy = "commonDiscipline", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "commonDiscipline")
 	@Fetch(FetchMode.JOIN)
 	private List<DiscTerm> discTerms;
 	
-	@OneToMany(mappedBy = "commonDiscipline", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "commonDiscipline")
 	@Fetch(FetchMode.SUBSELECT)
 	@NotEmpty
 	private List<ProfileDiscipline> profileDisciplines;

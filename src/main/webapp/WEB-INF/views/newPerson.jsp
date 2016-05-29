@@ -27,7 +27,7 @@
 	<table>
 		<tr>
 			<td>Фамилия</td>
-			<td><form:input path="lastName" required="required" 
+			<td><form:input path="lastName" required="required"
 					pattern="[А-ЯЁ][а-яё]+(-[А-Я][а-я]+)*" /></td>
 			<td><form:errors path="lastName" cssClass="error" /></td>
 		</tr>
@@ -75,11 +75,9 @@
 							<c:forEach items="${groups}" var="group">
 								<c:set var="enroll"
 									value="${group.curriculum.commonCurriculum.enrollment}" />
-								<form:option value="${group.idGroup}">
-								    ${group.groupNumber},
-									<c:if test="${enroll.course != null}">${enroll.course}-ый курс,</c:if>
-									выпуск ${enroll.yearEnd}
-								</form:option>
+								<form:option value="${group.idGroup}"> ${group.groupNumber}, 
+							    <c:if test="${enroll.course != null}">${enroll.course}-ый курс,</c:if> выпуск ${enroll.yearEnd}
+							    </form:option>
 							</c:forEach>
 						</form:select></td>
 					<td><form:errors
@@ -296,11 +294,7 @@
 	</c:if>
 
 	<table>
-		<tr>
-			<td></td>
-			<td><button>Отправить</button></td>
-			<td></td>
-		</tr>
+		<t:insertTemplate template="utils/submitButton.jsp" />
 		<tr>
 			<td><h3>После сохранения:</h3></td>
 			<td><select name="returnHere">

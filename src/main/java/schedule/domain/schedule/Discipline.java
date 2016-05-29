@@ -25,7 +25,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "discipline")
 public class Discipline {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_name", updatable = false)
 	private int idDiscName;

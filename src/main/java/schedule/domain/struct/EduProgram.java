@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -31,12 +30,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "edu_program")
 public class EduProgram {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_prog", unique = true, updatable = false)
 	private Integer idEduProg;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "edu_prog_group_code", updatable = false)
 	@NotNull
 	private EduProgGroup eduProgGroup;
@@ -56,7 +55,7 @@ public class EduProgram {
 	@NotEmpty
 	private String eduProgName;
 	
-	@OneToMany(mappedBy = "eduProgram", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "eduProgram")
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
 	public Integer getIdEduProg() {

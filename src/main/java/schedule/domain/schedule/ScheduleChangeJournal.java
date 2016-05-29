@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -33,19 +32,19 @@ import schedule.domain.persons.EduDep;
 				"date_of_change" }))
 public class ScheduleChangeJournal {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_change", updatable = false)
 	private int idScheduleChange;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_edu_dep", updatable = false)
 	@NotNull
 	private EduDep eduDep;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_schedule", updatable = false)
-	private Schedule schedule;
+	private ScheduleItem schedule;
 	
 	@Column(name = "note")
 	@Size(max = 200)
@@ -75,11 +74,11 @@ public class ScheduleChangeJournal {
 		this.eduDep = eduDep;
 	}
 	
-	public Schedule getSchedule() {
+	public ScheduleItem getSchedule() {
 		return schedule;
 	}
 	
-	public void setSchedule(Schedule schedule) {
+	public void setSchedule(ScheduleItem schedule) {
 		this.schedule = schedule;
 	}
 	

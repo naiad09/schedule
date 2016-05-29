@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -30,12 +29,12 @@ import schedule.domain.schedule.Semester;
 @Table(name = "edu_proc_graphic")
 public class EduProcGraphic {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_period", updatable = false, unique = true)
 	private int idEduPeriod;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_semestr", updatable = false)
 	@NotNull
 	private Semester semester;
@@ -63,7 +62,7 @@ public class EduProcGraphic {
 	@Column(name = "exams_session_end")
 	private LocalDate examsSessionEnd;
 	
-	@ManyToMany(mappedBy = "eduProcGraphics", fetch = FetchType.LAZY)
+	@ManyToMany(mappedBy = "eduProcGraphics")
 	private List<Enrollment> curriculums = new ArrayList<Enrollment>(0);
 	
 	public int getIdEduPeriod() {

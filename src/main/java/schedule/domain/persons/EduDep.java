@@ -9,7 +9,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -36,7 +35,7 @@ public class EduDep extends Person {
 			columnDefinition = "enum(vf,frt,fe,faitu,fvt,ief,hi,vi)")
 	private Faculty faculty;
 	
-	@OneToMany(mappedBy = "eduDep", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "eduDep")
 	@OrderBy("dateOfChange")
 	private List<ScheduleChangeJournal> scheduleChangeJournals = new ArrayList<ScheduleChangeJournal>(
 			0);

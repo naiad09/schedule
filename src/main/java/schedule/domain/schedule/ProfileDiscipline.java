@@ -5,7 +5,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -29,16 +28,16 @@ import schedule.domain.struct.Chair;
 		@UniqueConstraint(columnNames = { "id_curriculum", "id_disc_name" }) })
 public class ProfileDiscipline {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_prof_disc", updatable = false)
 	private int idProfDisc;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_disc_name", updatable = false)
 	@NotNull
 	private Discipline discipline;
@@ -46,7 +45,7 @@ public class ProfileDiscipline {
 	@Column(name = "id_curriculum", updatable = false)
 	private Integer curriculum;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_common_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;

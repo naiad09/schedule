@@ -6,11 +6,10 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -23,7 +22,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.persons.Group;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import schedule.domain.persons.Lecturer;
 
 
@@ -38,16 +38,17 @@ import schedule.domain.persons.Lecturer;
 public class GroupLessonType {
 	
 	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_lesson_types", updatable = false)
 	private int idLessonTypes;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "id_group", updatable = false)
 	@NotNull
-	private Group group;
+	@JoinColumn(name = "id_schedule", updatable = false)
+	@ManyToOne
+	private Schedule schedule;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_disc_sem", updatable = false)
 	@NotNull
 	private DiscTerm discTerm;
@@ -59,15 +60,16 @@ public class GroupLessonType {
 	@Enumerated(EnumType.STRING)
 	private LessonType lessonType;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany()
 	@JoinTable(	name = "lecturers_lessons",
 				joinColumns = { @JoinColumn(name = "id_lesson_types",
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
-	@OneToMany(mappedBy = "groupLessonType",fetch=FetchType.LAZY)
-	private List<Schedule> schedules = new ArrayList<Schedule>(0);
+	@OneToMany(mappedBy = "groupLessonType")
+	@NotEmpty
+	private List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>(0);
 	
 	public int getIdLessonTypes() {
 		return idLessonTypes;
@@ -75,14 +77,6 @@ public class GroupLessonType {
 	
 	public void setIdLessonTypes(int idLessonTypes) {
 		this.idLessonTypes = idLessonTypes;
-	}
-	
-	public Group getGroup() {
-		return group;
-	}
-	
-	public void setGroup(Group group) {
-		this.group = group;
 	}
 	
 	public DiscTerm getDiscTerm() {
@@ -109,12 +103,20 @@ public class GroupLessonType {
 		this.lecturers = lecturers;
 	}
 	
-	public List<Schedule> getSchedules() {
-		return schedules;
+	public Schedule getSchedule() {
+		return schedule;
 	}
 	
-	public void setSchedules(List<Schedule> schedules) {
-		this.schedules = schedules;
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
+	}
+	
+	public List<ScheduleItem> getScheduleItems() {
+		return scheduleItems;
+	}
+	
+	public void setScheduleItems(List<ScheduleItem> scheduleItems) {
+		this.scheduleItems = scheduleItems;
 	}
 	
 	public enum LessonType {

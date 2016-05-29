@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,11 +27,12 @@ import schedule.domain.struct.Curriculum;
 @Table(name = "`group`")
 public class Group {
 	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_group", updatable = false)
 	private Integer idGroup;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_curriculum", updatable = false)
 	@NotNull
 	private Curriculum curriculum;
@@ -42,7 +42,7 @@ public class Group {
 	@Size(max = 5, min = 2)
 	private String groupNumber;
 	
-	@OneToMany(mappedBy = "group", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "group")
 	private List<Student> students = new ArrayList<Student>(0);
 	
 	public Integer getIdGroup() {

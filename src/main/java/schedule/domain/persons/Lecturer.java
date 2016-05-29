@@ -11,7 +11,6 @@ import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -35,8 +34,7 @@ public class Lecturer extends Person {
 	@NotNull
 	private Degree degree;
 	
-	@OneToMany(	mappedBy = "id.lecturer", fetch = FetchType.LAZY,
-				cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "id.lecturer", cascade = CascadeType.ALL)
 	@Valid
 	@ElementCollection(targetClass = LecturerJob.class)
 	@NotEmpty

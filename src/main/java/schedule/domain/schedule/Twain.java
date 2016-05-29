@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "twain")
 public class Twain {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_twain", updatable = false)
 	private int idTwain;

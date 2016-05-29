@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,26 +27,26 @@ import schedule.domain.schedule.CommonDiscipline;
 				"id_enroll" }))
 public class CommonCurriculum {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_common_curriculum", updatable = false)
 	private Integer idCommonCurriculum;
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_enroll", updatable = false)
 	private Enrollment enrollment;
 	
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_edu_prog", updatable = false)
 	private EduProgram eduProgram;
 	
 	@NotEmpty
-	@OneToMany(mappedBy = "commonCurriculum", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "commonCurriculum")
 	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
-	@OneToMany(mappedBy = "commonCurriculum", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "commonCurriculum")
 	private List<CommonDiscipline> commonDisciplines = new ArrayList<CommonDiscipline>(
 			0);
 	

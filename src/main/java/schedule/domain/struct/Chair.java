@@ -11,7 +11,6 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -35,7 +34,7 @@ import schedule.domain.schedule.ProfileDiscipline;
 @Table(name = "chair")
 public class Chair {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_chair", updatable = false, unique = true)
 	private int idChair;
@@ -61,20 +60,20 @@ public class Chair {
 	@NotEmpty
 	private String shortNameEng;
 	
-	@OneToMany(mappedBy = "id.chair", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "id.chair")
 	@OrderBy("jobType") // , lecturer.degree, lecturer.lastName,
 						// lecturer.firstName, lecturer.middleName")
 	// TODO order by not works...
 	@ElementCollection(targetClass = LecturerJob.class)
 	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>(0);
 	
-	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "chair")
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
-	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "chair")
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
-	@OneToMany(mappedBy = "chair", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "chair")
 	private List<ProfileDiscipline> curDisciplines = new ArrayList<ProfileDiscipline>(
 			0);
 	

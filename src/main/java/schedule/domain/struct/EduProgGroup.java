@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -32,7 +31,7 @@ public class EduProgGroup {
 	@NotEmpty
 	private String eduProgGroupName;
 	
-	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "eduProgGroup")
 	private List<EduProgram> eduPrograms = new ArrayList<EduProgram>(0);
 	
 	public int getEduProgGroupCode() {

@@ -11,7 +11,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -34,7 +33,7 @@ import schedule.domain.struct.EduProgram.EduQual;
 				"qual_type", "year_start" }))
 public class Enrollment {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_enroll", unique = true, updatable = false)
 	private Integer idEnroll;
@@ -72,10 +71,10 @@ public class Enrollment {
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(	name = "id_edu_period",
 													updatable = false) })
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany()
 	private List<EduProcGraphic> eduProcGraphics;
 	
-	@OneToMany(mappedBy = "enrollment", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "enrollment")
 	private List<CommonCurriculum> commonCurriculums;
 	
 	public Integer getIdEnroll() {

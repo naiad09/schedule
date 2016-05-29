@@ -10,7 +10,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,13 +39,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Embeddable
 public abstract class Person {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "uid", unique = true, updatable = false)
 	private int uid;
 	
-	@OneToOne(	fetch = FetchType.LAZY, cascade = CascadeType.ALL,
-				optional = true, mappedBy = "person")
+	@OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "person")
 	@Embedded
 	@Valid
 	private AuthData authData;

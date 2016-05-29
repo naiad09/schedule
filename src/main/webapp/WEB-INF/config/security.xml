@@ -13,6 +13,8 @@
 			access="hasRole('ROLE_ADMIN')" />
 		<!-- <intercept-url pattern="/enroll/new" access="hasRole('ROLE_ADMIN')" /> -->
 		<!-- <intercept-url pattern="ed/**" access="hasRole('ROLE_ADMIN')" /> -->
+		<!-- <intercept-url pattern="schedule/new" access="hasRole('ROLE_ADMIN')" /> -->
+		<!-- <intercept-url pattern="schedule/edit" access="hasRole('ROLE_ADMIN')" /> -->
 
 
 		<form-login login-page="/login" default-target-url="/"

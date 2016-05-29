@@ -3,7 +3,6 @@ package schedule.domain.persons;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -18,12 +17,12 @@ import schedule.domain.struct.Chair;
 public class LecturerJobId implements java.io.Serializable {
 	private static final long serialVersionUID = 1L;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@NotNull
 	@JoinColumn(name = "id_chair")
 	private Chair chair;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_lecturer", updatable = false)
 	@Embedded
 	private Lecturer lecturer;

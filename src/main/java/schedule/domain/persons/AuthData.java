@@ -4,7 +4,6 @@ package schedule.domain.persons;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
@@ -27,11 +26,11 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Embeddable
 public class AuthData {
 	
-	@Id
+	@Id@NotNull
 	@PrimaryKeyJoinColumn(name = "auth_uid")
 	private int authUid;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne()
 	@MapsId
 	@JoinColumn(name = "auth_uid", updatable = false)
 	private Person person;

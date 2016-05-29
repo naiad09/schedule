@@ -1,153 +1,90 @@
 package schedule.domain.schedule;
-// Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;import javax.persistence.FetchType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Range;
+
+import schedule.domain.persons.Group;
 
 
-/**
- * Класс элемента расписания. Определяет, какой предмет в какой день недели в
- * какой аудитории. Важный параметр - временной план, определяет, в какие недели
- * будет это расписание (раз в неделю, в две, в четыре недели, до смены
- * расписания, после смены).
- */
 @Entity
 @Table(name = "schedule")
 public class Schedule {
 	
 	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule", updatable = false)
-	private long idSchedule;
+	private int idSchedule;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "id_lesson_types", updatable = false)
 	@NotNull
-	private GroupLessonType groupLessonType;
+	@JoinColumn(name = "id_group", updatable = false)
+	@ManyToOne
+	private Group group;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name = "id_twain")
 	@NotNull
-	private Twain twain;
+	@Column(name = "term_num")
+	@Range(min = 1, max = 12)
+	private Integer termNum;
 	
-	@Column(name = "time_plan")
 	@NotNull
-	// TODO mapping and test
-	private short timePlan = 255;
+	@Column(name = "schedule_done")
+	private boolean scheduleDone = false;
 	
-	@Enumerated(EnumType.ORDINAL)
-	@NotNull
-	@Column(name = "weekday")
-	private DayOfWeek weekday;
+	@OneToMany(mappedBy = "schedule")
+	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>();
 	
-	@Column(name = "note")
-	@Size(max = 256)
-	private String note;
-	
-	@Column(name = "elective")
-	@NotNull
-	private boolean elective = false;
-	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(	name = "schedule_classroom",
-				joinColumns = {
-						@JoinColumn(name = "id_schedule", updatable = false) },
-				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
-	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
-	
-	@OneToMany(mappedBy = "schedule",fetch=FetchType.LAZY)
-	private List<ScheduleChangeJournal> scheduleChangeJournals = new ArrayList<ScheduleChangeJournal>(
-			0);
-	
-	public long getIdSchedule() {
+	public int getIdSchedule() {
 		return idSchedule;
 	}
 	
-	public void setIdSchedule(long idSchedule) {
+	public void setIdSchedule(int idSchedule) {
 		this.idSchedule = idSchedule;
 	}
 	
-	public GroupLessonType getGroupLessonType() {
-		return groupLessonType;
+	public Group getGroup() {
+		return group;
 	}
 	
-	public void setGroupLessonType(GroupLessonType groupLessonType) {
-		this.groupLessonType = groupLessonType;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 	
-	public Twain getTwain() {
-		return twain;
+	public Integer getTermNum() {
+		return termNum;
 	}
 	
-	public void setTwain(Twain twain) {
-		this.twain = twain;
+	public void setTermNum(Integer termNum) {
+		this.termNum = termNum;
 	}
 	
-	public short getTimePlan() {
-		return timePlan;
+	public boolean isScheduleDone() {
+		return scheduleDone;
 	}
 	
-	public void setTimePlan(short timePlan) {
-		this.timePlan = timePlan;
+	public void setScheduleDone(boolean scheduleDone) {
+		this.scheduleDone = scheduleDone;
 	}
 	
-	public DayOfWeek getWeekday() {
-		return weekday;
+	public List<GroupLessonType> getGroupLessonTypes() {
+		return groupLessonTypes;
 	}
 	
-	public void setWeekday(DayOfWeek weekday) {
-		this.weekday = weekday;
-	}
-	
-	public String getNote() {
-		return note;
-	}
-	
-	public void setNote(String note) {
-		this.note = note;
-	}
-	
-	public boolean isElective() {
-		return elective;
-	}
-	
-	public void setElective(boolean elective) {
-		this.elective = elective;
-	}
-	
-	public List<Classroom> getClassrooms() {
-		return classrooms;
-	}
-	
-	public void setClassrooms(List<Classroom> classrooms) {
-		this.classrooms = classrooms;
-	}
-	
-	public List<ScheduleChangeJournal> getScheduleChangeJournals() {
-		return scheduleChangeJournals;
-	}
-	
-	public void setScheduleChangeJournals(
-			List<ScheduleChangeJournal> scheduleChangeJournals) {
-		this.scheduleChangeJournals = scheduleChangeJournals;
+	public void setGroupLessonTypes(List<GroupLessonType> groupLessonTypes) {
+		this.groupLessonTypes = groupLessonTypes;
 	}
 	
 }

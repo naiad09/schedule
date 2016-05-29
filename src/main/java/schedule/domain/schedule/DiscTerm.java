@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -28,12 +27,12 @@ import javax.validation.constraints.NotNull;
 @Table(name = "disc_term")
 public class DiscTerm {
 	
-	@Id
+	@Id@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_sem", updatable = false)
 	private int idDiscSem;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne()
 	@JoinColumn(name = "id_com_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;
@@ -54,7 +53,7 @@ public class DiscTerm {
 	@NotNull
 	private boolean exam;
 	
-	@OneToMany(mappedBy = "discTerm", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "discTerm")
 	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>(
 			0);
 	
