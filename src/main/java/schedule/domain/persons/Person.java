@@ -45,7 +45,7 @@ public abstract class Person {
 	@Column(name = "uid", unique = true, updatable = false)
 	private int uid;
 	
-	@OneToOne(	fetch = FetchType.EAGER, cascade = CascadeType.ALL,
+	@OneToOne(	fetch = FetchType.LAZY, cascade = CascadeType.ALL,
 				optional = true, mappedBy = "person")
 	@Embedded
 	@Valid

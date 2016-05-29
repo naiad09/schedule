@@ -34,11 +34,11 @@ public class ProfileDiscipline {
 	@Column(name = "id_prof_disc", updatable = false)
 	private int idProfDisc;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_disc_name", updatable = false)
 	@NotNull
 	private Discipline discipline;
@@ -46,7 +46,7 @@ public class ProfileDiscipline {
 	@Column(name = "id_curriculum", updatable = false)
 	private Integer curriculum;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_common_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;

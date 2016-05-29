@@ -63,7 +63,7 @@ public class CommonDiscipline {
 	@NotNull
 	private DisciplineVariability variability;
 	
-	@OneToMany(mappedBy = "commonDiscipline", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "commonDiscipline", fetch = FetchType.LAZY)
 	@Fetch(FetchMode.JOIN)
 	private List<DiscTerm> discTerms;
 	

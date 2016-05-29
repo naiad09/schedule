@@ -32,7 +32,7 @@ public class EduProgGroup {
 	@NotEmpty
 	private String eduProgGroupName;
 	
-	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "eduProgGroup", fetch = FetchType.LAZY)
 	private List<EduProgram> eduPrograms = new ArrayList<EduProgram>(0);
 	
 	public int getEduProgGroupCode() {

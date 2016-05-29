@@ -42,7 +42,7 @@ public class Curriculum {
 	@NotNull
 	private SkillProfile skillProfile;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_common_curriculum", updatable = false)
 	@NotNull
 	private CommonCurriculum commonCurriculum;

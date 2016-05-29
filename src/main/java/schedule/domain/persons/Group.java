@@ -32,7 +32,7 @@ public class Group {
 	@Column(name = "id_group", updatable = false)
 	private Integer idGroup;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_curriculum", updatable = false)
 	@NotNull
 	private Curriculum curriculum;

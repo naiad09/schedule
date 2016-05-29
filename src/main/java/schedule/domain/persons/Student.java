@@ -21,7 +21,7 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class Student extends Person {
 	
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_group")
 	@NotNull
 	private Group group;
