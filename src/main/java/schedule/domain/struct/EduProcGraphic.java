@@ -14,9 +14,12 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
+import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.Semester;
 
 
@@ -29,14 +32,14 @@ import schedule.domain.schedule.Semester;
 @Table(name = "edu_proc_graphic")
 public class EduProcGraphic {
 	
-	@Id@NotNull
+	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_period", updatable = false, unique = true)
 	private int idEduPeriod;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_semestr", updatable = false)
-	@NotNull
+	// @NotNull
 	private Semester semester;
 	
 	@NotNull
@@ -63,7 +66,14 @@ public class EduProcGraphic {
 	private LocalDate examsSessionEnd;
 	
 	@ManyToMany(mappedBy = "eduProcGraphics")
-	private List<Enrollment> curriculums = new ArrayList<Enrollment>(0);
+	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
+			0);
+	
+	@Transient
+	private Enrollment enroll;
+	
+	@OneToMany(mappedBy = "eduProcGraphic")
+	private List<Schedule> schedules = new ArrayList<>();
 	
 	public int getIdEduPeriod() {
 		return idEduPeriod;
@@ -137,12 +147,28 @@ public class EduProcGraphic {
 		this.examsSessionEnd = examsSessionEnd;
 	}
 	
-	public List<Enrollment> getCurriculums() {
+	public List<CommonCurriculum> getCurriculums() {
 		return curriculums;
 	}
 	
-	public void setCurriculums(List<Enrollment> curriculums) {
+	public void setCurriculums(List<CommonCurriculum> curriculums) {
 		this.curriculums = curriculums;
+	}
+	
+	public Enrollment getEnroll() {
+		return enroll;
+	}
+	
+	public void setEnroll(Enrollment enroll) {
+		this.enroll = enroll;
+	}
+	
+	public List<Schedule> getSchedules() {
+		return schedules;
+	}
+	
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
 	}
 	
 }

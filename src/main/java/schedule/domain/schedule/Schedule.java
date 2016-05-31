@@ -18,6 +18,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Range;
 
 import schedule.domain.persons.Group;
+import schedule.domain.struct.EduProcGraphic;
 
 
 @Entity
@@ -43,6 +44,11 @@ public class Schedule {
 	@NotNull
 	@Column(name = "schedule_done")
 	private boolean scheduleDone = false;
+	
+	@NotNull
+	@JoinColumn(name = "id_edu_period")
+	@ManyToOne
+	private EduProcGraphic eduProcGraphic;
 	
 	@OneToMany(mappedBy = "schedule")
 	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>();
@@ -85,6 +91,14 @@ public class Schedule {
 	
 	public void setGroupLessonTypes(List<GroupLessonType> groupLessonTypes) {
 		this.groupLessonTypes = groupLessonTypes;
+	}
+	
+	public EduProcGraphic getEduProcGraphic() {
+		return eduProcGraphic;
+	}
+	
+	public void setEduProcGraphic(EduProcGraphic eduProcGraphic) {
+		this.eduProcGraphic = eduProcGraphic;
 	}
 	
 }

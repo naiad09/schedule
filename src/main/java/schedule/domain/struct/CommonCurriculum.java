@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -27,7 +29,8 @@ import schedule.domain.schedule.CommonDiscipline;
 				"id_enroll" }))
 public class CommonCurriculum {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_common_curriculum", updatable = false)
 	private Integer idCommonCurriculum;
@@ -49,6 +52,12 @@ public class CommonCurriculum {
 	@OneToMany(mappedBy = "commonCurriculum")
 	private List<CommonDiscipline> commonDisciplines = new ArrayList<CommonDiscipline>(
 			0);
+	
+	@JoinTable(name = "curriculum_semester", joinColumns = {
+			@JoinColumn(name = "id_common_curriculum") }, inverseJoinColumns = {
+					@JoinColumn(name = "id_edu_period", updatable = false) })
+	@ManyToMany()
+	private List<EduProcGraphic> eduProcGraphics;
 	
 	public Integer getIdCommonCurriculum() {
 		return idCommonCurriculum;
@@ -88,6 +97,14 @@ public class CommonCurriculum {
 	
 	public void setCommonDisciplines(List<CommonDiscipline> commonDisciplines) {
 		this.commonDisciplines = commonDisciplines;
+	}
+	
+	public List<EduProcGraphic> getEduProcGraphics() {
+		return eduProcGraphics;
+	}
+	
+	public void setEduProcGraphics(List<EduProcGraphic> eduProcGraphics) {
+		this.eduProcGraphics = eduProcGraphics;
 	}
 	
 }

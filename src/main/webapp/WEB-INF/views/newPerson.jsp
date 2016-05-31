@@ -20,8 +20,7 @@
 </c:if>
 
 <form:form action="new-${person.role}" method="post"
-	commandName="person"
-	onsubmit="${person.role == 'lecturer' ? 'prerareChairs()' : ''}">
+	commandName="person">
 	<input type="hidden" value="${person.role}" name="person" />
 	<h2>Шаг 1: общая информация</h2>
 	<table>
@@ -85,6 +84,8 @@
 				</tr>
 			</c:when>
 			<c:when test="${person.role == 'lecturer'}">
+				<script src="../resources/js/selectorFinder.js"></script>
+				<script src="../resources/js/dynamicList.js"></script>
 				<tr>
 					<td>Научная степень</td>
 					<td><t:insertTemplate template="level2/degreeSelector.jsp" /></td>
@@ -108,7 +109,8 @@
 									var="chair" />
 								<tr class="chair">
 									<td class="chairName"><spring:message
-											code="${chair.faculty}.shortName" />, ${chair.fullName}</td>
+											code="${chair.faculty}.shortName" />, ${chair.fullName} <c:if
+											test="${chair.shortName != null}">(${chair.shortName})</c:if></td>
 									<td><form:input type="hidden"
 											path="lecturerJobs[${i.index}].chair.idChair" /> <c:set
 											var="tempPath" scope="request"
@@ -121,7 +123,9 @@
 							</c:forEach>
 							<tr class="default">
 								<td class="chairName"></td>
-								<td><input type="hidden" /> <t:insertTemplate
+								<td><input type="hidden"
+									name="lecturerJobs[].chair.idChair" /> <c:set var="tempName"
+										scope="request" value="lecturerJobs[].jobType" /> <t:insertTemplate
 										template="level2/jobTypeSelector.jsp" /></td>
 								<td><img class="deleteChairLink button"
 									src="../resources/cross.png" title="Удалить"></td>
@@ -132,11 +136,8 @@
 					<td>Добавить:</td>
 					<td colspan="2"><input id="chairSelectorInput"
 						placeholder="Найти кафедру по названию" /><img class="button"
-						id="clearSelection" src="../resources/cross.png" title="Удалить"></td>
-				</tr>
-				<tr>
-					<td></td>
-					<td colspan="2"><select id="chairSelector">
+						id="clearSelection" src="../resources/cross.png" title="Очистить"><br>
+						<select id="chairSelector">
 							<c:forEach items="${chairs}" var="chair">
 								<option value="${chair.idChair}">
 									<spring:message code="${chair.faculty}.shortName" />,
@@ -146,64 +147,38 @@
 							</c:forEach>
 					</select></td>
 				</tr>
-				<script src="../resources/js/selectorFinder.js"></script>
 				<script>
-					// Убирает из chairSelector option-ы, которые уже выбраны в таблице
-					$("#chairs tr.chair input[type='hidden']").each(
-							function() {
-								$(
-										"#chairSelector option[value="
-												+ $(this).val() + "]").attr(
-										"disabled", "true")
-							})
-
-					// Удаляет строку при нажатии на кнопку Удалить, а также скрывает option
-					$(".deleteChairLink").click(
-							function() {
-								var row = $(this).parent().parent()
-								var idChair = row.find("input[type='hidden']")
-										.attr("value")
-								$("#chairSelector").find(
-										"option[value='" + idChair + "']")
-										.removeAttr("disabled")
-								row.remove()
-								if ($("#chairs .chair").size() == 0)
-									$("#chairs").hide();
-							})
-
-					// Обработчик нажатия на option в селекторе. Добавляет стрку в
-					// таблицу с выбранной кафедрой: названием, номером и селектором должности
-					$("#chairSelector option").click(
-							function() {
-								if ($("#chairs .chair").size() == 0)
-									$("#chairs").show();
-								$(this).attr("disabled", "true")
-								$("#chairSelector").val("")
-								var row = $("#chairs .default").clone(true)
-										.removeClass("default").addClass(
-												"chair").insertBefore(
-												"#chairs .default")
-								row.find(".chairName").html(
-										$(this).text().trim())
-								row.find("input[type=hidden]").val(
-										$(this).val())
-							})
-
-					// Подготавливает форму к отправке на сервер: проставляет name у hidden inputs
-					// what contains idChair
-					function prerareChairs() {
-						$("#chairs tr.chair").each(
-								function(i) {
-									var j = "lecturerJobs[" + i + "]."
-									$(this).find("input.[type='hidden']").attr(
-											"name", j + "chair.idChair")
-									$(this).find("select").attr("name",
-											j + "jobType")
-								})
+					function onClone(newRow, option) {
+						newRow.find(".chairName").html(option.text().trim())
 					}
 
-					selectorFindHelper($("#chairSelectorInput"),
-							$("#chairSelector"), $("#clearSelection"), 160)
+					function onDropAll(newRow, option) {
+						$("#chairs").hide();
+					}
+					var config = {
+						holder : $("#chairs"),
+						listName : "lecturerJobs",
+						rowClass : 'chair',
+						removeLink : $(".deleteChairLink"),
+						form : $("form#person"),
+						selector : $("#chairSelector"),
+						defaultRowClass : "default",
+						removeDefault : true,
+						hideWithZeroRows : true,
+						processCloning : onClone,
+						processDropAll : onDropAll
+					}
+					new DynamicList(config)
+
+					var configFinder = {
+						selector : $("#chairSelector"),
+						input : $("#chairSelectorInput"),
+						clearButton : $("#clearSelection"),
+						maxHeightSelect : 160,
+						onDropSelection : onDropSelection
+					}
+
+					new SelectorFindHelper(configFinder)
 				</script>
 			</c:when>
 			<c:when test="${person.role == 'edudep'}">

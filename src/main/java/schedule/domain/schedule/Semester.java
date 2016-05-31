@@ -8,13 +8,16 @@ import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import schedule.domain.struct.EduProcGraphic;
@@ -32,7 +35,7 @@ public class Semester {
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_semester", unique = true, updatable = false)
 	@NotNull
-	private int idSemester;
+	private Integer idSemester;
 	
 	@Column(name = "semester_year", updatable = false)
 	@NotNull
@@ -42,15 +45,17 @@ public class Semester {
 	@NotNull
 	private Boolean fallSpring;
 	
-	@OneToMany(mappedBy = "semester")
+	@OneToMany(	mappedBy = "semester", cascade = CascadeType.ALL,
+				fetch = FetchType.EAGER)
+	@Valid
 	private List<EduProcGraphic> eduProcGraphics = new ArrayList<EduProcGraphic>(
 			0);
 	
-	public int getIdSemester() {
+	public Integer getIdSemester() {
 		return idSemester;
 	}
 	
-	public void setIdSemester(int idSemester) {
+	public void setIdSemester(Integer idSemester) {
 		this.idSemester = idSemester;
 	}
 	
@@ -84,8 +89,8 @@ public class Semester {
 		int year = now.getYear();
 		if (now.isAfter(LocalDate.of(year, Month.AUGUST, 31))
 				|| now.isBefore(LocalDate.of(year, Month.JANUARY, 31)))
-			fallSpring = true;
-		else fallSpring = false;
+			fallSpring = false;
+		else fallSpring = true;
 		
 		Semester semester = new Semester();
 		semester.semesterYear = year;
@@ -95,8 +100,8 @@ public class Semester {
 	
 	public static Semester getNextSemester(Semester one) {
 		Semester semester = new Semester();
-		semester.semesterYear = one.fallSpring ? (one.semesterYear + 1)
-				: one.semesterYear;
+		semester.semesterYear = one.fallSpring ? one.semesterYear
+				: (one.semesterYear + 1);
 		semester.fallSpring = !one.fallSpring;
 		return semester;
 	}

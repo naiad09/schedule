@@ -1,26 +1,22 @@
-RegExp.escape= function(s) {
-    return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
-}
-
-function selectorFindHelper(input, select, clearButton, maxHeight) {
-	var options = select.find("option")
-	var optionHeight = options.height()
+function SelectorFindHelper(c) {
+	var options = c.selector.find("option")
+	var optionHeight = 16.75
 	var count = options.size()
-	input.width(select.width() - 7)
-	select.width(select.width())
-	select.css("position", "absolute")
-	select.wrap("<div></div>")
-	select.css("margin-top", "-5px")
-	select.attr("size", 2)
-	select.append("<option id='notFound' disabled>Ничего не найдено</option>")
-	var notFound = select.find("#notFound")
+	c.input.width(c.selector.width() - 7)
+	c.selector.width(c.selector.width())
+	c.selector.css("position", "absolute")
+	c.selector.wrap("<div></div>")
+	c.selector.css("margin-top", "-1px")
+	c.selector.attr("size", 2)
+	c.selector.append("<option id='notFound' disabled>Ничего не найдено</option>")
+	var notFound = c.selector.find("#notFound")
 	
-	clearButton.click(dropSelection)
+	c.clearButton.click(dropSelection)
+	c.selector.hide()
+ options.click(dropSelection)
 	
-	select.hide()
-	
-	input.keypress(function(e) {
-		var text = input.val() + getChar(e)
+	c.input.keypress(function(e) {
+		var text = c.input.val() + getChar(e)
 		switch (e.keyCode) {
 		case 27: dropSelection()
 				 return
@@ -32,23 +28,22 @@ function selectorFindHelper(input, select, clearButton, maxHeight) {
 		if (filtred.size()>0) showSelection(filtred)
 		else showSelection(notFound)
 	})
-	
-	
-	options.click(dropSelection)
-
+		
 	function dropSelection() {
-		select.hide()
-		input.val("")
+		c.selector.hide()
+		c.input.val("")
+		c.onDropSelection()
 	}
 	
 	function showSelection(filtred) {
 		notFound.hide()
 		options.hide()
 		filtred.show()
-		select.show()
+		c.selector.show()
 		var height = filtred.size() * optionHeight + 3
-		select.height(Math.min(height,maxHeight))
+		c.selector.height(Math.min(height,c.maxHeightSelect))
 	}
+	
 }
 
 function getChar(event) {

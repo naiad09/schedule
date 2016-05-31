@@ -4,7 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
-<form:select path="${tempPath}">
+<form:select path="${tempPath}" name="${tempName}">
 	<form:option value="">-- Выберите должность --</form:option>
 	<c:forEach items="${refsContainer.jobTypes}" var="jobType">
 		<form:option value="${jobType}">

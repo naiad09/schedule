@@ -13,6 +13,11 @@
 <script src="${pageContext.request.contextPath}/resources/jquery.min.js"
 	type="text/javascript"></script>
 <title>РГРТУ - <t:insertAttribute name="title" /></title>
+<script>
+	RegExp.escape = function(s) {
+		return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+	}
+</script>
 </head>
 <body>
 	<div id="page">

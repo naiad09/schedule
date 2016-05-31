@@ -21,7 +21,7 @@
 <c:set var="enroll" value="${cur.enrollment}" scope="request" />
 <table>
 	<tr>
-		<td><small>Обучение <spring:message
+		<td><small>Форма обучения: <spring:message
 					code="${enroll.eduMode}" /><br>Набор ${enroll.yearStart} года
 		</small></td>
 		<td><small>Квалификация выпускника - <spring:message
@@ -35,7 +35,7 @@
 
 <h2>Учебные дисциплины</h2>
 
-<table id="curriculum">
+<table id="curriculum" class="borderTable">
 	<c:forEach begin="1" end="3" varStatus="i">
 		<t:insertTemplate template="level2/curriculumHead.jsp" />
 

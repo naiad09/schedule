@@ -15,7 +15,7 @@ public class MinimalGenericDAO<E> {
 	@Autowired
 	private SessionFactory sessionFactory;
 	
-	protected Class<E> daoType;
+	protected final Class<E> daoType;
 	
 	public MinimalGenericDAO(Class<E> type) {
 		this.daoType = type;

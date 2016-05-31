@@ -13,9 +13,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -23,6 +20,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Formula;
 
 import schedule.domain.struct.EduProgram.EduQual;
 
@@ -33,7 +32,8 @@ import schedule.domain.struct.EduProgram.EduQual;
 				"qual_type", "year_start" }))
 public class Enrollment {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_enroll", unique = true, updatable = false)
 	private Integer idEnroll;
@@ -66,13 +66,8 @@ public class Enrollment {
 	@Column(name = "period_months", updatable = false)
 	private Integer periodMonths;
 	
-	@JoinTable(	name = "curriculum_semester",
-				joinColumns = { @JoinColumn(name = "id_curriculum",
-											updatable = false) },
-				inverseJoinColumns = { @JoinColumn(	name = "id_edu_period",
-													updatable = false) })
-	@ManyToMany()
-	private List<EduProcGraphic> eduProcGraphics;
+	@Formula(value = "period_years*2+if(period_months>0,1,0)")
+	private int semesterCount;
 	
 	@OneToMany(mappedBy = "enrollment")
 	private List<CommonCurriculum> commonCurriculums;
@@ -83,14 +78,6 @@ public class Enrollment {
 	
 	public void setIdEnroll(Integer idEnroll) {
 		this.idEnroll = idEnroll;
-	}
-	
-	public List<EduProcGraphic> getEduProcGraphics() {
-		return eduProcGraphics;
-	}
-	
-	public void setEduProcGraphics(List<EduProcGraphic> eduProcGraphics) {
-		this.eduProcGraphics = eduProcGraphics;
 	}
 	
 	public List<CommonCurriculum> getCommonCurriculums() {
@@ -148,8 +135,8 @@ public class Enrollment {
 	}
 	
 	@Transient
-	public Integer getSemesterCount() {
-		return periodYears * 2 + (periodMonths > 0 ? 1 : 0);
+	public int getSemesterCount() {
+		return semesterCount;
 	}
 	
 	@Transient
