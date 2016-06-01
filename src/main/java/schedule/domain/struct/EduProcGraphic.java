@@ -9,9 +9,11 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -35,7 +37,7 @@ public class EduProcGraphic {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_period", updatable = false, unique = true)
-	private int idEduPeriod;
+	private Integer idEduPeriod;
 	
 	@ManyToOne
 	@JoinColumn(name = "id_semestr", updatable = false)
@@ -65,7 +67,11 @@ public class EduProcGraphic {
 	@Column(name = "exams_session_end")
 	private LocalDate examsSessionEnd;
 	
-	@ManyToMany(mappedBy = "eduProcGraphics")
+	@JoinTable(	name = "curriculum_semester",
+				joinColumns = @JoinColumn(	name = "id_edu_period",
+											updatable = false),
+				inverseJoinColumns = @JoinColumn(name = "id_common_curriculum"))
+	@ManyToMany(fetch = FetchType.EAGER)
 	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
 			0);
 	
@@ -75,11 +81,11 @@ public class EduProcGraphic {
 	@OneToMany(mappedBy = "eduProcGraphic")
 	private List<Schedule> schedules = new ArrayList<>();
 	
-	public int getIdEduPeriod() {
+	public Integer getIdEduPeriod() {
 		return idEduPeriod;
 	}
 	
-	public void setIdEduPeriod(int idEduPeriod) {
+	public void setIdEduPeriod(Integer idEduPeriod) {
 		this.idEduPeriod = idEduPeriod;
 	}
 	
@@ -169,6 +175,19 @@ public class EduProcGraphic {
 	
 	public void setSchedules(List<Schedule> schedules) {
 		this.schedules = schedules;
+	}
+	
+	@Override
+	public String toString() {
+		return "EduProcGraphic [idEduPeriod=" + idEduPeriod + ", semester="
+				+ semester + ", eduStart=" + eduStart + ", scheduleChangeDate="
+				+ scheduleChangeDate + ", semestrEnd=" + semestrEnd
+				+ ", recordSessionStart=" + recordSessionStart
+				+ ", recordSessionEnd=" + recordSessionEnd
+				+ ", examsSessionStart=" + examsSessionStart
+				+ ", examsSessionEnd=" + examsSessionEnd + ", curriculums="
+				+ curriculums + ", enroll=" + enroll + ", schedules="
+				+ schedules + "]";
 	}
 	
 }

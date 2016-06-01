@@ -1,11 +1,13 @@
 function DynamicList(c) {
 
 	// Убирает из селектора option-ы, которые уже выбраны в таблице
-	c.holder.find("." + c.rowClass + " input:hidden").each(
-			function() {
-				c.selector.find("option[value=" + $(this).val() + "]").attr(
-						"disabled", "true")
-			})
+	c.holder.find(
+			"." + c.rowClass + " input:hidden[name*='" + c.nameToCopy + "']")
+			.each(
+					function() {
+						c.selector.find("option[value=" + $(this).val() + "]")
+								.attr("disabled", "true")
+					})
 
 	// Нажатие на кнопку удалить
 	if (c.removeLink != null)
@@ -15,7 +17,8 @@ function DynamicList(c) {
 
 		// Удаляет строку при нажатии на кнопку Удалить, а также скрывает option
 	function removeRow(row) {
-		var id = row.find("input:hidden").attr("value")
+		var id = row.find("input:hidden[name*='" + c.nameToCopy + "']").attr(
+				"value")
 		c.selector.find("option[value='" + id + "']").removeAttr("disabled")
 		row.remove()
 		if (c.holder.find("." + c.rowClass).size() == c.minRows)
@@ -32,13 +35,15 @@ function DynamicList(c) {
 	}
 
 	// Обработчик нажатия на option в селекторе. Добавляет стрку в таблицу
-	c.selector.find("option").click(function() {
-		$(this).attr("disabled", "true")
-		c.selector.val("")
-		var row = cloneRow()
-		c.processCloning(row, $(this))
-		row.find("input:hidden").val($(this).val())
-	})
+	c.selector.find("option").click(
+			function() {
+				$(this).attr("disabled", "true")
+				c.selector.val("")
+				var row = cloneRow()
+				c.processCloning(row, $(this))
+				row.find("input:hidden[name*='" + c.nameToCopy + "']").val(
+						$(this).val())
+			})
 
 }
 
@@ -59,6 +64,5 @@ function FormDynamicListSubmitProcessor(c) {
 				})
 
 		c.listHolder.find("." + c.defaultRowClass).remove()
-
 	})
 }

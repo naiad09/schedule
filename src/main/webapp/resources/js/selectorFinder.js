@@ -32,7 +32,8 @@ function SelectorFindHelper(c) {
 	function dropSelection() {
 		c.selector.hide()
 		c.input.val("")
-		c.onDropSelection()
+		if(c.onDropSelection)
+			c.onDropSelection()
 	}
 	
 	function showSelection(filtred) {

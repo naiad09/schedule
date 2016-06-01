@@ -1,5 +1,7 @@
 package schedule.web;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +21,8 @@ import org.springframework.web.bind.support.SessionStatus;
 import schedule.dao.EnrollmentDAO;
 import schedule.dao.SemesterDAO;
 import schedule.domain.schedule.Semester;
+import schedule.domain.struct.CommonCurriculum;
+import schedule.domain.struct.EduProcGraphic;
 import schedule.domain.struct.Enrollment;
 import schedule.service.ResourceNotFoundException;
 
@@ -84,19 +88,67 @@ public class SemesterController {
 	
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.GET)
 	public String editSemester(@PathVariable Integer id, Model model) {
-		Semester find = semesterDAO.get(id);
-		if (find == null) throw new ResourceNotFoundException();
-		model.addAttribute("semester", find);
-		List<Enrollment> actualEnrolls = enrollmentDAO.trainingInSemester(find);
-		// model.addAttribute("actualEnrolls", actualEnrolls);
+		Semester semester = semesterDAO.get(id);
+		if (semester == null) throw new ResourceNotFoundException();
+		model.addAttribute("semester", semester);
+		List<Enrollment> actualEnrolls = enrollmentDAO
+				.trainingInSemester(semester);
+		model.addAttribute("actualEnrolls", actualEnrolls);
+		
+		// prepareSemesterToView(find, actualEnrolls);
+		
+		System.out.println("from db: " + semester.getEduProcGraphics());
+		semester.getEduProcGraphics().forEach(g -> {
+			if (g.getCurriculums().size() > 0) {
+				CommonCurriculum commonCurriculum = g.getCurriculums().get(0);
+				if (commonCurriculum != null)
+					g.setEnroll(commonCurriculum.getEnrollment());
+			}
+		});
+		
+		System.out.println("to view: " + semester.getEduProcGraphics());
 		
 		return "common/editSemester";
+	}
+	
+	private void prepareSemesterToView(Semester semester,
+			List<Enrollment> actualEnrolls) {
+		System.out.println(
+				"graphics getted count:" + semester.getEduProcGraphics());
+		semester.getEduProcGraphics().forEach(g -> {
+			if (g.getCurriculums().size() > 0) {
+				CommonCurriculum commonCurriculum = g.getCurriculums().get(0);
+				if (commonCurriculum != null)
+					g.setEnroll(commonCurriculum.getEnrollment());
+			}
+		});
+		
+		actualEnrolls.forEach(a -> {
+			EduProcGraphic eduProcGraphic = semester.getEduProcGraphics()
+					.stream().filter(g -> g.getEnroll() == a)
+					.sorted(new Comparator<EduProcGraphic>() {
+						public int compare(EduProcGraphic o1,
+								EduProcGraphic o2) {
+							return o1.getCurriculums().size()
+									- o2.getCurriculums().size();
+						};
+					}).findFirst().orElse(null);
+			if (eduProcGraphic == null) {
+				EduProcGraphic e = new EduProcGraphic();
+				e.setEnroll(a);
+				semester.getEduProcGraphics().add(e);
+				System.out.println("add new:" + e + a);
+			} else {
+				System.out.println("set default:" + eduProcGraphic + a);
+			}
+		});
 	}
 	
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.POST)
 	public String editSemesterPost(
 			@Valid @ModelAttribute("semester") Semester semester,
-			BindingResult result, SessionStatus ss) {
+			BindingResult result, SessionStatus ss,
+			@ModelAttribute("actualEnrolls") List<Enrollment> actualEnrolls) {
 		
 		if (result.hasErrors()) {
 			result.getAllErrors()
@@ -104,8 +156,51 @@ public class SemesterController {
 			return "common/editSemester";
 		}
 		
+		// prepareSemesterToSave(semester, actualEnrolls);
+		semester.getEduProcGraphics().stream()
+				.forEach(g -> g.setSemester(semester));
+		semesterDAO.saveOrUpdate(semester);
+		
 		System.out.println("SUCCESS!!!!!!");
-		return "common/editSemester";
-		// return "redirect:semester-" + s.getIdSemester();
+		
+		ss.setComplete();
+		// return "common/editSemester";
+		return "redirect:edit";
+	}
+	
+	private void prepareSemesterToSave(Semester semester,
+			List<Enrollment> actualEnrolls) {
+		System.out.println("prepare start:" + semester.getEduProcGraphics());
+		List<CommonCurriculum> suchDefined = new ArrayList<>();
+		
+		semester.getEduProcGraphics().stream()
+				.filter(g -> !g.getCurriculums().isEmpty())
+				.forEach(g -> suchDefined.addAll(g.getCurriculums()));
+		
+		System.out.println("such defined: " + suchDefined.size());
+		
+		semester.getEduProcGraphics().stream()
+				.peek(g -> g.setSemester(semester))
+				.filter(g -> g.getCurriculums().isEmpty()).forEach(g -> {
+					Enrollment enrollment = actualEnrolls
+							.stream().filter(a -> a.getIdEnroll() == g
+									.getEnroll().getIdEnroll())
+							.findFirst().get();
+					g.setCurriculums(enrollment.getCommonCurriculums());
+					final List<CommonCurriculum> toRemove = new ArrayList<>();
+					g.getCurriculums().forEach(c -> {
+						suchDefined.forEach(s -> {
+							if (c.getIdCommonCurriculum() == s
+									.getIdCommonCurriculum())
+								toRemove.add(c);
+						});
+					});
+					g.getCurriculums().removeAll(toRemove);
+					System.out.println("enroll " + enrollment.getIdEnroll()
+							+ ", " + enrollment.getCommonCurriculums().size());
+				});
+		
+		System.out.println("prepare end:" + semester.getEduProcGraphics());
+		
 	}
 }

@@ -1,6 +1,5 @@
 package schedule.domain.converters;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 import javax.persistence.AttributeConverter;
@@ -9,15 +8,17 @@ import javax.persistence.Converter;
 
 @Converter(autoApply = true)
 public class LocalDateAttributeConverter
-		implements AttributeConverter<LocalDate, Date> {
+		implements AttributeConverter<LocalDate, String> {
 	
 	@Override
-	public Date convertToDatabaseColumn(LocalDate locDate) {
-		return (locDate == null ? null : Date.valueOf(locDate));
+	public String convertToDatabaseColumn(LocalDate locDate) {
+		if (locDate == null) return null;
+		return locDate.toString();
 	}
 	
 	@Override
-	public LocalDate convertToEntityAttribute(Date sqlDate) {
-		return (sqlDate == null ? null : sqlDate.toLocalDate());
+	public LocalDate convertToEntityAttribute(String sqlDate) {
+		return (sqlDate == null ? null : LocalDate.parse(sqlDate));
 	}
+	
 }

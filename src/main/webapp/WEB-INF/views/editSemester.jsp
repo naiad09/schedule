@@ -10,12 +10,12 @@
 <h1>${semester.semesterYear}/${semester.semesterYear+1}-ый&nbsp;учебный&nbsp;год,
 	${semester.fallSpring?'весна':'осень'}</h1>
 
-<c:set var="dateMin"
+<c:set var="dateMin" scope="request"
 	value="${semester.semesterYear+(semester.fallSpring?'1':'0')}-${semester.fallSpring?'02':'09'}-01" />
-<c:set var="dateMax"
+<c:set var="dateMax" scope="request"
 	value="${semester.semesterYear+1}-${semester.fallSpring?'07-15':'01-31'}" />
 
-<form:form action="edit" method="post" modelAttribute="semester">
+<form:form action="edit" method="post" commandName="semester">
 
 	<table>
 		<thead>
@@ -48,7 +48,11 @@
 						<spring:eval var="enrollCourse"
 							expression="enrolls.^[${semester.semesterYear}- yearStart + 1 == ${i.index}]" />
 						<c:if test="${!empty enrollCourse}">
-
+							<spring:eval
+								expression="semester.eduProcGraphics.?[enroll.idEnroll==${enrollCourse.idEnroll}]"
+								var="hereGraphics" />
+							<spring:eval var="defaultGraphic"
+								expression="T(schedule.service.RefsContainer).getDefaultEduProcGraphicForList(hereGraphics)" />
 							<tbody
 								class="eduProcGraphics ${eduMode} ${qual} course${i.index}">
 								<tr class="selectCurriculum toggleVisiable">
@@ -66,43 +70,53 @@
 											</c:forEach>
 									</select></td>
 								</tr>
+								<c:forEach items="${hereGraphics}" var="g">
+									<c:if test="${g!=defaultGraphic}">
+										<tr class="eduProcGraphic">
+											<td>${i.index}&nbsp;курс,<br> <small>${g.curriculums[0].eduProgram.eduProgCode}</small>
+												<input type="hidden"
+												value="${g.curriculums[0].idCommonCurriculum}"
+												name="eduProcGraphics[].curriculums[0].idCommonCurriculum" />
+												<input type="hidden" value="${g.idEduPeriod}"
+												name="eduProcGraphics[].idEduPeriod" /><input type="hidden"
+												value="${enrollCourse.idEnroll}"
+												name="eduProcGraphics[].enroll.idEnroll" /></td>
+
+											<c:set value="${g}" var="graphic" scope="request" />
+											<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+
+											<td><c:if test="${g.idEduPeriod==null}">
+													<img class="deleteLink button"
+														src="../../resources/cross.png" title="Удалить">
+												</c:if></td>
+										</tr>
+									</c:if>
+								</c:forEach>
 								<tr class="default">
-									<td>${i.index}&nbsp;курс,<br> <small></small></td>
-									<td><input type="hidden"
-										name="eduProcGraphics[].curriculums[0].idCommonCurriculum" />
-										<input name="eduProcGraphics[].eduStart" type="date"
-										min="${dateMin}" value="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].semestrEnd" type="date"
-										min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].recordSessionStart"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].recordSessionEnd"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].examsSessionStart"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].examsSessionEnd"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
+									<td>${i.index}&nbsp;курс,<br> <small></small><input
+										type="hidden"
+										name="eduProcGraphics[].curriculums[0].idCommonCurriculum" /><input
+										type="hidden" name="eduProcGraphics[].idEduPeriod" value="" /><input
+										type="hidden" value="${enrollCourse.idEnroll}"
+										name="eduProcGraphics[].enroll.idEnroll" /></td>
+
+									<c:set value="${null}" var="graphic" scope="request" />
+									<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+
 									<td><img class="deleteLink button"
 										src="../../resources/cross.png" title="Удалить"></td>
 								</tr>
 								<tr class="allCurriculums eduProcGraphic">
 									<td class="allCurriculumsTd">${i.index}&nbsp;курс,<br>
-										<small>все направления</small></td>
-									<td><input type="hidden" value="${enrollCourse.idEnroll}"
-										name="eduProcGraphics[].enroll.idEnroll" /> <input
-										name="eduProcGraphics[].eduStart" type="date"
-										required="required" min="${dateMin}" max="${dateMax}"
-										value="${dateMin}" /></td>
-									<td><input name="eduProcGraphics[].semestrEnd" type="date"
-										required="required" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].recordSessionStart"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].recordSessionEnd"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].examsSessionStart"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
-									<td><input name="eduProcGraphics[].examsSessionEnd"
-										type="date" min="${dateMin}" max="${dateMax}" /></td>
+										<small>${hereGraphics.size() le 1?'все направления':'другие направления'}</small>
+										<input type="hidden" value="${enrollCourse.idEnroll}"
+										name="eduProcGraphics[].enroll.idEnroll" /><input
+										type="hidden" name="eduProcGraphics[].idEduPeriod"
+										value="${defaultGraphic.idEduPeriod==null?'':defaultGraphic.idEduPeriod}" /></td>
+
+									<c:set value="${defaultGraphic}" var="graphic" scope="request" />
+									<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+
 									<td><img src="../../resources/add.png"
 										title="Уточнить для..." class="button pinpointCurriculumLink" /></td>
 								</tr>
@@ -122,6 +136,83 @@
 </form:form>
 
 <script>
+	$(".eduProcGraphics")
+			.each(
+					function() {
+						var allCurriculumsSmall = $(this).find(
+								".allCurriculumsTd small")
+
+						function onClone(newRow, option) {
+							var code = option.text().match(/\d\d\.\d\d\.\d\d/)
+							var td = newRow.find("td:first-child small")
+							td.text("" + code)
+							allCurriculumsSmall.text("другие направления")
+						}
+
+						function onDropAll(newRow, option) {
+							allCurriculumsSmall.text("все направления")
+						}
+
+						var selector = $(this).find(".curriculumSelector")
+						var holder = $(this)
+
+						var config = {
+							holder : holder,
+							rowClass : 'eduProcGraphic',
+							removeLink : $(this).find(".deleteLink"),
+							selector : selector,
+							nameToCopy : "idCommonCurriculum",
+							defaultRowClass : "default",
+							processCloning : onClone,
+							processDropAll : onDropAll,
+							minRows : 1
+						}
+						new DynamicList(config)
+
+						var trSelect = $(this).find(".selectCurriculum")
+
+						function onDropSelection() {
+							trSelect.toggleClass("toggleVisiable")
+						}
+
+						var selectorInput = $(this).find(
+								".curriculumSelectorInput")
+
+						var configFinder = {
+							selector : $(this).find(".curriculumSelector"),
+							input : selectorInput,
+							clearButton : $(this).find(".clearSelection"),
+							maxHeightSelect : 100,
+							onDropSelection : onDropSelection
+						}
+
+						$(this).find(".pinpointCurriculumLink").click(
+								function() {
+									trSelect.toggleClass("toggleVisiable")
+									selectorInput.focus()
+								})
+
+						new SelectorFindHelper(configFinder)
+
+						$("form#semester")
+								.submit(
+										function() {
+											selector
+													.find(
+															"option:not(:disabled)")
+													.each(
+															function(i) {
+																holder
+																		.find(
+																				".allCurriculumsTd")
+																		.append(
+																				'<input type="hidden" name="'
+																				+'eduProcGraphics[].curriculums['+
+	                                                    i+'].idCommonCurriculum" value="'+this.value+'"/>')
+															})
+										})
+					})
+
 	var configSubmit = {
 		form : $("form#semester"),
 		listHolder : $("form#semester"),
@@ -130,55 +221,4 @@
 		defaultRowClass : "default"
 	}
 	new FormDynamicListSubmitProcessor(configSubmit)
-
-	$(".eduProcGraphics").each(function() {
-		var allCurriculumsSmall = $(this).find(".allCurriculumsTd small")
-
-		function onClone(newRow, option) {
-			var code = option.text().match(/\d\d\.\d\d\.\d\d/)
-			var td = newRow.find("td:first-child small")
-			td.text("" + code)
-			allCurriculumsSmall.text("другие направления")
-		}
-
-		function onDropAll(newRow, option) {
-			allCurriculumsSmall.text("все направления")
-		}
-
-		var config = {
-			holder : $(this),
-			rowClass : 'eduProcGraphic',
-			removeLink : $(this).find(".deleteLink"),
-			selector : $(this).find(".curriculumSelector"),
-			defaultRowClass : "default",
-			processCloning : onClone,
-			processDropAll : onDropAll,
-			minRows : 1
-		}
-		new DynamicList(config)
-
-		var trSelect = $(this).find(".selectCurriculum")
-
-		function onDropSelection() {
-			trSelect.toggleClass("toggleVisiable")
-		}
-
-		var selectorInput = $(this).find(".curriculumSelectorInput")
-
-		var configFinder = {
-			selector : $(this).find(".curriculumSelector"),
-			input : selectorInput,
-			clearButton : $(this).find(".clearSelection"),
-			maxHeightSelect : 100,
-			onDropSelection : onDropSelection
-		}
-
-		$(this).find(".pinpointCurriculumLink").click(function() {
-			trSelect.toggleClass("toggleVisiable")
-			selectorInput.focus()
-		})
-
-		new SelectorFindHelper(configFinder)
-
-	})
 </script>

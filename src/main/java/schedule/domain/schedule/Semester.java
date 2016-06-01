@@ -11,7 +11,6 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -45,8 +44,7 @@ public class Semester {
 	@NotNull
 	private Boolean fallSpring;
 	
-	@OneToMany(	mappedBy = "semester", cascade = CascadeType.ALL,
-				fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "semester", cascade = CascadeType.ALL)
 	@Valid
 	private List<EduProcGraphic> eduProcGraphics = new ArrayList<EduProcGraphic>(
 			0);
@@ -104,12 +102,6 @@ public class Semester {
 				: (one.semesterYear + 1);
 		semester.fallSpring = !one.fallSpring;
 		return semester;
-	}
-	
-	public String toString() {
-		return "Semester [idSemester=" + idSemester + ", semesterYear="
-				+ semesterYear + ", fallSpring=" + fallSpring
-				+ ", eduProcGraphics=" + eduProcGraphics + "]";
 	}
 	
 }

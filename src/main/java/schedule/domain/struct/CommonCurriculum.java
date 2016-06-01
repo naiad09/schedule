@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -53,10 +52,7 @@ public class CommonCurriculum {
 	private List<CommonDiscipline> commonDisciplines = new ArrayList<CommonDiscipline>(
 			0);
 	
-	@JoinTable(name = "curriculum_semester", joinColumns = {
-			@JoinColumn(name = "id_common_curriculum") }, inverseJoinColumns = {
-					@JoinColumn(name = "id_edu_period", updatable = false) })
-	@ManyToMany()
+	@ManyToMany(mappedBy = "curriculums")
 	private List<EduProcGraphic> eduProcGraphics;
 	
 	public Integer getIdCommonCurriculum() {
@@ -105,6 +101,12 @@ public class CommonCurriculum {
 	
 	public void setEduProcGraphics(List<EduProcGraphic> eduProcGraphics) {
 		this.eduProcGraphics = eduProcGraphics;
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "[idCommonCurriculum=" + idCommonCurriculum
+				+ ", enrollment=" + enrollment + "]";
 	}
 	
 }

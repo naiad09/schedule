@@ -11,6 +11,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -69,7 +70,7 @@ public class Enrollment {
 	@Formula(value = "period_years*2+if(period_months>0,1,0)")
 	private int semesterCount;
 	
-	@OneToMany(mappedBy = "enrollment")
+	@OneToMany(mappedBy = "enrollment", fetch = FetchType.EAGER)
 	private List<CommonCurriculum> commonCurriculums;
 	
 	public Integer getIdEnroll() {
@@ -166,4 +167,5 @@ public class Enrollment {
 	public enum EduMode {
 		och, zao, oz
 	}
+	
 }

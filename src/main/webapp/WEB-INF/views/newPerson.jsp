@@ -20,7 +20,7 @@
 </c:if>
 
 <form:form action="new-${person.role}" method="post"
-	commandName="person">
+	modelAttribute="person">
 	<input type="hidden" value="${person.role}" name="person" />
 	<h2>Шаг 1: общая информация</h2>
 	<table>
@@ -50,7 +50,7 @@
 		<tr>
 			<td>Дата рождения<br /> <small>например, 2012-05-07</small>
 			</td>
-			<td><form:input path="birthday" pattern="\d{4}-\d{2}-\d{2}" /></td>
+			<td><form:input path="birthday" type="date" /></td>
 			<td><form:errors path="birthday" cssClass="error" /></td>
 		</tr>
 	</table>
@@ -157,16 +157,16 @@
 					}
 					var config = {
 						holder : $("#chairs"),
-						listName : "lecturerJobs",
 						rowClass : 'chair',
 						removeLink : $(".deleteChairLink"),
-						form : $("form#person"),
 						selector : $("#chairSelector"),
 						defaultRowClass : "default",
 						removeDefault : true,
+						nameToCopy : "idChair",
 						hideWithZeroRows : true,
 						processCloning : onClone,
-						processDropAll : onDropAll
+						processDropAll : onDropAll,
+						minRows : 0
 					}
 					new DynamicList(config)
 
@@ -174,11 +174,19 @@
 						selector : $("#chairSelector"),
 						input : $("#chairSelectorInput"),
 						clearButton : $("#clearSelection"),
-						maxHeightSelect : 160,
-						onDropSelection : onDropSelection
+						maxHeightSelect : 160
 					}
 
 					new SelectorFindHelper(configFinder)
+
+					var configSubmit = {
+						form : $("form#person"),
+						listHolder : $("table#chairs"),
+						listName : "lecturerJobs",
+						rowClass : 'chair',
+						defaultRowClass : "default"
+					}
+					new FormDynamicListSubmitProcessor(configSubmit)
 				</script>
 			</c:when>
 			<c:when test="${person.role == 'edudep'}">
