@@ -16,12 +16,12 @@
 		<put-attribute name="content" value="/WEB-INF/views/curriculum.jsp" />
 		<put-attribute name="title" expression="Учебный план" />
 	</definition>
-	
+
 	<definition name="semester" extends="main">
 		<put-attribute name="content" value="/WEB-INF/views/semester.jsp" />
 		<put-attribute name="title"
-			expression="${s.semesterYear}/${s.semesterYear+1}-ый учебный год,
-            ${s.fallSpring?'весна':'осень'}" />
+			expression="${semester.semesterYear}/${semester.semesterYear+1}-ый учебный год,
+            ${semester.fallSpring?'весна':'осень'}" />
 	</definition>
 
 	<definition name="chair" extends="main">

@@ -175,6 +175,14 @@ tr.blockHead4 {
 }
 
 /*Semester*/
+#semester th:not(:first-child) {
+	width: 145px;
+}
+
+#semester td:not(:first-child) {
+	text-align: center;
+}
+
 form#semester select {
 	width: 600px;
 }

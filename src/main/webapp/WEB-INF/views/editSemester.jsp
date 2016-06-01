@@ -4,6 +4,8 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
+<%@taglib uri="http://www.springframework.org/security/tags"
+	prefix="sec"%>
 <script src="../../resources/js/selectorFinder.js"></script>
 <script src="../../resources/js/dynamicList.js"></script>
 
@@ -83,7 +85,7 @@
 												name="eduProcGraphics[].enroll.idEnroll" /></td>
 
 											<c:set value="${g}" var="graphic" scope="request" />
-											<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+											<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
 											<td><c:if test="${g.idEduPeriod==null}">
 													<img class="deleteLink button"
@@ -101,7 +103,7 @@
 										name="eduProcGraphics[].enroll.idEnroll" /></td>
 
 									<c:set value="${null}" var="graphic" scope="request" />
-									<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+									<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
 									<td><img class="deleteLink button"
 										src="../../resources/cross.png" title="Удалить"></td>
@@ -115,7 +117,7 @@
 										value="${defaultGraphic.idEduPeriod==null?'':defaultGraphic.idEduPeriod}" /></td>
 
 									<c:set value="${defaultGraphic}" var="graphic" scope="request" />
-									<t:insertTemplate template="level2/eduProcGraphic.jsp" />
+									<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
 									<td><img src="../../resources/add.png"
 										title="Уточнить для..." class="button pinpointCurriculumLink" /></td>
