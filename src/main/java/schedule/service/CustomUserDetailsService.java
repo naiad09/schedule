@@ -12,12 +12,12 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import schedule.dao.PersonDAO;
-import schedule.domain.persons.EduDep;
 import schedule.domain.persons.AuthData;
+import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Person;
 
 
-@Service
+@Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	
 	@Autowired

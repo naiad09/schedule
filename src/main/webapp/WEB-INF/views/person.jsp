@@ -4,6 +4,7 @@
 	prefix="sec"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="/WEB-INF/custom.tld" prefix="fmt"%>
 
 <h1>${person.fullTextName}</h1>
 <c:if test="${param.saved == true}">
@@ -56,6 +57,8 @@
 		<c:otherwise>женский</c:otherwise>
 	</c:choose>
 	<c:if test="${person.birthday != null}">
-		<br>Дата рождения: ${person.birthday}</c:if>
+		<br>Дата рождения: <fmt:formatDate value="${person.birthday}"
+			pattern="d MMMMM yyyy" />
+	</c:if>
 
 </p>
