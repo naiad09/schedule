@@ -19,7 +19,7 @@
 </c:if>
 
 <form:form action="new-${person.role}" method="post"
-	modelAttribute="person">
+	modelAttribute="person" autocomplete="off">
 	<input type="hidden" value="${person.role}" name="person" />
 	<h2>Шаг 1: общая информация</h2>
 	<table>

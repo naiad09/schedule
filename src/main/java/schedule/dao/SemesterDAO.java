@@ -2,7 +2,6 @@ package schedule.dao;
 
 import java.util.List;
 
-import org.hibernate.Criteria;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
@@ -35,9 +34,7 @@ public class SemesterDAO extends GenericDAO<Semester> {
 	}
 	
 	public Semester get(Integer key) {
-		return (Semester) getCriteriaDaoType()
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
-				.add(Restrictions.idEq(key)).uniqueResult();
+		return currentSession().get(daoType, key);
 	}
 	
 }

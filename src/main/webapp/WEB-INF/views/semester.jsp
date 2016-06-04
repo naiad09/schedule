@@ -20,7 +20,6 @@
 				<th>Конец зачетной недели</th>
 				<th>Начало экзаменационной сессии</th>
 				<th>Конец экзаменационной сессии</th>
-				<th></th>
 			</tr>
 		</thead>
 		<c:forEach items="${refsContainer.eduModes}" var="eduMode">
@@ -73,3 +72,36 @@
 		</c:forEach>
 	</table>
 </form>
+
+<h3>Расписания</h3>
+<table>
+	<c:forEach items="${semester.eduProcGraphics}" var="graphic">
+		<c:forEach items="${graphic.curriculums}" var="comCur">
+			<c:forEach items="${comCur.curriculums}" var="cur">
+				<c:forEach items="${cur.groups}" var="group">
+					<tr>
+						<td>&nbsp;${group.groupNumber}, ${graphic.enroll.course}-ый
+							курс</td>
+						<td><spring:eval
+								expression="graphic.schedules.^[group.idGroup==${group.idGroup}]"
+								var="schedule" /> <c:choose>
+								<c:when test="${schedule!=null}">${schedule}</c:when>
+								<c:otherwise>
+									<sec:authorize access="hasRole('ROLE_ADMIN')">
+										<c:url value="new-schedule" var="semesterUrl" />
+										<form method="post" action="${semesterUrl}" name="schedule">
+											<input type="hidden" name="group.idGroup"
+												value="${group.idGroup}" /> <input type="hidden"
+												name="eduProcGraphic.idEduPeriod"
+												value="${graphic.idEduPeriod}" />
+											<button>Создать расписание</button>
+										</form>
+									</sec:authorize>
+								</c:otherwise>
+							</c:choose></td>
+					</tr>
+				</c:forEach>
+			</c:forEach>
+		</c:forEach>
+	</c:forEach>
+</table>

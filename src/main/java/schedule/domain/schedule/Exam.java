@@ -4,10 +4,14 @@ package schedule.domain.schedule;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -18,9 +22,17 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "exam")
-@PrimaryKeyJoinColumn(	name = "id_lesson_types",
-						referencedColumnName = "id_lesson_types")
-public class Exam extends GroupLessonType {
+@Embeddable
+public class Exam {
+	@Id
+	@NotNull
+	@PrimaryKeyJoinColumn(name = "id_exam")
+	private int idExam;
+	
+	@OneToOne
+	@MapsId
+	@JoinColumn(name = "id_exam", updatable = false)
+	private GroupLessonType groupLessonType;
 	
 	@ManyToOne
 	@JoinColumn(name = "consult_id_classroom")
@@ -39,6 +51,22 @@ public class Exam extends GroupLessonType {
 	@NotNull
 	@Column(name = "exam_date")
 	private LocalDateTime examDate;
+	
+	public int getIdExam() {
+		return idExam;
+	}
+	
+	public void setIdExam(int idExam) {
+		this.idExam = idExam;
+	}
+	
+	public GroupLessonType getGroupLessonType() {
+		return groupLessonType;
+	}
+	
+	public void setGroupLessonType(GroupLessonType groupLessonType) {
+		this.groupLessonType = groupLessonType;
+	}
 	
 	public Classroom getConsultClassroom() {
 		return consultClassroom;

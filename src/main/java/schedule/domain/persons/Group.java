@@ -17,6 +17,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import schedule.domain.schedule.Schedule;
 import schedule.domain.struct.Curriculum;
 
 
@@ -44,6 +45,9 @@ public class Group {
 	
 	@OneToMany(mappedBy = "group")
 	private List<Student> students = new ArrayList<Student>(0);
+	
+	@OneToMany(mappedBy = "group")
+	private List<Schedule> schedules = new ArrayList<Schedule>(0);
 	
 	public Integer getIdGroup() {
 		return idGroup;
@@ -75,6 +79,12 @@ public class Group {
 	
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+	
+	@Override
+	public String toString() {
+		return "Group [idGroup=" + idGroup + ", groupNumber=" + groupNumber
+				+ "]";
 	}
 	
 }

@@ -6,7 +6,9 @@ import static javax.persistence.GenerationType.IDENTITY;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,10 +21,10 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.NotEmpty;
 
 import schedule.domain.persons.Lecturer;
 
@@ -40,51 +42,70 @@ public class GroupLessonType {
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id_lesson_types", updatable = false)
-	private int idLessonTypes;
+	@Column(name = "id_lesson_type", updatable = false)
+	private int idLessonType;
 	
 	@NotNull
 	@JoinColumn(name = "id_schedule", updatable = false)
 	@ManyToOne
 	private Schedule schedule;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_disc_sem", updatable = false)
 	@NotNull
+	@JoinColumn(name = "id_disc_sem", updatable = false)
+	@ManyToOne
 	private DiscTerm discTerm;
 	
+	@OneToOne(	cascade = CascadeType.ALL, optional = true,
+				mappedBy = "groupLessonType")
+	@Embedded
+	private Exam exam;
+	
 	@NotNull
-	@Column(name = "id_lesson_type",
-			columnDefinition = "enum('lec','lab','pract','lab4')",
-			updatable = false)
+	@Column(name = "lesson_type")
 	@Enumerated(EnumType.STRING)
 	private LessonType lessonType;
 	
+	@JoinColumn(name = "id_disc_name", updatable = false)
+	@ManyToOne
+	private Discipline disc;
+	
 	@ManyToMany()
 	@JoinTable(	name = "lecturers_lessons",
-				joinColumns = { @JoinColumn(name = "id_lesson_types",
+				joinColumns = { @JoinColumn(name = "id_lesson_type",
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
-	@OneToMany(mappedBy = "groupLessonType")
-	@NotEmpty
+	@OneToMany(mappedBy = "groupLessonType", cascade = CascadeType.ALL)
+	@Valid
 	private List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>(0);
 	
-	public int getIdLessonTypes() {
-		return idLessonTypes;
+	public GroupLessonType() {
+		super();
 	}
 	
-	public void setIdLessonTypes(int idLessonTypes) {
-		this.idLessonTypes = idLessonTypes;
-	}
-	
-	public DiscTerm getDiscTerm() {
-		return discTerm;
-	}
-	
-	public void setDiscTerm(DiscTerm discTerm) {
+	public GroupLessonType(Schedule schedule, DiscTerm discTerm,
+			LessonType lessonType, Discipline disc) {
+		this.schedule = schedule;
 		this.discTerm = discTerm;
+		this.lessonType = lessonType;
+		this.disc = disc;
+	}
+	
+	public int getIdLessonType() {
+		return idLessonType;
+	}
+	
+	public void setIdLessonType(int idLessonType) {
+		this.idLessonType = idLessonType;
+	}
+	
+	public Exam getExam() {
+		return exam;
+	}
+	
+	public void setExam(Exam exam) {
+		this.exam = exam;
 	}
 	
 	public LessonType getLessonType() {
@@ -119,7 +140,30 @@ public class GroupLessonType {
 		this.scheduleItems = scheduleItems;
 	}
 	
+	public DiscTerm getDiscTerm() {
+		return discTerm;
+	}
+	
+	public void setDiscTerm(DiscTerm discTerm) {
+		this.discTerm = discTerm;
+	}
+	
+	public Discipline getDisc() {
+		return disc;
+	}
+	
+	public void setDisc(Discipline disc) {
+		this.disc = disc;
+	}
+	
+	@Override
+	public String toString() {
+		return "GroupLessonType [idLessonType=" + idLessonType + ", discTerm="
+				+ discTerm + ", lessonType=" + lessonType + ", disc=" + disc
+				+ "]";
+	}
+	
 	public enum LessonType {
-		lec, lab, pract, lab4;
+		lec, lab, lab4, pract;
 	}
 }

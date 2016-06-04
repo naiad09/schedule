@@ -25,7 +25,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "discipline")
 public class Discipline {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_name", updatable = false)
 	private int idDiscName;
@@ -64,6 +65,11 @@ public class Discipline {
 	
 	public void setDiscName(String discName) {
 		this.discName = discName;
+	}
+	
+	@Override
+	public String toString() {
+		return "Discipline [discName=" + discName + "]";
 	}
 	
 }

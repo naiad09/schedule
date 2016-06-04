@@ -24,9 +24,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import schedule.dao.ChairDAO;
-import schedule.dao.GenericDAO;
+import schedule.dao.GroupDAO;
 import schedule.dao.PersonDAO;
-import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
@@ -48,7 +47,7 @@ public class PersonController {
 	@Autowired
 	private PersonDAO personDAO;
 	@Autowired
-	private GenericDAO<Group> groupDAO;
+	private GroupDAO groupDAO;
 	@Autowired
 	private ChairDAO chairDAO;
 	

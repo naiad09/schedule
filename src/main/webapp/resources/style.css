@@ -4,7 +4,7 @@ body {
 }
 
 #page {
-	width: 900px;
+	width: 1000px;
 	margin: auto;
 }
 
@@ -42,6 +42,7 @@ h2 {
 div#login {
 	width: 270px;
 	text-align: center;
+	margin-left: 100px;
 }
 
 /* Text */
@@ -130,20 +131,13 @@ tr.default, .toggleVisiable {
 table#curriculum {
 	width: 1100px;
 	position: relative;
-	margin-left: -100px;
+	margin-left: -50px;
 }
 
-table.borderTable {
+table.borderTable, .borderTable td, .borderTable th {
 	border-spacing: 0;
 	border: 1px solid #808080;
-	border-right: 1px;
-	border-top: 1px;
-}
-
-.borderTable td, .borderTable th {
-	border: 1px solid #808080;
-	border-left: 0px;
-	border-bottom: 0px;
+	border-collapse: collapse;
 }
 
 .borderTable td {
@@ -175,14 +169,110 @@ tr.blockHead4 {
 }
 
 /*Semester*/
-#semester th:not(:first-child) {
+#semester th:not (:first-child ) {
 	width: 145px;
 }
 
-#semester td:not(:first-child) {
+#semester td:not (:first-child ) {
 	text-align: center;
 }
 
 form#semester select {
 	width: 600px;
+}
+
+/* Schedule */
+#groupLessonTypes {
+	text-align: center;
+	width: 210px;
+}
+
+table#schedule {
+	width: 860px;
+}
+
+form table#schedule td:nth-child(1) {
+	text-align: center;
+	width: 80px;
+}
+
+#schedule th:first-child small {
+	transform: rotate(-100grad);
+	display: block;
+	margin: 0px -37px 0 -40px;
+}
+
+#schedule tr.empty {
+	font-size: 10px;
+}
+#schedule>tbody>tr:last-child {
+    border-bottom: 1px double black;
+}
+
+#scheduleOverflow {
+	height: 600px;
+	overflow-y: auto;
+	display: block;
+}
+
+div.glt {
+    border: 1px gray solid;
+    padding: 2px;
+    display: inline-block;
+    cursor: move;
+}
+
+table.schi {
+    border: 1px gray solid;
+    cursor: move;
+}
+
+.schi td {
+    border: none;
+}
+
+
+div.glt.lab, table.schi.lab {
+    background: rgba(141, 209, 93, 0.3);
+}
+
+div.glt.lab4, table.schi.lab4 {
+    background: rgba(194, 162, 240, 0.3);
+}
+
+div.glt.pract, table.schi.pract {
+	background: rgba(240, 162, 162, 0.3);
+}
+
+div.glt.lec, table.schi.lec {
+	background: rgba(156, 231, 231, 0.3);
+}
+.schi .inner {
+    padding: 6px 0;
+}
+.schi td.mover {
+    width: 7px !important;
+    padding: 0px;
+}
+td.rightMover {
+	border-right: 2px dotted gray;
+}
+
+td.leftMover {
+	border-left: 2px dotted gray;
+}
+.schi .schiButtons {
+    float: right;
+    margin-top: -7px;
+}
+.schi .button {
+    filter: grayscale(50%);
+    -webkit-filter: grayscale(1);
+    margin: 0;
+}
+.scheduleItem {
+    padding: 2px 5px;
+}
+td.scheduleItem[colspan='1'] {
+    font-size: 12px;
 }

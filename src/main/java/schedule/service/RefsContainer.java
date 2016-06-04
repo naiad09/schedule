@@ -1,5 +1,8 @@
 package schedule.service;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -48,5 +51,13 @@ public class RefsContainer {
 				return o1.getCurriculums().size() - o2.getCurriculums().size();
 			};
 		}).findFirst().orElse(null);
+	}
+	
+	public List<LocalDate> getDaysOfWeek() {
+		List<LocalDate> days = new ArrayList<LocalDate>();
+		for (int i = 1; i <= 6; i++) {
+			days.add(LocalDate.of(2016, Month.FEBRUARY, i));
+		}
+		return days;
 	}
 }

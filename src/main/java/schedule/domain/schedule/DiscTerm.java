@@ -27,12 +27,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "disc_term")
 public class DiscTerm {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_disc_sem", updatable = false)
 	private int idDiscSem;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_com_disc", updatable = false)
 	@NotNull
 	private CommonDiscipline commonDiscipline;

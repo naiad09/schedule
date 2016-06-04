@@ -26,7 +26,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Embeddable
 public class AuthData {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@PrimaryKeyJoinColumn(name = "auth_uid")
 	private int authUid;
 	

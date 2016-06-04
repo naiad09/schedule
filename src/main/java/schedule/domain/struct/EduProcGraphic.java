@@ -44,6 +44,20 @@ public class EduProcGraphic {
 	// @NotNull
 	private Semester semester;
 	
+	@JoinTable(	name = "curriculum_semester",
+				joinColumns = @JoinColumn(	name = "id_edu_period",
+											updatable = false),
+				inverseJoinColumns = @JoinColumn(name = "id_common_curriculum"))
+	@ManyToMany(fetch = FetchType.EAGER)
+	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
+			0);
+
+	@Transient
+	private Enrollment enroll;
+
+	@OneToMany(mappedBy = "eduProcGraphic")
+	private List<Schedule> schedules = new ArrayList<>();
+
 	@NotNull
 	@Column(name = "edu_start")
 	private LocalDate eduStart;
@@ -66,20 +80,6 @@ public class EduProcGraphic {
 	
 	@Column(name = "exams_session_end")
 	private LocalDate examsSessionEnd;
-	
-	@JoinTable(	name = "curriculum_semester",
-				joinColumns = @JoinColumn(	name = "id_edu_period",
-											updatable = false),
-				inverseJoinColumns = @JoinColumn(name = "id_common_curriculum"))
-	@ManyToMany(fetch = FetchType.EAGER)
-	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
-			0);
-	
-	@Transient
-	private Enrollment enroll;
-	
-	@OneToMany(mappedBy = "eduProcGraphic")
-	private List<Schedule> schedules = new ArrayList<>();
 	
 	public Integer getIdEduPeriod() {
 		return idEduPeriod;
