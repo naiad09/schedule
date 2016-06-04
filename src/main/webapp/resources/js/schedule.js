@@ -1,61 +1,76 @@
+// Управляет интерфейсом расписания. Сокрыщения:
+// schi - schedule item, элемент расписания
+// glt - group lesson type
+// Каждая tr содержит массив[4] ссылок на schi
+
+// удалить schi
 function removeSchi(schi) {
     var targetTd = schi.parentElement
     if (!targetTd) return
+    // удалить из ячейки
     targetTd.removeChild(schi)
     var trOld = targetTd.parentElement
+    // и из массива в tr
 	if (trOld) for(var i = 0;i<4;i++) {
-		if (trOld.schi[i]==schi) {
+		if (trOld.schi[i] == schi) {
 			trOld.schi[i] = null
-			if(schi.classList.contains("lab4"))
+			if (schi.classList.contains("lab4"))
 				trOld.nextElementSibling.schi[i] = null
 		}
 	}
 }
-function newItem(colSpan) {
+function newTd(colSpan) {// создает новую ячейку td
 	var td = document.createElement("td")
 	td.colSpan = colSpan
 	td.classList.add("scheduleItem")
 	return td
 }
+// нормализует tr, то есть составляет правильные ячейки в соответствии с
+// tr.schi[]
 function normalizeTr(tr) {
-	var flagLab4Prev = false
+	var flagLab4Prev = false // нужен для выставления класса
 	var length = tr.cells.length;
-	for (var i = 1; i< length;i++) {
+	for (var i = 1; i< length;i++) { // удаляем все старые ячейки
 		var td = tr.lastElementChild;
 		if(td.firstElementChild)td.removeChild(td.firstElementChild)
 		tr.removeChild(td)
 	}
-	var merge = 0
+	var merge = 0 // определяет, сколько schi или null идут подряд
 	var schi = tr.schi[0]
-	for (var i = 0;i<tr.schi.length+1;i++) {
-		if (schi === tr.schi[i]) merge++
-		else {
-			var td = newItem(merge)
+	for (var i = 0;i<tr.schi.length+1;i++) {// +1, чтобы последняя merge тоже
+											// создавалась
+		if (schi === tr.schi[i]) merge++ // если совпадает, инкрементируем
+		// tr.schi[4]=undefined, поэтому последняя ячейка создается
+		else {// иначе создаем новую ячейку с результатом
+			var td = newTd(merge)
 			merge = 1
-			tr.appendChild(td)
-			if (schi) {if(schi.classList.contains("lab4")) {
-				if (schi.parentElement) {
-					td.remove()
+			tr.appendChild(td)// и добавляем
+			if (schi) {if(schi.classList.contains("lab4")) {// однако если это
+															// lab4
+				if (schi.parentElement) {// и если schi уже добавлена
+											// куда-то, то есть строкой выше
+					td.remove()// удаляем ячейку
 					flagLab4Prev = true
 				}
 				else {
-					td.rowSpan = 2
+					td.rowSpan = 2// ианче ставим rowspan
 					td.appendChild(schi)
 				}
-			} else td.appendChild(schi)}
+			} else td.appendChild(schi)}// а если обычная то просто добавляем
 		}
 		schi = tr.schi[i]
 	}
 	
     if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
-        tr.classList.add("empty")
+        tr.classList.add("empty")// и определяем класс
     else  tr.classList.remove("empty")
 }
+// добавляет shci в tr.schi, удаляет конфликты
 function addSchi(targetTd, schi) {
 	var tdOld = schi.parentElement
 	var tr = targetTd.parentElement
 	
-	if (tdOld) {
+	if (tdOld) {// если schi был перемещен, то нужно удалить старые ссылки
 		var oldTr = tdOld.parentElement;
 		for(var i = 0;i<4;i++) {
 			if (oldTr.schi[i]==schi) {
@@ -64,7 +79,7 @@ function addSchi(targetTd, schi) {
 					oldTr.nextElementSibling.schi[i] = null
 			}
 		}
-		if(oldTr != tr){
+		if(oldTr != tr){// и если это было в другой строке, нормализовать ее
 			normalizeTr(oldTr)
 			if(schi.classList.contains("lab4") && tr != oldTr.nextElementSibling)
 				normalizeTr(oldTr.nextElementSibling)
@@ -72,10 +87,10 @@ function addSchi(targetTd, schi) {
 	}
 	
 	var j = -1// из-за ячейки с парой
-	for(var i=0;tr.cells[i]!=targetTd;i++)
+	for(var i=0;tr.cells[i]!=targetTd;i++)// считаем пропуски в этой строке
 		j+=tr.cells[i].colSpan
 		
-    var prevTr = tr.previousElementSibling
+    var prevTr = tr.previousElementSibling// и из-за предыдущий lab4
     for(var i=0;i<prevTr.cells.length && i<targetTd.colSpan;i++)
     	if (prevTr.cells[i].rowSpan==2)
     		j+=prevTr.cells[i].colSpan
@@ -84,16 +99,17 @@ function addSchi(targetTd, schi) {
 		
 	for(var i = j;i<targetTd.colSpan+j;i++) {
 		var prew = tr.schi[i]
-		if (prew && prew != schi) {
+		if (prew && prew != schi) {// если конфликт, удаляем его
 			removeSchi(prew)
 			if (prew.classList.contains("lab4"))
 				normalizeTr(tr.nextElementSibling)
 		}
-		tr.schi[i] = schi
-		if(schi.classList.contains("lab4")) {
+		tr.schi[i] = schi// записываем schi
+		if(schi.classList.contains("lab4")) { // если lab4, то запиываем и в
+												// следующую строку
 			prew = nextTr.schi[i]
 			if (prew && prew != schi) {
-				removeSchi(prew)
+				removeSchi(prew)// и удаляем конфликты
 				if (prew.classList.contains("lab4"))
 					normalizeTr(tr.nextElementSibling.nextElementSibling)
 			}
@@ -101,16 +117,17 @@ function addSchi(targetTd, schi) {
 		}
 	}
 	
-	normalizeTr(tr)
+	normalizeTr(tr)// и нормализуем
 	if(schi.classList.contains("lab4"))
 		normalizeTr(nextTr)
 }
 
 var schiId = 0
+// создает schi по glt
 function createSchi(glt) {
-    var schi = schiTemplate.cloneNode(true)
-    schi.id = "schi" + schiId++
-    schi.glt = glt
+    var schi = schiTemplate.cloneNode(true)// клонирует шалон
+    schi.id = "schi" + schiId++// добавляет id
+    schi.glt = glt// сохраняет ссылку
 
     var inner = schi.getElementsByClassName("inner")[0]
 
@@ -121,6 +138,7 @@ function createSchi(glt) {
     return schi
 }
 
+// обработчик перемещения в таблицу
 function dragDrop(ev) {
     var targetTd = ev.target
     while (!targetTd.classList.contains("scheduleItem"))
@@ -236,6 +254,7 @@ $(".rightMover.mover").live("mousedown", function(e) {
         } if (coef > 1.2) mergeTwaise(schi, false, coef)
     }
 })
+// разбиение ячейки
 function breakTwaise(schi, left, coef) {
     var td = schi.parentElement
     if (td.colSpan == 1) return
@@ -244,12 +263,12 @@ function breakTwaise(schi, left, coef) {
     if (left) {
     	var dif = td.colSpan - newColSpan
     	if (dif == 0) return
-    	tr.insertBefore(newItem(dif), td)
+    	tr.insertBefore(newTd(dif), td)
     }
     td.colSpan = newColSpan
     addSchi(td, schi)
 }
-
+// слияние ячеек
 function mergeTwaise(schi, left, coef) {
     var td = schi.parentElement
     if (td.colSpan == 4) return
@@ -264,7 +283,7 @@ function mergeTwaise(schi, left, coef) {
     addSchi(td, schi)
 }
 
-
+// обработчик на кнопке удаления
 function processClickDelete(link) {
     while (!link.classList.contains("schi")) {
         link = link.parentNode
