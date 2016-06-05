@@ -8,19 +8,20 @@
 <script src="../../resources/js/selectorFinder.js"></script>
 <script src="../../resources/js/dynamicList.js"></script>
 
-<h1>${schedule.eduProcGraphic.semester.semesterYear}/${schedule.eduProcGraphic.semester.semesterYear+1}-ый
-	учебный&nbsp;год,
+<h1>${schedule.eduProcGraphic.semester.semesterYear}&nbsp;/&nbsp;
+	${schedule.eduProcGraphic.semester.semesterYear+1}-ый учебный год,
 	${schedule.eduProcGraphic.semester.fallSpring?'весна':'осень'},
 	расписание группы ${schedule.group.groupNumber}</h1>
 
 <script src="../../resources/js/schedule.js"></script>
+<script src="../../resources/js/scheduleSettings.js"></script>
 
 <table ondragenter="return dragEnter(event)"
 	ondrop="return dragDrop(event)" ondragover="return dragEnter(event)"
 	style="width: 1100px; margin-left: -50px;">
 	<tr>
 		<td id="scheduleOverflow">
-			<form action="edit" method="post">
+			<form action="edit" method="post" id="scheduleForm">
 				<table id="schedule" class="borderTable">
 					<thead>
 						<tr>
@@ -50,7 +51,9 @@
 								<tr class="empty">
 									<td><fmt:formatDate value="${twain.timeStart}"
 											pattern="HH'<sup>'mm'</sup>'" /> - <fmt:formatDate
-											value="${twain.timeEnd}" pattern="HH'<sup>'mm'</sup>'" /> <input
+											value="${twain.timeEnd}"
+											pattern="HH'
+											<sup>'mm'</sup>'" /> <input
 										type="hidden" value="${twain.idTwain}" /></td>
 									<td colspan="4" class="scheduleItem"></td>
 								</tr>
@@ -64,7 +67,7 @@
 			<table id="groupLessonTypes">
 				<tr>
 					<th>
-						<h3>Дисциплины:</h3>
+						<h3 style="margin-top: 0">Дисциплины:</h3>
 					</th>
 				</tr>
 				<c:forEach items="${schedule.groupLessonTypesMap}" var="mapRow"
@@ -83,6 +86,10 @@
 							</c:forEach></td>
 					</tr>
 				</c:forEach>
+				<tr>
+					<td><br>
+						<button onclick="scheduleForm.submit()">Отправить</button></td>
+				</tr>
 			</table>
 		</td>
 	</tr>
@@ -96,10 +103,11 @@
 				<td class="inner" draggable="true"
 					ondragstart="return dragStartSCHI(event)">
 					<div id="schiButtons" class="schiButtons">
-						<img src="../../resources/add.png" class="button"> <img
+						<img src="../../resources/add.png" class="button"
+							onclick="settings(this)"> <img
 							src="../../resources/cross.png" class="button"
 							onclick="processClickDelete(this)">
-					</div>
+					</div> <input type="hidden" name="timePlan" />
 				</td>
 				<td rowspan="2" class="rightMover mover"></td>
 			</tr>
@@ -112,7 +120,157 @@
 	$("#schedule>tbody").each(function(i) {
 		this.index = i
 		$(this).find("tr.empty").each(function(j) {
-			this.schi=[]
+			this.schi = []
 		})
 	})
 </script>
+
+<div id="settingsDiv">
+	<h2 style="text-align: center; margin: 0;">Настроить элемент
+		расписания</h2>
+	<a id="settgins"></a>
+	<form>
+		<fieldset disabled="disabled">
+			<table>
+				<tr>
+					<td><h3>Предмет</h3></td>
+					<td>Выберите элемент раписписания и нажмите кнопку "Настроить"</td>
+				</tr>
+				<tr>
+					<td style="padding: 6px 5px;">День недели, пара</td>
+					<td><select name="dayOfWeek" required="required" style="min-width: 151px;">
+						<c:forEach items="${refsContainer.daysOfWeek}" var="day">
+								<option><fmt:formatDate value="${day}" pattern="eeee" /></option>
+							</c:forEach></select>
+                        <select name="twain" style="min-width: 100px;">
+                            <c:forEach items="${twains}" var="twain">
+								<option value="${twain.idTwain}">
+								    <fmt:formatDate value="${twain.timeStart}" pattern="HH:mm" /> -
+									<fmt:formatDate value="${twain.timeEnd}" pattern="HH:mm" />
+								</option>
+							</c:forEach></select></td>
+				</tr>
+				<tr>
+					<td>Аудитории</td>
+					<td><div id="classrooms" style="display: inline-block;">
+							<div class="default classroom">
+								<input type="hidden" name="classrooms[].idClassroom" /><span></span><img
+									class="deleteClassroomLink button"
+									src="../../resources/cross.png" title="Удалить">
+							</div>
+						</div><div style="display: inline-block;">
+							<input id="classroomSelectorInput"
+								placeholder="Найти аудиторию по названию" /><img class="button"
+								id="clearClassroomSelection" src="../../resources/cross.png"
+								title="Очистить"><br> <select id="classroomSelector">
+								<c:forEach items="${classrooms}" var="classroom">
+									<option value="${classroom.idClassroom}">ауд.
+										${classroom.classroomNumber}, корпус ${classroom.campus}
+										<c:if test="${classroom.chair!=null}">
+                            , кафедра ${classroom.chair.shortName}</c:if>
+									</option>
+								</c:forEach>
+							</select>
+						</div> <script>
+							function onClone(newRow, option) {
+								newRow.find("span")
+										.text(
+												"ауд."
+														+ option.text().match(
+																/(.*),/)[1])
+							}
+							var config = {
+								holder : $("#classrooms"),
+								rowClass : 'classroom',
+								removeLink : $(".deleteClassroomLink"),
+								selector : $("#classroomSelector"),
+								defaultRowClass : "default",
+								nameToCopy : "idClassroom",
+								processCloning : onClone,
+								minRows : 1
+							}
+							new DynamicList(config)
+
+							var configFinder = {
+								selector : $("#classroomSelector"),
+								input : $("#classroomSelectorInput"),
+								clearButton : $("#clearClassroomSelection"),
+								maxHeightSelect : 100
+							}
+
+							new SelectorFindHelper(configFinder)
+						</script></td>
+				</tr>
+				<tr>
+					<td style="padding: 6px 5px;">Преподаватели</td>
+					<td><div id="lecturers">
+							<div class="default lecturer">
+								<input type="hidden" name="lecturers[].idLecturer" /><span></span><img
+									class="deleteLecturerLink button"
+									src="../../resources/cross.png" title="Удалить">
+							</div>
+						</div>
+						<div>
+							<input id="lecturerSelectorInput"
+								placeholder="Найти преподавателя по имени или кафедре" /><img
+								class="button" id="clearLecturerSelection"
+								src="../../resources/cross.png" title="Очистить"><br>
+							<select id="lecturerSelector">
+								<c:forEach items="${lecturers}" var="lecturer">
+									<c:if test="${!empty lecturer.lecturerJobs}">
+										<spring:message
+											code="${lecturer.lecturerJobs[0].jobType}.shortName"
+											var="mainJob" />
+									</c:if>
+									<option value="${lecturer.uid}"
+										title="${mainJob} ${lecturer.fullName}">
+										${lecturer.fullTextName},
+										<c:forEach items="${lecturer.lecturerJobs}" var="job"
+											varStatus="loop">
+											<spring:message code="${job.jobType}.fullName" />
+									 кафедры ${job.chair.shortName}<c:if test="${!loop.last }">,</c:if>
+										</c:forEach>
+									</option>
+								</c:forEach>
+							</select>
+						</div> <script>
+							function onClone(newRow, option) {
+								newRow.find("span").text(option.attr("title"))
+							}
+							var config = {
+								holder : $("#lecturers"),
+								rowClass : 'lecturer',
+								removeLink : $(".deleteLecturerLink"),
+								selector : $("#lecturerSelector"),
+								defaultRowClass : "default",
+								nameToCopy : "idLecturer",
+								processCloning : onClone,
+								minRows : 1
+							}
+							new DynamicList(config)
+
+							var configFinder = {
+								selector : $("#lecturerSelector"),
+								input : $("#lecturerSelectorInput"),
+								clearButton : $("#clearLecturerSelection"),
+								maxHeightSelect : 100
+							}
+
+							new SelectorFindHelper(configFinder)
+						</script></td>
+				</tr>
+				<tr>
+					<td>Временной план</td>
+					<td><c:forEach begin="0" end="7" varStatus="i">
+							<input type="checkbox" name="scheduleChange" required="required"
+								value="${i.index}" />
+						</c:forEach> <output name="timeplan">Выберите нужные пункты</output></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><button>Сохранить</button></td>
+				</tr>
+			</table>
+		</fieldset>
+	</form>
+</div>

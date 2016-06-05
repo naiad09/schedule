@@ -12,7 +12,7 @@ function DynamicList(c) {
 	// Нажатие на кнопку удалить
 	if (c.removeLink != null)
 		c.removeLink.click(function() {
-			removeRow($(this).parent().parent())
+			removeRow($(this).parents("." + c.rowClass))
 		})
 
 		// Удаляет строку при нажатии на кнопку Удалить, а также скрывает option
@@ -22,7 +22,8 @@ function DynamicList(c) {
 		c.selector.find("option[value='" + id + "']").removeAttr("disabled")
 		row.remove()
 		if (c.holder.find("." + c.rowClass).size() == c.minRows)
-			c.processDropAll()
+			if (c.processDropAll)
+				c.processDropAll()
 	}
 
 	function cloneRow() {

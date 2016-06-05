@@ -8,10 +8,13 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -34,10 +37,13 @@ public class Lecturer extends Person {
 	@NotNull
 	private Degree degree;
 	
-	@OneToMany(mappedBy = "id.lecturer", cascade = CascadeType.ALL)
+	@OneToMany(	mappedBy = "id.lecturer", cascade = CascadeType.ALL,
+				fetch = FetchType.EAGER)
 	@Valid
 	@ElementCollection(targetClass = LecturerJob.class)
 	@NotEmpty
+	@Embedded
+	@OrderBy("jobType asc")
 	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>();
 	
 	public Degree getDegree() {

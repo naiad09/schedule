@@ -7,6 +7,7 @@ function SelectorFindHelper(c) {
 	c.selector.css("position", "absolute")
 	c.selector.wrap("<div></div>")
 	c.selector.css("margin-top", "-1px")
+	c.selector.css("z-index", "1000")
 	c.selector.attr("size", 2)
 	c.selector.append("<option id='notFound' disabled>Ничего не найдено</option>")
 	var notFound = c.selector.find("#notFound")

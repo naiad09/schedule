@@ -147,17 +147,3 @@
 		</table>
 	</c:otherwise>
 </c:choose>
-
-<sec:authorize url="/fvt">
-    <spring:url value="/fvt" var="admin_url" />
-    <br />
-    <a href="${admin_url}">Admin</a>
-</sec:authorize>
-<sec:authorize url="/persons/uid-1/edit">
-    <spring:url value="/persons/uid-1" var="admin_url" />
-    <br />
-    <a href="${admin_url}">Admin2</a>
-</sec:authorize>
-<sec:authorize url="/persons/new-student">
-    Траливали
-</sec:authorize>

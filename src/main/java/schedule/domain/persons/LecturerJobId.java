@@ -3,6 +3,7 @@ package schedule.domain.persons;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
@@ -22,7 +23,7 @@ public class LecturerJobId implements java.io.Serializable {
 	@JoinColumn(name = "id_chair")
 	private Chair chair;
 	
-	@ManyToOne()
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_lecturer", updatable = false)
 	@Embedded
 	private Lecturer lecturer;

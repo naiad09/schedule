@@ -64,10 +64,16 @@ form table td:nth-child(1) {
 	text-align: right;
 	width: 200px;
 }
-
+fieldset {
+    border: none;
+}
+fieldset:disabled, fieldset:disabled * {
+    color: gray !important;
+}
 input {
-	height: 20px;
-	width: 230px;
+    height: 26px;
+    width: 230px;
+    box-sizing: border-box;
 }
 
 input[type="radio"], input[type="checkbox"] {
@@ -85,7 +91,12 @@ select {
 }
 
 button {
-	height: 28px;
+    height: 28px;
+    background: rgba(187, 117, 42, 0.3);
+    border: 1px solid gray;
+}
+button:active {
+    border: black 1px solid;
 }
 
 form table td {
@@ -112,10 +123,8 @@ th {
 	opacity: 1;
 }
 
-fieldset.selectorFinder {
-	padding: 0;
-	margin: 0;
-	border: 0;
+table h3 {
+	margin: 10px 0;
 }
 
 /*Chairs*/
@@ -123,7 +132,7 @@ table#chairs tr td {
 	text-align: left !important;
 }
 
-tr.default, .toggleVisiable {
+.default, .toggleVisiable {
 	display: none;
 }
 
@@ -217,7 +226,7 @@ form table#schedule td:nth-child(1) {
 
 div.glt {
     border: 1px gray solid;
-    padding: 2px;
+    padding: 3px;
     display: inline-block;
     cursor: move;
 }
@@ -275,4 +284,23 @@ td.leftMover {
 }
 td.scheduleItem[colspan='1'] {
     font-size: 12px;
+}
+
+/*schedule settings*/
+.classroom:not(.default) {
+    display: inline-block;
+    border: 1px solid gray;
+    padding: 3px;
+    background: rgba(121, 133, 224, 0.3);
+    margin: 0 3px;
+}
+.classroom .button, .lecturer .button {
+    margin: 1px;
+}
+.lecturer:not(.default) {
+    display: inline-block;
+    border: 1px solid gray;
+    padding: 3px;
+    background: rgba(231, 249, 126, 0.3);
+    margin: 0 3px;
 }

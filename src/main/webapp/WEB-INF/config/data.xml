@@ -41,4 +41,7 @@
 
 	<bean name="twainDAO" class="schedule.dao.MinimalGenericDAO"
 		c:type="schedule.domain.schedule.Twain" />
+
+	<bean name="classroomDAO" class="schedule.dao.MinimalGenericDAO"
+		c:type="schedule.domain.schedule.Classroom" />
 </beans>

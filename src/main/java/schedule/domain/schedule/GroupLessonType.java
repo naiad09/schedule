@@ -12,6 +12,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -58,6 +59,7 @@ public class GroupLessonType {
 	@OneToOne(	cascade = CascadeType.ALL, optional = true,
 				mappedBy = "groupLessonType")
 	@Embedded
+	@Valid
 	private Exam exam;
 	
 	@NotNull
@@ -76,7 +78,8 @@ public class GroupLessonType {
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
-	@OneToMany(mappedBy = "groupLessonType", cascade = CascadeType.ALL)
+	@OneToMany(	mappedBy = "groupLessonType", cascade = CascadeType.ALL,
+				fetch = FetchType.EAGER)
 	@Valid
 	private List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>(0);
 	

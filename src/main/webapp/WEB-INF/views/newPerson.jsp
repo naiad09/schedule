@@ -162,7 +162,6 @@
 						defaultRowClass : "default",
 						removeDefault : true,
 						nameToCopy : "idChair",
-						hideWithZeroRows : true,
 						processCloning : onClone,
 						processDropAll : onDropAll,
 						minRows : 0

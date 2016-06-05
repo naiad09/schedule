@@ -33,7 +33,7 @@ public class UniverStructController {
 		model.addAttribute("faculty", f);
 		model.addAttribute("chairs", chairs);
 		
-		return "faculty";
+		return "common/faculty";
 	}
 	
 	@RequestMapping("{chairShort}")
