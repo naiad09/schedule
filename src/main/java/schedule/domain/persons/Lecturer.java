@@ -18,7 +18,6 @@ import javax.persistence.OrderBy;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -34,7 +33,6 @@ public class Lecturer extends Person {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name = "degree", columnDefinition = "enum(dtn,ctn)")
-	@NotNull
 	private Degree degree;
 	
 	@OneToMany(	mappedBy = "id.lecturer", cascade = CascadeType.ALL,

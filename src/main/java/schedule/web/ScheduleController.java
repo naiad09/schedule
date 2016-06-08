@@ -41,14 +41,14 @@ public class ScheduleController {
 	@Autowired
 	private PersonDAO personDAO;
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-schedule", method = RequestMethod.POST)
 	public String createSchedulePost(Schedule schedule) {
 		scheduleDAO.create(schedule);
 		return "redirect:schedule-" + schedule.getIdSchedule() + "/edit";
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit",
 					method = RequestMethod.GET)
 	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
@@ -63,6 +63,7 @@ public class ScheduleController {
 		return "common/editSchedule";
 	}
 	
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit",
 					method = RequestMethod.POST)
 	public String editSchedulePost(

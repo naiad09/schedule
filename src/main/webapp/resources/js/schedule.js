@@ -18,6 +18,7 @@ function removeSchi(schi) {
 				trOld.nextElementSibling.schi[i] = null
 		}
 	}
+    settingsResetButton.click()
 }
 function newTd(colSpan) {// создает новую ячейку td
 	var td = document.createElement("td")
@@ -120,22 +121,58 @@ function addSchi(targetTd, schi) {
 	normalizeTr(tr)// и нормализуем
 	if(schi.classList.contains("lab4"))
 		normalizeTr(nextTr)
+		
+	updateDivider(schi)
 }
 
 var schiId = 0
 // создает schi по glt
 function createSchi(glt) {
-    var schi = schiTemplate.cloneNode(true)// клонирует шалон
+    var schi = schiTemplate.cloneNode(true)// клонирует шаблон
     schi.id = "schi" + schiId++// добавляет id
     schi.glt = glt// сохраняет ссылку
 
-    var inner = schi.getElementsByClassName("inner")[0]
+    var discipline = $(schi).find(".discipline")
 
     schi.classList.add(glt.classList[1])
-    inner.appendChild(glt.firstElementChild.cloneNode(true))
-    inner.appendChild(glt.lastElementChild.cloneNode(true))
-    inner.appendChild(glt.parentElement.firstElementChild.cloneNode(true))
+    discipline.append($(glt).find("input[name='idLessonType'], .gltType").clone())
+    discipline.append(" ")
+    discipline.append($(glt).parent().find("b").clone())
+    updateDetails(schi)
     return schi
+}
+
+function updateDetails(schi) {
+	var details2 = $(schi).find(".details span.classrooms")
+	var clrooms = details2.find("input")
+	clrooms.each(function(i){
+		var cl = $(classroomSelector).find("option[value='"+this.value+"']").attr("title")
+		details2.append(cl+((i<clrooms.size()-1)?", ":""))
+	})
+	
+	var details0 = $(schi).find(".details span.lecturers")
+	var lects = $(schi.glt).find(".lecturers input")
+	lects.each(function(i){
+		var cl = $(lecturerSelector).find("option[value='"+this.value+"']").attr("title")
+		details0.append(cl+((i<lects.size()-1)?", ":""))
+	})
+	
+	updateDivider(schi)
+}
+function updateDivider(schi) {
+	var details2 = $(schi).find(".details span.classrooms")
+	var details0 = $(schi).find(".details span.lecturers")
+	
+	var divider = $(schi).find(".details span.divider");
+	var width = $(schi).find("b").width() + 20
+	if(details2.width() && details0.width()) {
+		width-=details0.width()
+		width-=details2.width()
+		divider.width(width)
+		divider.css("display","inline-block")
+	} else {
+		divider.css("display","none")
+	}
 }
 
 // обработчик перемещения в таблицу

@@ -54,4 +54,5 @@ public class CustomUserDetailsService implements UserDetailsService {
 		
 	}
 	
+	public CustomUserDetailsService() {}
 }

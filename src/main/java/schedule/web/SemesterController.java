@@ -42,7 +42,7 @@ public class SemesterController {
 		return "common/ed";
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.GET)
 	public String newSemester(Model model) {
 		model.addAttribute("semester",
@@ -50,7 +50,7 @@ public class SemesterController {
 		return "common/newSemester";
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.POST)
 	public String newSemesterPost(
 			@Valid @ModelAttribute("semester") Semester semester,
@@ -97,14 +97,14 @@ public class SemesterController {
 		return "semester";
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.GET)
 	public String editSemester(@PathVariable Integer id, Model model) {
 		showSemester(id, model);
 		return "common/editSemester";
 	}
 	
-	// @Secured("ROLE_ADMIN")
+	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.POST)
 	public String editSemesterPost(
 			@Valid @ModelAttribute("semester") Semester semester,

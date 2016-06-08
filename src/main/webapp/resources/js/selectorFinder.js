@@ -2,7 +2,7 @@ function SelectorFindHelper(c) {
 	var options = c.selector.find("option")
 	var optionHeight = 16.75
 	var count = options.size()
-	c.input.width(c.selector.width() - 7)
+	c.input.width(c.selector.width())
 	c.selector.width(c.selector.width())
 	c.selector.css("position", "absolute")
 	c.selector.wrap("<div></div>")

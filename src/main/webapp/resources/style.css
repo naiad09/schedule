@@ -38,7 +38,9 @@ h1 {
 h2 {
 	font-size: 20px;
 }
-
+h3 {
+    font-size: 16px;
+}
 div#login {
 	width: 270px;
 	text-align: center;
@@ -272,8 +274,15 @@ td.leftMover {
 }
 .schi .schiButtons {
     float: right;
-    margin-top: -7px;
+    margin-top: -5px;
+    margin-bottom: -45px;
+    display: none;
+    height: 0px;
 }
+.schi:hover .schiButtons {
+    display: block;
+}
+
 .schi .button {
     filter: grayscale(50%);
     -webkit-filter: grayscale(1);
@@ -282,25 +291,32 @@ td.leftMover {
 .scheduleItem {
     padding: 2px 5px;
 }
+td.scheduleItem[colspan='2'] {
+	font-size: 14px;
+}
 td.scheduleItem[colspan='1'] {
     font-size: 12px;
-}
+} 
+td.scheduleItem[colspan='1'] .divider{
+    display: none;
+} 
 
 /*schedule settings*/
-.classroom:not(.default) {
+.classroom, .lecturer {
     display: inline-block;
+}
+#scheduleSettingsForm .classroom:not(.default) {
     border: 1px solid gray;
     padding: 3px;
     background: rgba(121, 133, 224, 0.3);
-    margin: 0 3px;
+    margin-right: 6px;
 }
-.classroom .button, .lecturer .button {
+#scheduleSettingsForm .classroom .button, #scheduleSettingsForm .lecturer .button {
     margin: 1px;
 }
-.lecturer:not(.default) {
-    display: inline-block;
+#scheduleSettingsForm .lecturer:not(.default) {
     border: 1px solid gray;
     padding: 3px;
     background: rgba(231, 249, 126, 0.3);
-    margin: 0 3px;
+    margin-right: 6px;
 }

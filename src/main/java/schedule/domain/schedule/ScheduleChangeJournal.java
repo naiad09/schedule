@@ -32,7 +32,8 @@ import schedule.domain.persons.EduDep;
 				"date_of_change" }))
 public class ScheduleChangeJournal {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_change", updatable = false)
 	private int idScheduleChange;
@@ -49,10 +50,6 @@ public class ScheduleChangeJournal {
 	@Column(name = "note")
 	@Size(max = 200)
 	private String note;
-	
-	@Column(name = "commit_bool")
-	@NotNull
-	private boolean commitBool = false;
 	
 	@Column(name = "date_of_change", updatable = false)
 	@GeneratedValue
@@ -88,14 +85,6 @@ public class ScheduleChangeJournal {
 	
 	public void setNote(String note) {
 		this.note = note;
-	}
-	
-	public boolean isCommitBool() {
-		return commitBool;
-	}
-	
-	public void setCommitBool(boolean commitBool) {
-		this.commitBool = commitBool;
 	}
 	
 	public LocalDateTime getDateOfChange() {

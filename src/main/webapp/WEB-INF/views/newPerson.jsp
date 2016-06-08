@@ -49,7 +49,8 @@
 		<tr>
 			<td>Дата рождения<br /> <small>например, 2012-05-07</small>
 			</td>
-			<td><form:input path="birthday" type="date" /></td>
+			<td><form:input path="birthday" type="date" max="2000-01-01"
+					min="1920-01-01" /></td>
 			<td><form:errors path="birthday" cssClass="error" /></td>
 		</tr>
 	</table>
@@ -103,9 +104,8 @@
 								<th></th>
 							</tr>
 							<c:forEach items="${person.lecturerJobs}" var="job" varStatus="i">
-								<spring:eval
-									expression="chairs.^[idChair == ${job.chair.idChair}]"
-									var="chair" />
+								<spring:eval var="chair"
+									expression="chairs.^[idChair == ${job.chair.idChair}]" />
 								<tr class="chair">
 									<td class="chairName"><spring:message
 											code="${chair.faculty}.shortName" />, ${chair.fullName} <c:if
