@@ -193,7 +193,7 @@ form#semester select {
 }
 
 /* Schedule */
-#groupLessonTypes {
+#scheduleDisciplines {
 	text-align: center;
 	width: 210px;
 }

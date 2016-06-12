@@ -11,10 +11,12 @@ import schedule.domain.curriculum.Curriculum;
 import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.curriculum.Semester;
 import schedule.domain.persons.Group;
+import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.EduProcGraphic;
-import schedule.domain.schedule.GroupLessonType;
-import schedule.domain.schedule.GroupLessonType.LessonType;
 import schedule.domain.schedule.Schedule;
+import schedule.domain.schedule.ScheduleDiscipline;
+import schedule.domain.schedule.ScheduleDiscipline.LessonType;
+import schedule.domain.schedule.ScheduleItem;
 
 
 @Repository
@@ -55,7 +57,7 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 				.getCommonCurriculum().getEnrollment().getYearStart()) * 2
 				+ (semester.getFallSpring() ? 2 : 1);
 		
-		List<GroupLessonType> groupLessonTypes = new ArrayList<>();
+		List<ScheduleDiscipline> groupLessonTypes = new ArrayList<>();
 		
 		curriculum.getCommonCurriculum().getCommonDisciplines()
 				.forEach(cd -> cd.getDiscTerms().stream()
@@ -77,26 +79,30 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 										.findAny().get();
 							}
 							if (cd.getLectureHours() > 0)// и создаем нужные
-								groupLessonTypes.add(new GroupLessonType(
+								groupLessonTypes.add(new ScheduleDiscipline(
 										schedule, dt, LessonType.lec,
 										profileDiscipline.getDiscipline()));
 							if (cd.getLabHours() > 0) {
-								groupLessonTypes.add(new GroupLessonType(
+								groupLessonTypes.add(new ScheduleDiscipline(
 										schedule, dt, LessonType.lab,
 										profileDiscipline.getDiscipline()));
-								groupLessonTypes.add(new GroupLessonType(
+								groupLessonTypes.add(new ScheduleDiscipline(
 										schedule, dt, LessonType.lab4,
 										profileDiscipline.getDiscipline()));
 							}
 							if (cd.getSeminarHours() > 0)
-								groupLessonTypes.add(new GroupLessonType(
+								groupLessonTypes.add(new ScheduleDiscipline(
 										schedule, dt, LessonType.pract,
 										profileDiscipline.getDiscipline()));
 						}));
 		
-		schedule.setGroupLessonTypes(groupLessonTypes);
+		schedule.setScheduleDisciplines(groupLessonTypes);
 		
 		currentSession().save(schedule);
 	}
 	
+	public List<Classroom> getConflictingClassrooms(ScheduleItem scheduleItem) {
+		
+		return null;
+	}
 }

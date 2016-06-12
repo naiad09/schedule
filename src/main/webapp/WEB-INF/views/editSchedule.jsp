@@ -64,13 +64,13 @@
 			</form>
 		</td>
 		<td>
-			<table id="groupLessonTypes">
+			<table id="scheduleDisciplines">
 				<tr>
 					<th>
 						<h3 style="margin-top: 0">Дисциплины:</h3>
 					</th>
 				</tr>
-				<c:forEach items="${schedule.groupLessonTypesMap}" var="mapRow"
+				<c:forEach items="${schedule.scheduleDisciplinesMap}" var="mapRow"
 					varStatus="i">
 					<tr>
 						<td><b>${mapRow.value[0].disc.discName}</b> <br> <small>Часов

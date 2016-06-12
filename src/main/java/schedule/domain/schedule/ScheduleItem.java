@@ -36,12 +36,12 @@ public class ScheduleItem {
 	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_item", updatable = false)
-	private long idSchedule;
+	private long idScheduleItem;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_lesson_types", updatable = false)
 	@NotNull
-	private GroupLessonType groupLessonType;
+	private ScheduleDiscipline scheduleDiscipline;
 	
 	@ManyToOne()
 	@JoinColumn(name = "id_twain")
@@ -73,20 +73,20 @@ public class ScheduleItem {
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
-	public long getIdSchedule() {
-		return idSchedule;
+	public long getIdScheduleItem() {
+		return idScheduleItem;
 	}
 	
-	public void setIdSchedule(long idSchedule) {
-		this.idSchedule = idSchedule;
+	public void setIdScheduleItem(long idScheduleItem) {
+		this.idScheduleItem = idScheduleItem;
 	}
 	
-	public GroupLessonType getGroupLessonType() {
-		return groupLessonType;
+	public ScheduleDiscipline getScheduleDiscipline() {
+		return scheduleDiscipline;
 	}
 	
-	public void setGroupLessonType(GroupLessonType groupLessonType) {
-		this.groupLessonType = groupLessonType;
+	public void setScheduleDiscipline(ScheduleDiscipline scheduleDiscipline) {
+		this.scheduleDiscipline = scheduleDiscipline;
 	}
 	
 	public Twain getTwain() {

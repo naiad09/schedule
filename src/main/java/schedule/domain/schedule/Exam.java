@@ -32,7 +32,7 @@ public class Exam {
 	@OneToOne
 	@MapsId
 	@JoinColumn(name = "id_exam", updatable = false)
-	private GroupLessonType groupLessonType;
+	private ScheduleDiscipline scheduleDiscipline;
 	
 	@ManyToOne
 	@JoinColumn(name = "consult_id_classroom")
@@ -60,12 +60,12 @@ public class Exam {
 		this.idExam = idExam;
 	}
 	
-	public GroupLessonType getGroupLessonType() {
-		return groupLessonType;
+	public ScheduleDiscipline getScheduleDiscipline() {
+		return scheduleDiscipline;
 	}
 	
-	public void setGroupLessonType(GroupLessonType groupLessonType) {
-		this.groupLessonType = groupLessonType;
+	public void setScheduleDiscipline(ScheduleDiscipline scheduleDiscipline) {
+		this.scheduleDiscipline = scheduleDiscipline;
 	}
 	
 	public Classroom getConsultClassroom() {

@@ -1,5 +1,8 @@
 package schedule.web;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -19,6 +24,7 @@ import schedule.dao.ScheduleDAO;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.Schedule;
+import schedule.domain.schedule.ScheduleItem;
 import schedule.domain.schedule.Twain;
 import schedule.service.PersonFinder;
 import schedule.service.ResourceNotFoundException;
@@ -73,5 +79,18 @@ public class ScheduleController {
 		System.out.println("HERE " + result.hasErrors());
 		
 		return "common/editSchedule";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "schedule-{idSchedule}/edit/conflict-classrooms",
+					method = RequestMethod.GET)
+	public List<String> getConflictingClassrooms(
+			@RequestBody ScheduleItem scheduleItem) {
+		List<String> records = new ArrayList<String>();
+		records.add("Record #1");
+		records.add("Record #2");
+		
+		return records;
+		// return scheduleDAO.getConflictingClassrooms(scheduleItem);
 	}
 }

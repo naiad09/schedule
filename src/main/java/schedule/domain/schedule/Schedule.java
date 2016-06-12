@@ -55,7 +55,7 @@ public class Schedule {
 	@OneToMany(	mappedBy = "schedule", cascade = CascadeType.ALL,
 				fetch = FetchType.EAGER)
 	@Valid
-	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>();
+	private List<ScheduleDiscipline> scheduleDisciplines = new ArrayList<ScheduleDiscipline>();
 	
 	public int getIdSchedule() {
 		return idSchedule;
@@ -81,12 +81,13 @@ public class Schedule {
 		this.scheduleDone = scheduleDone;
 	}
 	
-	public List<GroupLessonType> getGroupLessonTypes() {
-		return groupLessonTypes;
+	public List<ScheduleDiscipline> getScheduleDisciplines() {
+		return scheduleDisciplines;
 	}
 	
-	public void setGroupLessonTypes(List<GroupLessonType> groupLessonTypes) {
-		this.groupLessonTypes = groupLessonTypes;
+	public void setScheduleDisciplines(
+			List<ScheduleDiscipline> scheduleDisciplines) {
+		this.scheduleDisciplines = scheduleDisciplines;
 	}
 	
 	public EduProcGraphic getEduProcGraphic() {
@@ -98,8 +99,8 @@ public class Schedule {
 	}
 	
 	@Transient
-	public SortedMap<DiscTerm, List<GroupLessonType>> getGroupLessonTypesMap() {
-		SortedMap<DiscTerm, List<GroupLessonType>> map = new TreeMap<DiscTerm, List<GroupLessonType>>(
+	public SortedMap<DiscTerm, List<ScheduleDiscipline>> getScheduleDisciplinesMap() {
+		SortedMap<DiscTerm, List<ScheduleDiscipline>> map = new TreeMap<DiscTerm, List<ScheduleDiscipline>>(
 				new Comparator<DiscTerm>() {
 					public int compare(DiscTerm o1, DiscTerm o2) {
 						String s1 = o1.getCommonDiscipline().getDiscCode();
@@ -107,7 +108,7 @@ public class Schedule {
 						return s1.compareTo(s2);
 					}
 				});
-		Map<DiscTerm, List<GroupLessonType>> collect = getGroupLessonTypes()
+		Map<DiscTerm, List<ScheduleDiscipline>> collect = getScheduleDisciplines()
 				.stream()
 				.collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
 		map.putAll(collect);

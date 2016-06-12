@@ -41,7 +41,7 @@ import schedule.service.ResourceNotFoundException;
  */
 @Controller
 @RequestMapping("persons")
-@SessionAttributes(names = { "faculties", "chairs", "groups", })
+@SessionAttributes(names = { "faculties", "chairs", "groups" })
 public class PersonController {
 	
 	@Autowired

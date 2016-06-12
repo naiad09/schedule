@@ -18,7 +18,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.schedule.GroupLessonType;
+import schedule.domain.schedule.ScheduleDiscipline;
 
 
 /**
@@ -57,7 +57,7 @@ public class DiscTerm {
 	private boolean exam;
 	
 	@OneToMany(mappedBy = "discTerm")
-	private List<GroupLessonType> groupLessonTypes = new ArrayList<GroupLessonType>(
+	private List<ScheduleDiscipline> groupLessonTypes = new ArrayList<ScheduleDiscipline>(
 			0);
 	
 	public int getIdDiscSem() {
@@ -100,11 +100,11 @@ public class DiscTerm {
 		this.exam = exam;
 	}
 	
-	public List<GroupLessonType> getGroupLessonTypes() {
+	public List<ScheduleDiscipline> getGroupLessonTypes() {
 		return groupLessonTypes;
 	}
 	
-	public void setGroupLessonTypes(List<GroupLessonType> groupLessonTypes) {
+	public void setGroupLessonTypes(List<ScheduleDiscipline> groupLessonTypes) {
 		this.groupLessonTypes = groupLessonTypes;
 	}
 	
