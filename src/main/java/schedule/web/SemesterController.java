@@ -18,8 +18,8 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import schedule.dao.EnrollmentDAO;
 import schedule.dao.SemesterDAO;
-import schedule.domain.schedule.Semester;
-import schedule.domain.struct.CommonCurriculum;
+import schedule.domain.curriculum.CommonCurriculum;
+import schedule.domain.curriculum.Semester;
 import schedule.domain.struct.Enrollment;
 import schedule.service.ResourceNotFoundException;
 

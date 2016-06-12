@@ -24,8 +24,8 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import schedule.domain.curriculum.DiscTerm;
 import schedule.domain.persons.Group;
-import schedule.domain.struct.EduProcGraphic;
 
 
 @Entity

@@ -1,4 +1,4 @@
-package schedule.domain.struct;
+package schedule.domain.curriculum;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -19,7 +19,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import schedule.domain.schedule.CommonDiscipline;
+import schedule.domain.schedule.EduProcGraphic;
+import schedule.domain.struct.EduProgram;
+import schedule.domain.struct.Enrollment;
 
 
 @Entity

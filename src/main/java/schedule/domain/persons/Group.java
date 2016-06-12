@@ -17,8 +17,8 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import schedule.domain.curriculum.Curriculum;
 import schedule.domain.schedule.Schedule;
-import schedule.domain.struct.Curriculum;
 
 
 /**

@@ -21,9 +21,9 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.persons.LecturerJob;
 import schedule.domain.schedule.Classroom;
-import schedule.domain.schedule.ProfileDiscipline;
 
 
 /**

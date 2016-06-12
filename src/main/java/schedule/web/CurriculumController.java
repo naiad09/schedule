@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import schedule.dao.CurriculumDAO;
-import schedule.domain.struct.CommonCurriculum;
+import schedule.domain.curriculum.CommonCurriculum;
 import schedule.service.ResourceNotFoundException;
 
 

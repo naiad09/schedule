@@ -7,14 +7,14 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import schedule.domain.curriculum.Curriculum;
+import schedule.domain.curriculum.ProfileDiscipline;
+import schedule.domain.curriculum.Semester;
 import schedule.domain.persons.Group;
+import schedule.domain.schedule.EduProcGraphic;
 import schedule.domain.schedule.GroupLessonType;
 import schedule.domain.schedule.GroupLessonType.LessonType;
-import schedule.domain.schedule.ProfileDiscipline;
 import schedule.domain.schedule.Schedule;
-import schedule.domain.schedule.Semester;
-import schedule.domain.struct.Curriculum;
-import schedule.domain.struct.EduProcGraphic;
 
 
 @Repository

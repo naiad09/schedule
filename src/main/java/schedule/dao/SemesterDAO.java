@@ -6,7 +6,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import schedule.domain.schedule.Semester;
+import schedule.domain.curriculum.Semester;
 
 
 @Repository

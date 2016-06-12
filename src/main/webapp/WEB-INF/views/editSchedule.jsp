@@ -110,7 +110,7 @@
 							onclick="processClickDelete(this)" title="Удалить">
 					</div>
 					<div class="discipline"></div>
-                    <input type="hidden" name="timePlan" />
+                    <input type="hidden" name="weekPlan" />
                     <input type="hidden" name="comment" />
                     <small class="details">
                         <span class="lecturers"></span>
@@ -276,7 +276,7 @@
 					<td>Временной план</td>
 					<td><c:forEach begin="0" end="7" varStatus="i">
 							<input type="checkbox" name="scheduleChange" value="${i.index}" />
-						</c:forEach> <output name="timeplan">Выберите нужные пункты</output></td>
+						</c:forEach> <output name="weekplan">Выберите нужные пункты</output></td>
 				</tr>
 				<tr>
 					<td>Комментарий</td>

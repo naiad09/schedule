@@ -17,7 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -30,10 +29,11 @@ import javax.validation.constraints.Size;
  * расписания, после смены).
  */
 @Entity
-@Table(name = "schedule_items")
+@Table(name = "schedule_item")
 public class ScheduleItem {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_item", updatable = false)
 	private long idSchedule;
@@ -48,10 +48,10 @@ public class ScheduleItem {
 	@NotNull
 	private Twain twain;
 	
-	@Column(name = "time_plan")
+	@Column(name = "weekplan")
 	@NotNull
 	// TODO mapping and test
-	private short timePlan = 255;
+	private short weekPlan = 255;
 	
 	@Enumerated(EnumType.ORDINAL)
 	@NotNull
@@ -72,10 +72,6 @@ public class ScheduleItem {
 						@JoinColumn(name = "id_schedule", updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
-	
-	@OneToMany(mappedBy = "schedule")
-	private List<ScheduleChangeJournal> scheduleChangeJournals = new ArrayList<ScheduleChangeJournal>(
-			0);
 	
 	public long getIdSchedule() {
 		return idSchedule;
@@ -101,12 +97,12 @@ public class ScheduleItem {
 		this.twain = twain;
 	}
 	
-	public short getTimePlan() {
-		return timePlan;
+	public short getWeekPlan() {
+		return weekPlan;
 	}
 	
-	public void setTimePlan(short timePlan) {
-		this.timePlan = timePlan;
+	public void setWeekPlan(short weekPlan) {
+		this.weekPlan = weekPlan;
 	}
 	
 	public DayOfWeek getWeekday() {
@@ -139,15 +135,6 @@ public class ScheduleItem {
 	
 	public void setClassrooms(List<Classroom> classrooms) {
 		this.classrooms = classrooms;
-	}
-	
-	public List<ScheduleChangeJournal> getScheduleChangeJournals() {
-		return scheduleChangeJournals;
-	}
-	
-	public void setScheduleChangeJournals(
-			List<ScheduleChangeJournal> scheduleChangeJournals) {
-		this.scheduleChangeJournals = scheduleChangeJournals;
 	}
 	
 }

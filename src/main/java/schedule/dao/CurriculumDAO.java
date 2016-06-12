@@ -10,8 +10,8 @@ import org.hibernate.criterion.SimpleExpression;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
-import schedule.domain.struct.CommonCurriculum;
-import schedule.domain.struct.Curriculum;
+import schedule.domain.curriculum.CommonCurriculum;
+import schedule.domain.curriculum.Curriculum;
 import schedule.domain.struct.EduProgram;
 
 

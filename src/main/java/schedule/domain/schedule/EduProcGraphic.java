@@ -1,4 +1,4 @@
-package schedule.domain.struct;
+package schedule.domain.schedule;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -21,8 +21,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.schedule.Schedule;
-import schedule.domain.schedule.Semester;
+import schedule.domain.curriculum.CommonCurriculum;
+import schedule.domain.curriculum.Semester;
+import schedule.domain.struct.Enrollment;
 
 
 /**

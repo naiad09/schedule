@@ -24,6 +24,7 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Formula;
 
+import schedule.domain.curriculum.CommonCurriculum;
 import schedule.domain.struct.EduProgram.EduQual;
 
 

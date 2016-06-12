@@ -27,6 +27,8 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import schedule.domain.curriculum.DiscTerm;
+import schedule.domain.curriculum.Discipline;
 import schedule.domain.persons.Lecturer;
 
 

@@ -1,4 +1,4 @@
-package schedule.domain.schedule;
+package schedule.domain.curriculum;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -22,8 +22,6 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
-
-import schedule.domain.struct.CommonCurriculum;
 
 
 @Entity

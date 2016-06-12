@@ -7,7 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import schedule.domain.schedule.Semester;
+import schedule.domain.curriculum.Semester;
 import schedule.domain.struct.Enrollment;
 
 

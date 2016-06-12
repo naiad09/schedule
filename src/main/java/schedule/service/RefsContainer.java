@@ -8,11 +8,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import schedule.domain.curriculum.CommonDiscipline.DisciplineVariability;
 import schedule.domain.persons.Lecturer.Degree;
 import schedule.domain.persons.LecturerJob.JobType;
-import schedule.domain.schedule.CommonDiscipline.DisciplineVariability;
+import schedule.domain.schedule.EduProcGraphic;
 import schedule.domain.struct.Chair.Faculty;
-import schedule.domain.struct.EduProcGraphic;
 import schedule.domain.struct.EduProgram.EduQual;
 import schedule.domain.struct.Enrollment.EduMode;
 

@@ -227,7 +227,7 @@ function dragStartSCHI(ev) {
 function dragEnter(ev) {
     event.preventDefault()
     var td = ev.target
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 10; i++) {
         if (td.classList.contains("scheduleItem"))
         	return true;
         else {

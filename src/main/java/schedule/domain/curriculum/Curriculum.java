@@ -1,4 +1,4 @@
-package schedule.domain.struct;
+package schedule.domain.curriculum;
 // Generated 08.05.2016 21:15:35 by Hibernate Tools 4.0.0
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -18,6 +18,7 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 import schedule.domain.persons.Group;
+import schedule.domain.struct.SkillProfile;
 
 
 /**
