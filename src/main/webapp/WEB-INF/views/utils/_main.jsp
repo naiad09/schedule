@@ -10,7 +10,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 <link href="${pageContext.request.contextPath}/resources/style.css"
 	rel="stylesheet" />
-<script src="${pageContext.request.contextPath}/resources/jquery.min.js"
+<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"
 	type="text/javascript"></script>
 <title>РГРТУ - <t:insertAttribute name="title" /></title>
 <script>

@@ -12,9 +12,25 @@ function SelectorFindHelper(c) {
 	c.selector.append("<option id='notFound' disabled>Ничего не найдено</option>")
 	var notFound = c.selector.find("#notFound")
 	
+	focus = false 
+	
+	c.input.click(function(){
+		if (!focus) {
+			focus = true
+			
+			document.onclick = function(e) {
+	            var closest = $(e.target)
+	            	.closest("#" + c.input.attr("id") + ", #" + c.selector.attr("id"));
+				if (focus && closest.length == 0) {
+	                dropSelection()
+	            }
+	        };			
+		}
+	})
+	
 	c.clearButton.click(dropSelection)
 	c.selector.hide()
- options.click(dropSelection)
+	options.click(dropSelection)
 	
 	c.input.keypress(function(e) {
 		var text = c.input.val() + getChar(e)
@@ -31,6 +47,8 @@ function SelectorFindHelper(c) {
 	})
 		
 	function dropSelection() {
+		focus = false
+        document.onclick = undefined
 		c.selector.hide()
 		c.input.val("")
 		if(c.onDropSelection)
