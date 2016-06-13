@@ -2,8 +2,9 @@ function SelectorFindHelper(c) {
 	var options = c.selector.find("option")
 	var optionHeight = 16.75
 	var count = options.size()
-	c.input.width(c.selector.width())
-	c.selector.width(c.selector.width())
+	var width = c.selector.width();
+	c.input.width(width)
+	c.selector.width(width)
 	c.selector.css("position", "absolute")
 	c.selector.wrap("<div></div>")
 	c.selector.css("margin-top", "-1px")
@@ -12,21 +13,8 @@ function SelectorFindHelper(c) {
 	c.selector.append("<option id='notFound' disabled>Ничего не найдено</option>")
 	var notFound = c.selector.find("#notFound")
 	
-	focus = false 
-	
-	c.input.click(function(){
-		if (!focus) {
-			focus = true
-			
-			document.onclick = function(e) {
-	            var closest = $(e.target)
-	            	.closest("#" + c.input.attr("id") + ", #" + c.selector.attr("id"));
-				if (focus && closest.length == 0) {
-	                dropSelection()
-	            }
-	        };			
-		}
-	})
+	FormHider("click", c.input, 
+				"#" + c.input.attr("id") + ", #" + c.selector.attr("id"), dropSelection)
 	
 	c.clearButton.click(dropSelection)
 	c.selector.hide()
@@ -47,8 +35,6 @@ function SelectorFindHelper(c) {
 	})
 		
 	function dropSelection() {
-		focus = false
-        document.onclick = undefined
 		c.selector.hide()
 		c.input.val("")
 		if(c.onDropSelection)

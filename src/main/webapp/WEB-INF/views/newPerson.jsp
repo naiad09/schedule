@@ -84,8 +84,6 @@
 				</tr>
 			</c:when>
 			<c:when test="${person.role == 'lecturer'}">
-				<script src="../resources/js/selectorFinder.js"></script>
-				<script src="../resources/js/dynamicList.js"></script>
 				<tr>
 					<td>Научная степень</td>
 					<td><t:insertTemplate template="level2/degreeSelector.jsp" /></td>

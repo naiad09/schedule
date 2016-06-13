@@ -6,8 +6,6 @@
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 <%@taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
-<script src="../../resources/js/selectorFinder.js"></script>
-<script src="../../resources/js/dynamicList.js"></script>
 
 <h1>${semester.semesterYear}/${semester.semesterYear+1}-ый&nbsp;учебный&nbsp;год,
 	${semester.fallSpring?'весна':'осень'}</h1>

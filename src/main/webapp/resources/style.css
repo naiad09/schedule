@@ -64,12 +64,12 @@ a {
 /*Forms*/
 form table td:nth-child(1) {
 	text-align: right;
-	width: 200px;
+	width: 180px;
 }
 fieldset {
     border: none;
 }
-fieldset:disabled, fieldset:disabled * {
+fieldset:disabled {
     color: gray !important;
 }
 input {
@@ -193,10 +193,7 @@ form#semester select {
 }
 
 /* Schedule */
-#scheduleDisciplines {
-	text-align: center;
-	width: 210px;
-}
+
 
 table#schedule {
 	width: 860px;
@@ -235,34 +232,35 @@ div.glt {
 
 table.schi {
     border: 1px gray solid;
-    cursor: move;
+	cursor: move;
 }
 
 .schi td {
-    border: none;
+	border: none;
 }
 
-
-div.glt.lab, table.schi.lab {
-    background: rgba(141, 209, 93, 0.3);
+div.glt.lab, table.schi.lab, .lab .lecturer, .lab .classroom {
+	background: rgba(141, 209, 93, 0.3);
 }
 
-div.glt.lab4, table.schi.lab4 {
-    background: rgba(194, 162, 240, 0.3);
+div.glt.lab4, table.schi.lab4, .lab4 .lecturer, .lab4 .classroom {
+	background: rgba(194, 162, 240, 0.3);
 }
 
-div.glt.pract, table.schi.pract {
+div.glt.pract, table.schi.pract, .pract .lecturer, .pract .classroom {
 	background: rgba(240, 162, 162, 0.3);
 }
 
-div.glt.lec, table.schi.lec {
+div.glt.lec, table.schi.lec, .lec .lecturer, .lec .classroom {
 	background: rgba(156, 231, 231, 0.3);
 }
+
 .schi .inner {
-    padding: 6px 0;
+	padding: 6px 0;
 }
+
 .schi td.mover {
-    width: 7px !important;
+	width: 7px !important;
     padding: 0px;
 }
 td.rightMover {
@@ -308,7 +306,6 @@ td.scheduleItem[colspan='1'] .divider{
 #scheduleSettingsForm .classroom:not(.default) {
     border: 1px solid gray;
     padding: 3px;
-    background: rgba(121, 133, 224, 0.3);
     margin-right: 6px;
 }
 #scheduleSettingsForm .classroom .button, #scheduleSettingsForm .lecturer .button {
@@ -317,6 +314,5 @@ td.scheduleItem[colspan='1'] .divider{
 #scheduleSettingsForm .lecturer:not(.default) {
     border: 1px solid gray;
     padding: 3px;
-    background: rgba(231, 249, 126, 0.3);
     margin-right: 6px;
 }

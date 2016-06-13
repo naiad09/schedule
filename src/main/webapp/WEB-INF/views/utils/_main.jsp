@@ -8,11 +8,26 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
+
 <link href="${pageContext.request.contextPath}/resources/style.css"
 	rel="stylesheet" />
-<script src="${pageContext.request.contextPath}/resources/js/jquery.min.js"
-	type="text/javascript"></script>
+<link rel="stylesheet/less" type="text/css"
+	href="${pageContext.request.contextPath}/resources/style.less">
+
+<script
+	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/less.min.js"></script>
+
+<script
+	src="${pageContext.request.contextPath}/resources/js/dynamicList.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/formHider.js"></script>
+<script
+	src="${pageContext.request.contextPath}/resources/js/selectorFinder.js"></script>
+
 <title>РГРТУ - <t:insertAttribute name="title" /></title>
+
 <script>
 	RegExp.escape = function(s) {
 		return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');

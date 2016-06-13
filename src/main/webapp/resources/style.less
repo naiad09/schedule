@@ -1,0 +1,49 @@
+.grayBorder () {
+    border: 1px #a9a9a9 solid;
+}
+
+// Selector Finder wrapper
+.selectorFinderWrapper {
+    width: 630px;
+    background: white;
+    display: inline-block;
+    .grayBorder;
+    padding: 2px;
+    input {
+        border: none;
+        outline: none;
+    }
+}
+
+#scheduleDisciplines {
+    text-align: center;
+    width: 210px;
+    vertical-align: top;
+    .scheDisc {
+        .grayBorder;
+        background: rgba(255, 255, 255, 0.3);
+        margin-bottom: 5px;
+        padding: 3px;
+        cursor: pointer;
+        b {
+            padding-bottom: 2px;
+            display: inline-block;
+        }
+    }
+}
+
+#scheduleDiscSettingsDiv {
+    display: none;
+    input {
+        width: 280px ! important;
+    }
+
+    select {
+        width: 636px ! important;
+    }
+    
+    tr.toggleVisible {
+        display: none;
+    }
+}
+

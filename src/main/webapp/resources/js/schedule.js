@@ -18,7 +18,6 @@ function removeSchi(schi) {
 				trOld.nextElementSibling.schi[i] = null
 		}
 	}
-    settingsResetButton.click()
 }
 function newTd(colSpan) {// создает новую ячейку td
 	var td = document.createElement("td")
@@ -153,7 +152,7 @@ function updateDetails(schi) {
 	var details0 = $(schi).find(".details span.lecturers")
 	var lects = $(schi.glt).find(".lecturers input")
 	lects.each(function(i){
-		var cl = $(lecturerSelector).find("option[value='"+this.value+"']").attr("title")
+		var cl = $(lecLecturerSelector).find("option[value='"+this.value+"']").attr("title")
 		details0.append(cl+((i<lects.size()-1)?", ":""))
 	})
 	

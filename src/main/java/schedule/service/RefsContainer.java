@@ -12,6 +12,7 @@ import schedule.domain.curriculum.CommonDiscipline.DisciplineVariability;
 import schedule.domain.persons.Lecturer.Degree;
 import schedule.domain.persons.LecturerJob.JobType;
 import schedule.domain.schedule.EduProcGraphic;
+import schedule.domain.schedule.ScheduleDiscipline.LessonType;
 import schedule.domain.struct.Chair.Faculty;
 import schedule.domain.struct.EduProgram.EduQual;
 import schedule.domain.struct.Enrollment.EduMode;
@@ -51,6 +52,10 @@ public class RefsContainer {
 				return o1.getCurriculums().size() - o2.getCurriculums().size();
 			};
 		}).findFirst().orElse(null);
+	}
+	
+	public LessonType[] getLessonTypes() {
+		return LessonType.values();
 	}
 	
 	public List<LocalDate> getDaysOfWeek() {

@@ -11,7 +11,6 @@ import schedule.domain.curriculum.Curriculum;
 import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.curriculum.Semester;
 import schedule.domain.persons.Group;
-import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.EduProcGraphic;
 import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleDiscipline;
@@ -71,7 +70,7 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 								profileDiscipline = pd.get(0);
 								// или это общая дисциплина
 							} else {// или профильная, тогда выбираем для
-									// конкретного профиля
+								// конкретного профиля
 								profileDiscipline = pd.stream()
 										.filter(r -> r
 												.getCurriculum() == curriculum
@@ -101,7 +100,7 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 		currentSession().save(schedule);
 	}
 	
-	public List<Classroom> getConflictingClassrooms(ScheduleItem scheduleItem) {
+	public List<Integer> getConflictingClassrooms(ScheduleItem scheduleItem) {
 		
 		return null;
 	}

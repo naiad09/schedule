@@ -39,7 +39,7 @@ public class ScheduleItem {
 	private long idScheduleItem;
 	
 	@ManyToOne()
-	@JoinColumn(name = "id_lesson_types", updatable = false)
+	@JoinColumn(name = "id_schedule_discipline", updatable = false)
 	@NotNull
 	private ScheduleDiscipline scheduleDiscipline;
 	
@@ -59,7 +59,7 @@ public class ScheduleItem {
 	private DayOfWeek weekday;
 	
 	@Column(name = "note")
-	@Size(max = 256)
+	@Size(max = 512)
 	private String note;
 	
 	@Column(name = "elective")

@@ -1,6 +1,5 @@
 package schedule.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -84,13 +83,8 @@ public class ScheduleController {
 	@ResponseBody
 	@RequestMapping(value = "schedule-{idSchedule}/edit/conflict-classrooms",
 					method = RequestMethod.GET)
-	public List<String> getConflictingClassrooms(
+	public List<Integer> getConflictingClassrooms(
 			@RequestBody ScheduleItem scheduleItem) {
-		List<String> records = new ArrayList<String>();
-		records.add("Record #1");
-		records.add("Record #2");
-		
-		return records;
-		// return scheduleDAO.getConflictingClassrooms(scheduleItem);
+		return scheduleDAO.getConflictingClassrooms(scheduleItem);
 	}
 }
