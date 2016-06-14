@@ -39,7 +39,10 @@ scheduleDiscSettingsSaveButton.onclick = function() {
 						"tr." + this.classList[1] + " .lecturer input")
 				$(this).find(".lecturers").empty().append(lecturers.clone())
 
-				// обновить schi
+				var glt = this
+				$(".schi." + this.id).each(function() {
+					updateDetails(this)
+				})
 			})
 	dropScheduleDiscSettingsForm()
 }

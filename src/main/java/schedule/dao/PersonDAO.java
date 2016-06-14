@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -20,8 +21,8 @@ import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.LecturerJob;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
-import schedule.service.PersonConverter;
 import schedule.service.PersonFinder;
+import schedule.service.converters.PersonConverter;
 
 
 @Repository
@@ -126,8 +127,8 @@ public class PersonDAO extends GenericDAO<Person> {
 		if (pf.getGender() != null)
 			crit.add(Restrictions.eq("gender", pf.getGender()));
 		if (pf.getName() != null) {
-			crit.add(Restrictions.like("fullTextName",
-					"%" + pf.getName() + "%"));
+			crit.add(Restrictions.like("fullTextName", pf.getName(),
+					MatchMode.ANYWHERE));
 		}
 		if (pf.getLoginExists() != null) {
 			DetachedCriteria detCrit = DetachedCriteria

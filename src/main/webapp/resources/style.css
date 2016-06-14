@@ -196,7 +196,7 @@ form#semester select {
 
 
 table#schedule {
-	width: 860px;
+	width: 850px;
 }
 
 form table#schedule td:nth-child(1) {

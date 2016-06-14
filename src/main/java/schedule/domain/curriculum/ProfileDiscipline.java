@@ -28,26 +28,25 @@ import schedule.domain.struct.Chair;
 		@UniqueConstraint(columnNames = { "id_curriculum", "id_disc_name" }) })
 public class ProfileDiscipline {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_prof_disc", updatable = false)
 	private int idProfDisc;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_chair", updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_chair", updatable = false, nullable = false)
 	private Chair chair;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_disc_name", updatable = false)
-	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_disc_name", updatable = false, nullable = false)
 	private Discipline discipline;
 	
-	@Column(name = "id_curriculum", updatable = false)
+	@Column(name = "id_curriculum", updatable = false, nullable = false)
 	private Integer curriculum;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_common_disc", updatable = false)
-	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_common_disc", updatable = false, nullable = false)
 	private CommonDiscipline commonDiscipline;
 	
 	public int getIdProfDisc() {

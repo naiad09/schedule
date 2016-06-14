@@ -213,12 +213,13 @@
 										})
 					})
 
-	var configSubmit = {
-		form : $("form#semester"),
-		listHolder : $("form#semester"),
-		listName : "eduProcGraphics",
-		rowClass : 'eduProcGraphic',
-		defaultRowClass : "default"
-	}
-	new FormDynamicListSubmitProcessor(configSubmit)
+	$("form#semester").submit(function() {
+		var configSubmit = {
+			listHolder : $("form#semester"),
+			listName : "eduProcGraphics",
+			rowClass : 'eduProcGraphic',
+			defaultRowClass : "default"
+		}
+		processDynamicListForm(configSubmit)
+	})
 </script>

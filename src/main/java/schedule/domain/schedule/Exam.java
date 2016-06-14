@@ -31,7 +31,7 @@ public class Exam {
 	
 	@OneToOne
 	@MapsId
-	@JoinColumn(name = "id_exam", updatable = false)
+	@JoinColumn(name = "id_exam", updatable = false, nullable = false)
 	private ScheduleDiscipline scheduleDiscipline;
 	
 	@ManyToOne

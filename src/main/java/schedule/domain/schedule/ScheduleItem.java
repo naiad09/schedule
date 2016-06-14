@@ -3,14 +3,11 @@ package schedule.domain.schedule;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.time.DayOfWeek;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -38,38 +35,32 @@ public class ScheduleItem {
 	@Column(name = "id_schedule_item", updatable = false)
 	private long idScheduleItem;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_schedule_discipline", updatable = false)
-	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_schedule_discipline", updatable = false,
+				nullable = false)
 	private ScheduleDiscipline scheduleDiscipline;
 	
-	@ManyToOne()
+	@ManyToOne
 	@JoinColumn(name = "id_twain")
 	@NotNull
 	private Twain twain;
 	
 	@Column(name = "weekplan")
 	@NotNull
-	// TODO mapping and test
-	private short weekPlan = 255;
+	private Integer weekplan;
 	
-	@Enumerated(EnumType.ORDINAL)
 	@NotNull
 	@Column(name = "weekday")
-	private DayOfWeek weekday;
+	private Integer weekday;
 	
 	@Column(name = "note")
 	@Size(max = 512)
 	private String note;
 	
-	@Column(name = "elective")
-	@NotNull
-	private boolean elective = false;
-	
 	@ManyToMany()
 	@JoinTable(	name = "schedule_classroom",
-				joinColumns = {
-						@JoinColumn(name = "id_schedule", updatable = false) },
+				joinColumns = { @JoinColumn(name = "id_schedule_item",
+											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
@@ -97,19 +88,19 @@ public class ScheduleItem {
 		this.twain = twain;
 	}
 	
-	public short getWeekPlan() {
-		return weekPlan;
+	public Integer getWeekplan() {
+		return weekplan;
 	}
 	
-	public void setWeekPlan(short weekPlan) {
-		this.weekPlan = weekPlan;
+	public void setWeekplan(Integer weekplan) {
+		this.weekplan = weekplan;
 	}
 	
-	public DayOfWeek getWeekday() {
+	public Integer getWeekday() {
 		return weekday;
 	}
 	
-	public void setWeekday(DayOfWeek weekday) {
+	public void setWeekday(Integer weekday) {
 		this.weekday = weekday;
 	}
 	
@@ -119,14 +110,6 @@ public class ScheduleItem {
 	
 	public void setNote(String note) {
 		this.note = note;
-	}
-	
-	public boolean isElective() {
-		return elective;
-	}
-	
-	public void setElective(boolean elective) {
-		this.elective = elective;
 	}
 	
 	public List<Classroom> getClassrooms() {

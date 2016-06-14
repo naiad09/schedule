@@ -20,16 +20,18 @@
 					<td><spring:message code="${lessonType}.full" /></td>
 					<td><div class="selectorFinderWrapper">
 							<span id="${lessonType}Lecturers">
-								<div class="default">
-									<input type="hidden" name="lecturers[].idLecturer" /> <span></span>
+								<span class="default">
+									<input type="hidden" class="lecturerInput"
+										name="scheduleDisciplines[].lecturers[].uid" /> <span></span>
 									<img class="delete${lessonType}LecturerLink button"
 										src="../../resources/cross.png" title="Удалить">
-								</div>
+								</span>
 							</span> <input id="${lessonType}LecturerSelectorInput"
-								placeholder="Найти преподавателя по имени или кафедре" /></div>
-						<img class="button" id="clear${lessonType}LecturerSelection"
-                            src="../../resources/cross.png" title="Очистить">
-						<select id="${lessonType}LecturerSelector">
+								placeholder="Найти преподавателя по имени или кафедре" />
+						</div>
+                        <img class="button" id="clear${lessonType}LecturerSelection"
+					        src="../../resources/cross.png" title="Очистить">
+                        <select id="${lessonType}LecturerSelector">
 							<c:forEach items="${lecturers}" var="lecturer">
 								<c:if test="${!empty lecturer.lecturerJobs}">
 									<spring:message
@@ -47,46 +49,45 @@
 									</c:forEach>
 								</option>
 							</c:forEach>
-						</select>
-						<script>
-							function onClone(newRow, option) {
-								newRow.find("span").text(option.attr("title"))
-							}
-							var config = {
-								holder : $("#${lessonType}Lecturers"),
-								rowClass : 'lecturer',
-								removeLink : $(".delete${lessonType}LecturerLink"),
-								selector : $("#${lessonType}LecturerSelector"),
-								defaultRowClass : "default",
-								nameToCopy : "idLecturer",
-								processCloning : onClone,
-								minRows : 1
-							}
-							new DynamicList(config)
+					</select> <script>
+						function onClone(newRow, option) {
+							newRow.find("span").text(option.attr("title"))
+						}
+						var config = {
+							holder : $("#${lessonType}Lecturers"),
+							rowClass : 'lecturer',
+							removeLink : $(".delete${lessonType}LecturerLink"),
+							selector : $("#${lessonType}LecturerSelector"),
+							defaultRowClass : "default",
+							nameToCopy : "uid",
+							processCloning : onClone,
+							minRows : 1
+						}
+						new DynamicList(config)
 
-							var configFinder = {
-								selector : $("#${lessonType}LecturerSelector"),
-								input : $("#${lessonType}LecturerSelectorInput"),
-								clearButton : $("#clear${lessonType}LecturerSelection"),
-								maxHeightSelect : 100
-							}
+						var configFinder = {
+							selector : $("#${lessonType}LecturerSelector"),
+							input : $("#${lessonType}LecturerSelectorInput"),
+							clearButton : $("#clear${lessonType}LecturerSelection"),
+							maxHeightSelect : 100
+						}
 
-							new SelectorFindHelper(configFinder)
+						new SelectorFindHelper(configFinder)
 
-							$("#clear${lessonType}LecturerSelection")
-									.click(
-											function() {
-												$(
-														"#${lessonType}Lecturers .lecturer "
-																+ ".delete${lessonType}LecturerLink")
-														.click()
-											})
-						</script></td>
+						$("#clear${lessonType}LecturerSelection")
+								.click(
+										function() {
+											$(
+													"#${lessonType}Lecturers .lecturer "
+															+ ".delete${lessonType}LecturerLink")
+													.click()
+										})
+					</script></td>
 				</tr>
 			</c:forEach>
 			<tr>
 				<td></td>
-				<td><button type="button" id="scheduleDiscSettingsSaveButton">Сохранить</button>
+				<td><button type="button" id="scheduleDiscSettingsSaveButton">Применить</button>
 					<button type="reset" id="scheduleDiscSettingsResetButton">Отменить</button></td>
 			</tr>
 		</table>

@@ -12,7 +12,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -24,6 +23,9 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import schedule.domain.curriculum.DiscTerm;
 import schedule.domain.curriculum.Discipline;
@@ -45,13 +47,11 @@ public class ScheduleDiscipline {
 	@Column(name = "id_schedule_discipline", updatable = false)
 	private int idScheduleDiscipline;
 	
-	@NotNull
-	@JoinColumn(name = "id_schedule", updatable = false)
+	@JoinColumn(name = "id_schedule", updatable = false, nullable = false)
 	@ManyToOne
 	private Schedule schedule;
 	
-	@NotNull
-	@JoinColumn(name = "id_disc_sem", updatable = false)
+	@JoinColumn(name = "id_disc_sem", updatable = false, nullable = false)
 	@ManyToOne
 	private DiscTerm discTerm;
 	
@@ -61,26 +61,25 @@ public class ScheduleDiscipline {
 	@Valid
 	private Exam exam;
 	
-	@NotNull
-	@Column(name = "lesson_type")
-	@Enumerated(EnumType.STRING)
-	private LessonType lessonType;
-	
-	@JoinColumn(name = "id_disc_name", updatable = false)
+	@JoinColumn(name = "id_disc_name", updatable = false, nullable = false)
 	@ManyToOne
 	private Discipline disc;
 	
 	@ManyToMany()
 	@JoinTable(	name = "lecturers_lessons",
-				joinColumns = { @JoinColumn(name = "id_lesson_type",
+				joinColumns = { @JoinColumn(name = "id_schedule_discipline",
 											updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
-	@OneToMany(	mappedBy = "scheduleDiscipline", cascade = CascadeType.ALL,
-				fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "scheduleDiscipline", cascade = CascadeType.ALL)
 	@Valid
+	@Fetch(FetchMode.SUBSELECT)
 	private List<ScheduleItem> scheduleItems = new ArrayList<ScheduleItem>(0);
+	
+	@Column(name = "lesson_type", updatable = false, nullable = false)
+	@Enumerated(EnumType.STRING)
+	private LessonType lessonType;
 	
 	public ScheduleDiscipline() {
 		super();
@@ -160,7 +159,7 @@ public class ScheduleDiscipline {
 	
 	@Override
 	public String toString() {
-		return "GroupLessonType [id=" + idScheduleDiscipline + ", discTerm="
+		return "ScheduleDiscipline [id=" + idScheduleDiscipline + ", discTerm="
 				+ discTerm + ", lessonType=" + lessonType + ", disc=" + disc
 				+ "]";
 	}

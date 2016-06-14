@@ -3,6 +3,37 @@
 // glt - group lesson type
 // Каждая tr содержит массив[4] ссылок на schi
 
+var schiId = 0 // счетчик schi, чтобы каждому присвоить уникальный id
+
+//Расстановка номеров
+$("#schedule>tbody.weekday").each(function(i) {
+	this.index = i
+	$(this).find("tr.empty").each(function(j) {
+		this.schi = [ null, null, null, null ]
+	})
+})
+
+// парсинг scheduleInfo
+var trsToNormalize = []
+$(scheduleItemsInfo).find(".schiInfo").each(function(){
+	var schiInfo = this.innerHTML.split(/,\n?\s*/)
+	var schi = createSchi($("#glt" + schiInfo[2])[0])
+	var tr = $("tbody.weekday").eq(schiInfo[3])
+		.find("input.twainInput[value='" + schiInfo[1] + "']").parents("tr.scheduleTr")[0]
+	trsToNormalize[trsToNormalize.length] = tr
+	$(schi).find("input[name*='idScheduleItem']").val(schiInfo[0])
+	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5])
+	
+	// анализ weekplan
+	tr.schi[0] = schi
+	tr.schi[1] = schi
+	tr.schi[2] = schi
+	tr.schi[3] = schi
+})
+for (var i = 0; i < trsToNormalize.length; i++) {
+	normalizeTr(trsToNormalize[i])
+}
+
 // удалить schi
 function removeSchi(schi) {
     var targetTd = schi.parentElement
@@ -124,7 +155,6 @@ function addSchi(targetTd, schi) {
 	updateDivider(schi)
 }
 
-var schiId = 0
 // создает schi по glt
 function createSchi(glt) {
     var schi = schiTemplate.cloneNode(true)// клонирует шаблон
@@ -134,7 +164,12 @@ function createSchi(glt) {
     var discipline = $(schi).find(".discipline")
 
     schi.classList.add(glt.classList[1])
-    discipline.append($(glt).find("input[name='idLessonType'], .gltType").clone())
+    schi.classList.add(glt.id)
+    discipline.append($(glt).find("input[name*='idScheduleDiscipline']")
+		.clone()
+		.attr("name","scheduleDisciplines[].scheduleItems[].scheduleDiscipline.idScheduleDiscipline")
+    )
+    discipline.append($(glt).find(".gltType").clone())
     discipline.append(" ")
     discipline.append($(glt).parent().find("b").clone())
     updateDetails(schi)
@@ -149,7 +184,7 @@ function updateDetails(schi) {
 		details2.append(cl+((i<clrooms.size()-1)?", ":""))
 	})
 	
-	var details0 = $(schi).find(".details span.lecturers")
+	var details0 = $(schi).find(".details span.lecturers").empty()
 	var lects = $(schi.glt).find(".lecturers input")
 	lects.each(function(i){
 		var cl = $(lecLecturerSelector).find("option[value='"+this.value+"']").attr("title")
@@ -331,4 +366,40 @@ function processClickDelete(link) {
     normalizeTr(tr)
     if(link.classList.contains("lab4"))
         normalizeTr(tr.nextElementSibling)
+}
+
+scheduleForm.onsubmit = function() {
+	var configSubmit = {
+		listHolder : $(scheduleDisciplines),
+		listName : "scheduleDisciplines",
+		rowClass : "glt"
+	}
+	processDynamicListForm(configSubmit)
+	
+	$(".glt").each(function(i) {
+		var configSubmit = {
+			listHolder : $(this),
+			listName : "lecturers",
+			rowClass : "lecturerInput"
+		}
+		processDynamicListForm(configSubmit)
+		
+		$(".schi." + this.id).each(function(){
+			$(this).find("input").each(function() {
+				this.name = this.name.replace(/scheduleDisciplines\[\d*\]/,
+						"scheduleDisciplines[" + i + "]")
+			})
+			$(this).find("input[name*='weekday']").val($(this).parents("tbody.weekday")[0].index)
+			$(this).find("input[name*='idTwain']").val(
+					$(this).parents("tr.scheduleTr").find("input.twainInput").val()
+				)
+		})
+		
+		var configSubmit = {
+			listHolder : $(schedule),
+			rowClass : "schi." + this.id,
+			listName : "scheduleItems"
+		}
+		processDynamicListForm(configSubmit)
+	})
 }

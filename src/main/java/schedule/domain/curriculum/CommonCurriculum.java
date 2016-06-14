@@ -36,14 +36,12 @@ public class CommonCurriculum {
 	@Column(name = "id_common_curriculum", updatable = false)
 	private Integer idCommonCurriculum;
 	
-	@NotNull
-	@ManyToOne()
-	@JoinColumn(name = "id_enroll", updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_enroll", updatable = false, nullable = false)
 	private Enrollment enrollment;
 	
-	@NotNull
-	@ManyToOne()
-	@JoinColumn(name = "id_edu_prog", updatable = false)
+	@ManyToOne
+	@JoinColumn(name = "id_edu_prog", updatable = false, nullable = false)
 	private EduProgram eduProgram;
 	
 	@NotEmpty

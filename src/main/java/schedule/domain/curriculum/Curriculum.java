@@ -32,19 +32,19 @@ import schedule.domain.struct.SkillProfile;
 				"id_common_curriculum" }))
 public class Curriculum {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_curriculum", unique = true, updatable = false)
 	private Integer idCurriculum;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_profile", updatable = false)
-	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_profile", updatable = false, nullable = false)
 	private SkillProfile skillProfile;
 	
-	@ManyToOne()
-	@JoinColumn(name = "id_common_curriculum", updatable = false)
-	@NotNull
+	@ManyToOne
+	@JoinColumn(name = "id_common_curriculum", updatable = false,
+				nullable = false)
 	private CommonCurriculum commonCurriculum;
 	
 	@OneToMany(mappedBy = "curriculum")

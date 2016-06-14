@@ -24,7 +24,8 @@ import schedule.domain.struct.Chair;
 @Table(name = "classroom")
 public class Classroom {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_classroom", unique = true, updatable = false)
 	private int idClassroom;
@@ -34,7 +35,6 @@ public class Classroom {
 	private Chair chair;
 	
 	@Column(name = "classroom_number", unique = true, updatable = false)
-	@NotNull
 	@Size(max = 5, min = 2)
 	private String classroomNumber;
 	

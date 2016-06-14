@@ -41,8 +41,7 @@ public class EduProcGraphic {
 	private Integer idEduPeriod;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_semestr", updatable = false)
-	// @NotNull
+	@JoinColumn(name = "id_semestr", updatable = false, nullable = false)
 	private Semester semester;
 	
 	@JoinTable(	name = "curriculum_semester",
@@ -52,13 +51,13 @@ public class EduProcGraphic {
 	@ManyToMany(fetch = FetchType.EAGER)
 	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
 			0);
-
+	
 	@Transient
 	private Enrollment enroll;
-
+	
 	@OneToMany(mappedBy = "eduProcGraphic")
 	private List<Schedule> schedules = new ArrayList<>();
-
+	
 	@NotNull
 	@Column(name = "edu_start")
 	private LocalDate eduStart;

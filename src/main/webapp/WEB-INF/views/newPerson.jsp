@@ -175,14 +175,15 @@
 
 					new SelectorFindHelper(configFinder)
 
-					var configSubmit = {
-						form : $("form#person"),
-						listHolder : $("table#chairs"),
-						listName : "lecturerJobs",
-						rowClass : 'chair',
-						defaultRowClass : "default"
-					}
-					new FormDynamicListSubmitProcessor(configSubmit)
+					$("form#person").submit(function() {
+						var configSubmit = {
+							listHolder : $("table#chairs"),
+							listName : "lecturerJobs",
+							rowClass : 'chair',
+							defaultRowClass : "default"
+						}
+						processDynamicListForm(configSubmit)
+					})
 				</script>
 			</c:when>
 			<c:when test="${person.role == 'edudep'}">

@@ -38,8 +38,7 @@ public class Schedule {
 	@Column(name = "id_schedule", updatable = false)
 	private int idSchedule;
 	
-	@NotNull
-	@JoinColumn(name = "id_group", updatable = false)
+	@JoinColumn(name = "id_group", updatable = false, nullable = false)
 	@ManyToOne
 	private Group group;
 	
@@ -47,8 +46,7 @@ public class Schedule {
 	@Column(name = "schedule_done")
 	private boolean scheduleDone = false;
 	
-	@NotNull
-	@JoinColumn(name = "id_edu_period")
+	@JoinColumn(name = "id_edu_period", updatable = false, nullable = false)
 	@ManyToOne
 	private EduProcGraphic eduProcGraphic;
 	

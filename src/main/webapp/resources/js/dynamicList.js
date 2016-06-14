@@ -48,22 +48,24 @@ function DynamicList(c) {
 
 }
 
-function FormDynamicListSubmitProcessor(c) {
-	c.form.submit(function() {
-		c.listHolder.find("." + c.rowClass).each(
-				function(i) {
-					$(this).find("input,select").each(
-							function() {
-								$(this).attr(
-										"name",
-										$(this).attr("name").replace(
-												new RegExp(RegExp
-														.escape(c.listName)
-														+ "\\[\\d*\\]"),
-												c.listName + "[" + i + "]"))
-							})
+// Подготавливаем динамический лист к отправке, устанавливая нужные name у
+// элементов формы. c - конфигурация. c.listHolder - блок, где искать элементы
+// формы (ГДЕ искать). c.rowClass - класс элемента (ЧТО искать). c.listName -
+// имя списка, рядом с которым надо поставить номер по порядку (что МЕНЯТЬ).
+// c.defaultRowClass - класс элемента по умолчанию, который надо почистить перед
+// отправкой (необязательный параметр)
+function processDynamicListForm(c) {
+	c.listHolder.find("." + c.rowClass).each(
+			function(i) {
+				var set = $(this)
+				if (!set.is("input,select"))
+					set = set.find("input,select")
+				set.each(function() {
+					this.name = this.name.replace(new RegExp(RegExp
+							.escape(c.listName)
+							+ "\\[\\d*\\]"), c.listName + "[" + i + "]")
 				})
+			})
 
-		c.listHolder.find("." + c.defaultRowClass).remove()
-	})
+	c.listHolder.find("." + c.defaultRowClass).remove()
 }

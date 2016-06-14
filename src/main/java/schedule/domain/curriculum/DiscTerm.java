@@ -3,22 +3,16 @@ package schedule.domain.curriculum;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import schedule.domain.schedule.ScheduleDiscipline;
 
 
 /**
@@ -36,8 +30,7 @@ public class DiscTerm {
 	private int idDiscSem;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_com_disc", updatable = false)
-	@NotNull
+	@JoinColumn(name = "id_com_disc", updatable = false, nullable = false)
 	private CommonDiscipline commonDiscipline;
 	
 	@NotNull
@@ -55,10 +48,6 @@ public class DiscTerm {
 	@Column(name = "exam")
 	@NotNull
 	private boolean exam;
-	
-	@OneToMany(mappedBy = "discTerm")
-	private List<ScheduleDiscipline> groupLessonTypes = new ArrayList<ScheduleDiscipline>(
-			0);
 	
 	public int getIdDiscSem() {
 		return idDiscSem;
@@ -98,14 +87,6 @@ public class DiscTerm {
 	
 	public void setExam(boolean exam) {
 		this.exam = exam;
-	}
-	
-	public List<ScheduleDiscipline> getGroupLessonTypes() {
-		return groupLessonTypes;
-	}
-	
-	public void setGroupLessonTypes(List<ScheduleDiscipline> groupLessonTypes) {
-		this.groupLessonTypes = groupLessonTypes;
 	}
 	
 }

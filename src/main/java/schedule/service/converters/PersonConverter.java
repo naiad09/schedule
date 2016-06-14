@@ -1,4 +1,4 @@
-package schedule.service;
+package schedule.service.converters;
 
 import org.springframework.core.convert.converter.Converter;
 

@@ -34,9 +34,9 @@ public class CommonDiscipline {
 	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_com_disc", updatable = false)
-	private int idComDisc;
+	private Integer idComDisc;
 	
-	@JoinColumn(name = "id_com_cur", updatable = false)
+	@JoinColumn(name = "id_com_cur", updatable = false, nullable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private CommonCurriculum commonCurriculum;
 	
@@ -75,11 +75,11 @@ public class CommonDiscipline {
 		baz, var, vib;
 	}
 	
-	public int getIdComDisc() {
+	public Integer getIdComDisc() {
 		return idComDisc;
 	}
 	
-	public void setIdComDisc(int idComDisc) {
+	public void setIdComDisc(Integer idComDisc) {
 		this.idComDisc = idComDisc;
 	}
 	

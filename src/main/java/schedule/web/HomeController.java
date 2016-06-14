@@ -20,7 +20,7 @@ import schedule.dao.PersonDAO;
 import schedule.dao.SemesterDAO;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Chair.Faculty;
-import schedule.service.CustomUserDetails;
+import schedule.service.security.CustomUserDetails;
 
 
 @Controller

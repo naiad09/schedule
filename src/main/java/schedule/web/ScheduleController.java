@@ -31,7 +31,7 @@ import schedule.service.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("ed")
-@SessionAttributes({ "schedule", "twains", "lecturers", "classrooms" })
+@SessionAttributes({ "twains", "lecturers", "classrooms" })
 public class ScheduleController {
 	
 	@Autowired
@@ -75,9 +75,14 @@ public class ScheduleController {
 			@Valid @ModelAttribute("schedule") Schedule schedule,
 			BindingResult result, Model model, SessionStatus ss) {
 		
-		System.out.println("HERE " + result.hasErrors());
+		System.err.println("=== START SAVING");
 		
-		return "common/editSchedule";
+		scheduleDAO.saveOrUpdate(schedule);
+		ss.setComplete();
+		
+		System.err.println("=== END SAVING");
+		
+		return "redirect:edit";
 	}
 	
 	@ResponseBody
