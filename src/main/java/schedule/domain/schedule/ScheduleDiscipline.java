@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -157,11 +158,14 @@ public class ScheduleDiscipline {
 		this.disc = disc;
 	}
 	
-	@Override
 	public String toString() {
-		return "ScheduleDiscipline [id=" + idScheduleDiscipline + ", discTerm="
-				+ discTerm + ", lessonType=" + lessonType + ", disc=" + disc
-				+ "]";
+		StringBuilder string = new StringBuilder("ScheduleDiscipline [id="
+				+ idScheduleDiscipline + ", lessonType=" + lessonType
+				+ ", lecturers=" + lecturers.stream().map(c -> c.getUid())
+						.collect(Collectors.toList()).toString()
+				+ "]");
+		scheduleItems.forEach(s -> string.append("\n        " + s));
+		return string.toString();
 	}
 	
 	public enum LessonType {

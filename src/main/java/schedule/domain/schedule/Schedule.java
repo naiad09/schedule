@@ -112,4 +112,13 @@ public class Schedule {
 		map.putAll(collect);
 		return map;
 	}
+	
+	public String toString() {
+		StringBuilder string = new StringBuilder(
+				"Schedule [idSchedule=" + idSchedule + ", groupId="
+						+ group.getIdGroup() + ", scheduleDisciplines:");
+		scheduleDisciplines.forEach(s -> string.append("\n    " + s));
+		return string.toString();
+	}
+	
 }

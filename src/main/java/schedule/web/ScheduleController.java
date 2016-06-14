@@ -2,13 +2,9 @@ package schedule.web;
 
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +27,7 @@ import schedule.service.ResourceNotFoundException;
 
 @Controller
 @RequestMapping("ed")
-@SessionAttributes({ "twains", "lecturers", "classrooms" })
+@SessionAttributes({ "schedule", "twains", "lecturers", "classrooms" })
 public class ScheduleController {
 	
 	@Autowired
@@ -57,27 +53,34 @@ public class ScheduleController {
 	@RequestMapping(path = "schedule-{idSchedule}/edit",
 					method = RequestMethod.GET)
 	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
+		
 		Schedule schedule = scheduleDAO.get(idSchedule);
 		if (schedule == null) throw new ResourceNotFoundException();
 		model.addAttribute("schedule", schedule);
+		System.err.println(schedule);
+		
 		model.addAttribute("twains", twainDAO.getAll());
+		
 		PersonFinder personFinder = new PersonFinder();
 		personFinder.setRole(Lecturer.class.getSimpleName().toLowerCase());
 		model.addAttribute("lecturers", personDAO.getAll(personFinder));
+		
 		model.addAttribute("classrooms", classroomDAO.getAll());
+		
 		return "common/editSchedule";
 	}
 	
 	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit",
 					method = RequestMethod.POST)
-	public String editSchedulePost(
-			@Valid @ModelAttribute("schedule") Schedule schedule,
-			BindingResult result, Model model, SessionStatus ss) {
+	public String editSchedulePost(RawSchedule rawSchedule, Model model,
+			SessionStatus ss) {
+		
+		Schedule schedule = (Schedule) model.asMap().get("schedule");
 		
 		System.err.println("=== START SAVING");
 		
-		scheduleDAO.saveOrUpdate(schedule);
+		scheduleDAO.update(schedule, rawSchedule);
 		ss.setComplete();
 		
 		System.err.println("=== END SAVING");

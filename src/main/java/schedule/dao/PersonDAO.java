@@ -142,4 +142,5 @@ public class PersonDAO extends GenericDAO<Person> {
 		}
 		return crit.list();
 	}
+	
 }

@@ -11,8 +11,7 @@
 	${schedule.eduProcGraphic.semester.fallSpring?'весна':'осень'},
 	расписание группы ${schedule.group.groupNumber}</h1>
 
-<form:form action="edit" method="post" id="scheduleForm"
-	commandName="schedule">
+<form action="edit" method="post" id="scheduleForm">
 	<table ondragenter="return dragEnter(event)"
 		ondrop="return dragDrop(event)" ondragover="return dragEnter(event)"
 		style="width: 1100px; margin-left: -50px;">
@@ -84,7 +83,7 @@
 			</td>
 		</tr>
 	</table>
-</form:form>
+</form>
 <t:insertTemplate template="level2/scheduleDiscSettingsDiv.jsp" />
 
 <div style="display: none">

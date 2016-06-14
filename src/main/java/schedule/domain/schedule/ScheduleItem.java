@@ -5,6 +5,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -118,6 +119,18 @@ public class ScheduleItem {
 	
 	public void setClassrooms(List<Classroom> classrooms) {
 		this.classrooms = classrooms;
+	}
+	
+	@Override
+	public String toString() {
+		return "ScheduleItem [idScheduleItem=" + idScheduleItem + ", twain="
+				+ twain.getIdTwain() + ", scheduleDiscipline="
+				+ scheduleDiscipline.getIdScheduleDiscipline() + ", weekplan="
+				+ weekplan + ", weekday=" + weekday + ", note=" + note
+				+ ", classrooms="
+				+ classrooms.stream().map(c -> c.getIdClassroom())
+						.collect(Collectors.toList()).toString()
+				+ "]";
 	}
 	
 }

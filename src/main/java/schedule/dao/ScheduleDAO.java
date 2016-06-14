@@ -16,6 +16,7 @@ import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleDiscipline;
 import schedule.domain.schedule.ScheduleDiscipline.LessonType;
 import schedule.domain.schedule.ScheduleItem;
+import schedule.web.RawSchedule;
 
 
 @Repository
@@ -101,7 +102,37 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 	}
 	
 	public List<Integer> getConflictingClassrooms(ScheduleItem scheduleItem) {
-		
+		// TODO
 		return null;
+	}
+	
+	// если реализовывать оповещения о смене расписания, то тут можно искать
+	// изменившиеся части
+	public void update(Schedule schedule, RawSchedule rawSchedule) {
+		
+		mergeFromRawSchedule(schedule, rawSchedule);
+		
+		// а тут поиск конфликтов должен быть
+		
+		currentSession().update(schedule);
+	}
+	
+	private void mergeFromRawSchedule(Schedule schedule,
+			RawSchedule rawSchedule) {
+		schedule.getScheduleDisciplines().stream().forEach(oldSD -> {
+			ScheduleDiscipline newSD = rawSchedule.getScheduleDisciplines()
+					.stream()
+					.filter(newSD1 -> newSD1.getIdScheduleDiscipline() == oldSD
+							.getIdScheduleDiscipline())
+					.findAny().get();
+			oldSD.getScheduleItems().stream().filter(oldSchi -> !newSD
+					.getScheduleItems().stream()
+					.filter(newSchi -> newSchi.getIdScheduleItem() == oldSchi
+							.getIdScheduleItem())
+					.findAny().isPresent())
+					.forEach(oldSchi -> currentSession().delete(oldSchi));
+		});
+		
+		schedule.setScheduleDisciplines(rawSchedule.getScheduleDisciplines());
 	}
 }
