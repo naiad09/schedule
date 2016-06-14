@@ -393,6 +393,8 @@ scheduleForm.onsubmit = function() {
 			$(this).find("input[name*='idTwain']").val(
 					$(this).parents("tr.scheduleTr").find("input.twainInput").val()
 				)
+			var inputId = $(this).find("input[name*='idScheduleItem']")
+			if (!inputId.val()) inputId.remove()
 		})
 		
 		var configSubmit = {
