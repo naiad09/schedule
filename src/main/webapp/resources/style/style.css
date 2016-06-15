@@ -43,7 +43,9 @@ h3 {
 }
 div#login {
 	width: 270px;
-	text-align: center;
+	text-align: center;.weekplan, .details {
+    display: block;
+}
 	margin-left: 100px;
 }
 
@@ -278,6 +280,9 @@ td.leftMover {
     height: 0px;
 }
 .schi:hover .schiButtons {
+    display: block;
+}
+.weekplan, .details {
     display: block;
 }
 

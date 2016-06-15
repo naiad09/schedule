@@ -1,38 +1,74 @@
 FormHider("dblclick", $(".schi"), "#scheduleItemSettingsForm",
 		dropScheduleItemSettingsForm, showScheduleItemSettingsForm)
 
-// вычисляет базу понедельного плана
-function calcBase(weekplan) {
-	var dominAfterChange = calcHalfOfWeekplan(weekplan)
-	var domainHalf = weekplan.substr(dominAfterChange ? 4 : 0, 4);
-	var nondomainHalf = weekplan.substr(!dominAfterChange ? 4 : 0, 4);
-	if (domainHalf == "1111") return "every"
-	var domainDenominator = calcHalfOfWeekplan(domainHalf)
-	return domainDenominator ? "den" : "num";
-	
-	// вычисляет, какой половине принадлежит.
-	function calcHalfOfWeekplan(weekplan) {
-		var a = 0
-		var b = 0
-		for (var i = 0; i < weekplan.length / 2; i++)
-			if (weekplan[i] == "1")
-				a++
-		for (var i = weekplan.length / 2; i < weekplan.length; i++)
-			if (weekplan[i] == "1")
-				b++
-		return b > a
+function Weekplan(code) {
+	this.base = calcBase(code)
+	this.bc = calcBCAC(code.substr(0,4), this.base)
+	this.ac = calcBCAC(code.substr(4,4), this.base)
+		
+	this.normalize = function() {
+		 var n = new Weekplan(this.toString())
+		 this.base = n.base
+		 this.bc = n.bc
+		 this.ac = n.ac
 	}
-}
-
-// вычисляет части понедельного плана до и после смены расписания
-function calcBCAC(weekplanHalf, base) {
-	switch (base) {
-	case "every": 
-		return weekplanHalf.substr(1,2)
-	case "num":
-		return weekplanHalf.substr(0,2)
-	case "den":
-		return weekplanHalf.substr(2,2)
+	
+	this.toString = function() {
+		var ac = this.ac
+		var bc = this.bc
+		if ((ac == "01" && bc == "10") || (ac == "10" && bc == "01") || (ac == "00" && bc == "00")) {
+			return false
+		}
+		switch (this.base) {
+		case "every": 
+			bc = bc[0] + bc + bc[1]
+			ac = ac[0] + ac + ac[1]
+			break
+		case "num":
+			bc = bc + "00"
+			ac = ac + "00"
+			break
+		case "den":
+			bc = "00" + bc
+			ac = "00" + ac
+			break
+		}
+		return (bc + "" + ac)
+	}
+	 
+	
+	// вычисляет базу понедельного плана
+	function calcBase(weekplan) {
+		var dominAfterChange = calcHalfOfWeekplan(weekplan)
+		var domainHalf = weekplan.substr(dominAfterChange ? 4 : 0, 4);
+		var nondomainHalf = weekplan.substr(!dominAfterChange ? 4 : 0, 4);
+		if (domainHalf == "1111") return "every"
+		var domainDenominator = calcHalfOfWeekplan(domainHalf)
+		return domainDenominator ? "den" : "num";
+		
+		// вычисляет, какой половине принадлежит.
+		function calcHalfOfWeekplan(weekplan) {
+			var a = 0
+			var b = 0
+			for (var i = 0; i < weekplan.length / 2; i++)
+				if (weekplan[i] == "1")
+					a++
+			for (var i = weekplan.length / 2; i < weekplan.length; i++)
+				if (weekplan[i] == "1")
+					b++
+			return b > a
+		}
+	}
+	// вычисляет части понедельного плана до и после смены расписания
+	function calcBCAC(weekplanHalf, base) {
+		switch (base) {
+		case "every": 
+			return weekplanHalf.substr(1,2)
+		case "num":
+			return weekplanHalf.substr(0,2)
+		case "den":
+			return weekplanHalf.substr(2,2)
+		}
 	}
 }
 
@@ -43,10 +79,10 @@ function showScheduleItemSettingsForm(e) {
 
 	scheduleItemSettingsForm.classList.add(schi[0].classList[1])
 
-	weekplan.base = calcBase(schi[0].weekplan)
+	weekplan = schi[0].weekplan
 	$(scheduleItemSettingsForm).find("." + weekplan.base).show()
-	scheduleItemSettingsForm.elements["bc"].value = calcBCAC(schi[0].weekplan.substr(0,4),weekplan.base)
-	scheduleItemSettingsForm.elements["ac"].value = calcBCAC(schi[0].weekplan.substr(4,4),weekplan.base)
+	scheduleItemSettingsForm.elements["bc"].value = weekplan.bc
+	scheduleItemSettingsForm.elements["ac"].value = weekplan.ac
 
 	$(scheduleItemSettingsForm).show()
 	var bold = $(schi[0].glt).parent().find("b").clone()
@@ -70,7 +106,6 @@ function showScheduleItemSettingsForm(e) {
 }
 
 function dropScheduleItemSettingsForm() {
-	weekplan.base = undefined
 	if (!scheduleItemSettingsForm.editingSchi) return
 	scheduleItemSettingsForm.classList
 			.remove(scheduleItemSettingsForm.editingSchi[0].classList[1])
@@ -84,24 +119,19 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	var bc = scheduleItemSettingsForm.elements["bc"].value
 	var ac = scheduleItemSettingsForm.elements["ac"].value
 	if ((ac == "01" && bc == "10") || (ac == "10" && bc == "01") || (ac == "00" && bc == "00")) {
-		alert("Ай-ай-ай!!!")
+		alert("Некорректный понедельный план")
 		return false
 	}
-	switch (weekplan.base) {
-	case "every": 
-		bc = bc[0] + bc + bc[1]
-		ac = ac[0] + ac + ac[1]
-		break
-	case "num":
-		bc = bc + "00"
-		ac = ac + "00"
-		break
-	case "den":
-		bc = "00" + bc
-		ac = "00" + ac
-		break
-	}
-	scheduleItemSettingsForm.editingSchi[0].weekplan = (bc + "" + ac)
+	
+	var schi = scheduleItemSettingsForm.editingSchi[0]
+
+	var tr = $(scheduleItemSettingsForm.editingSchi).parents("tr.scheduleTr")[0];
+	removeSchi(schi)
+	schi.weekplan.bc = bc
+	schi.weekplan.bc = ac
+	schi.weekplan.normalize()
+	writeSchiToTr(schi, tr)
+	normalizeTr(tr)
 	
 	var classrooms = $(scheduleItemSettingsForm).find(".classroom input")
 	scheduleItemSettingsForm.editingSchi.find(".classrooms").empty().append(
@@ -110,7 +140,8 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	scheduleItemSettingsForm.editingSchi.find("[name*='comment']").val(
 			scheduleItemSettingsForm.elements['comment'].value)
 
-	updateDetails(scheduleItemSettingsForm.editingSchi[0])
+	updateWeekplanLabel(schi)
+	updateDetails(schi)
 
 	dropScheduleItemSettingsForm()
 }

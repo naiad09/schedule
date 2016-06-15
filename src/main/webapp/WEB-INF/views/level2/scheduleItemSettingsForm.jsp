@@ -112,8 +112,8 @@
 						<td><input type="radio" value="01" id="bcSecond" name="bc" />
 							<label for="bcSecond" class="every toggleVisiable">Знаменатель</label>
 							<label for="bcSecond" class="num toggleVisiable">Второй
-								знаменатель</label> <label for="bcSecond" class="den toggleVisiable">Второй
-								числитель</label></td>
+								числитель</label> <label for="bcSecond" class="den toggleVisiable">Второй
+								знаменатель</label></td>
 						<td><input type="radio" value="10" id="acFirst" name="ac" />
 							<label for="acFirst" class="every toggleVisiable">Числитель</label>
 							<label for="acFirst" class="num toggleVisiable">Первый
@@ -122,8 +122,8 @@
 						<td><input type="radio" value="01" id="acSecond" name="ac" />
 							<label for="acSecond" class="every toggleVisiable">Знаменатель</label>
 							<label for="acSecond" class="num toggleVisiable">Второй
-								знаменатель</label> <label for="acSecond" class="den toggleVisiable">Второй
-								числитель</label></td>
+								числитель</label> <label for="acSecond" class="den toggleVisiable">Второй
+								знаменатель</label></td>
 					</tr>
 				</table></td>
 		</tr>

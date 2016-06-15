@@ -11,10 +11,13 @@
 	${schedule.eduProcGraphic.semester.fallSpring?'весна':'осень'},
 	расписание группы ${schedule.group.groupNumber}</h1>
 
-<input type="date" value="${schedule.eduProcGraphic.semesterStart}" id="dateStart" type="hidden" />
-<input type="date" value="${schedule.eduProcGraphic.scheduleChange}" id="dateChange" type="hidden" />
-<input type="date" value="${schedule.eduProcGraphic.semesterEnd}" id="dateEnd" type="hidden" />
-    
+<input type="date" value="${schedule.eduProcGraphic.semesterStart}"
+	id="dateStart" type="hidden" />
+<input type="date" value="${schedule.eduProcGraphic.scheduleChange}"
+	id="dateChange" type="hidden" />
+<input type="date" value="${schedule.eduProcGraphic.semesterEnd}"
+	id="dateEnd" type="hidden" />
+
 <form action="edit" method="post" id="scheduleForm">
 	<table ondragenter="return dragEnter(event)"
 		ondrop="return dragDrop(event)" ondragover="return dragEnter(event)"
@@ -114,7 +117,7 @@
 					type="hidden" name="scheduleDisciplines[].scheduleItems[].weekday" />
 					<small class="details"> <span class="lecturers"></span> <span
 						class="divider"></span> <span class="classrooms"></span>
-				</small>
+				</small> <small class="weekplan"></small>
 				</td>
 				<td class="rightMover mover"></td>
 			</tr>
