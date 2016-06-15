@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="/WEB-INF/custom.tld" prefix="fmt"%>
 
-<td><fmt:formatDate pattern="d MMMM" value="${graphic.eduStart}" /></td>
-<td><fmt:formatDate pattern="d MMMM" value="${graphic.semestrEnd}" /></td>
+<td><fmt:formatDate pattern="d MMMM" value="${graphic.semesterStart}" /></td>
+<td><fmt:formatDate pattern="d MMMM" value="${graphic.semesterEnd}" /></td>
 <td><fmt:formatDate pattern="d MMMM"
 		value="${graphic.recordSessionStart}" /></td>
 <td><fmt:formatDate pattern="d MMMM"

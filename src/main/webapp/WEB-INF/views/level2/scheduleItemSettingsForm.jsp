@@ -80,19 +80,62 @@
 				new SelectorFindHelper(configFinder)
 			</script></td>
 		</tr>
-		<tr>
+		<tr id="weekplan">
 			<td>Понедельный план</td>
-			<td><c:forEach begin="0" end="7" varStatus="i">
-					<input type="checkbox" name="scheduleChange" value="${i.index}" />
-				</c:forEach> <output name="weekplan">Выберите нужные пункты</output></td>
+			<td><table style="width: 500px;">
+					<tr>
+						<th colspan="4"><span class="every toggleVisiable">Каждую
+								неделю</span> <span class="num toggleVisiable">Числитель</span> <span
+							class="den toggleVisiable">Знаменатель</span></th>
+					</tr>
+					<tr>
+						<td colspan="2" style="text-align: right"><small>До
+								смены расписания</small></td>
+						<td colspan="2"><small>После смены расписания</small></td>
+					</tr>
+					<tr>
+						<td><input value="11" type="radio" id="bcFull" name="bc" />
+							<label for="bcFull">Полностью</label></td>
+						<td><input value="00" type="radio" id="bcNone" name="bc" />
+							<label for="bcNone">Нет</label></td>
+						<td><input value="11" type="radio" id="acFull" name="ac" /><label
+							for="acFull">Полностью</label></td>
+						<td><input value="00" type="radio" id="acNone" name="ac" /><label
+							for="acNone">Нет</label></td>
+					</tr>
+					<tr>
+						<td><input type="radio" value="10" id="bcFirst" name="bc" />
+							<label for="bcFirst" class="every toggleVisiable">Числитель</label>
+							<label for="bcFirst" class="num toggleVisiable">Первый
+								числитель</label> <label for="bcFirst" class="den toggleVisiable">Первый
+								знаменатель</label></td>
+						<td><input type="radio" value="01" id="bcSecond" name="bc" />
+							<label for="bcSecond" class="every toggleVisiable">Знаменатель</label>
+							<label for="bcSecond" class="num toggleVisiable">Второй
+								знаменатель</label> <label for="bcSecond" class="den toggleVisiable">Второй
+								числитель</label></td>
+						<td><input type="radio" value="10" id="acFirst" name="ac" />
+							<label for="acFirst" class="every toggleVisiable">Числитель</label>
+							<label for="acFirst" class="num toggleVisiable">Первый
+								числитель</label> <label for="acFirst" class="den toggleVisiable">Первый
+								знаменатель</label></td>
+						<td><input type="radio" value="01" id="acSecond" name="ac" />
+							<label for="acSecond" class="every toggleVisiable">Знаменатель</label>
+							<label for="acSecond" class="num toggleVisiable">Второй
+								знаменатель</label> <label for="acSecond" class="den toggleVisiable">Второй
+								числитель</label></td>
+					</tr>
+				</table></td>
 		</tr>
 		<tr>
 			<td>Комментарий</td>
-			<td><textarea name="comment" style="width: 423px; height: 30px;"></textarea></td>
+			<td colspan="2"><textarea name="comment"
+					style="width: 423px; height: 30px;"></textarea></td>
 		</tr>
 		<tr>
 			<td></td>
-			<td><button type="button" id="scheduleItemSettingsSaveButton">Сохранить</button>
+			<td colspan="2"><button type="button"
+					id="scheduleItemSettingsSaveButton">Сохранить</button>
 				<button type="reset" id="scheduleItemSettingsResetButton">Отменить</button></td>
 		</tr>
 	</table>

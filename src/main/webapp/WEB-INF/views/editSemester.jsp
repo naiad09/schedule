@@ -48,9 +48,8 @@
 						<spring:eval var="enrollCourse"
 							expression="enrolls.^[${semester.semesterYear}- yearStart + 1 == ${i.index}]" />
 						<c:if test="${!empty enrollCourse}">
-							<spring:eval
-								expression="semester.eduProcGraphics.?[enroll.idEnroll==${enrollCourse.idEnroll}]"
-								var="hereGraphics" />
+							<spring:eval var="hereGraphics"
+								expression="semester.eduProcGraphics.?[enroll.idEnroll==${enrollCourse.idEnroll}]" />
 							<spring:eval var="defaultGraphic"
 								expression="T(schedule.service.RefsContainer).getDefaultEduProcGraphicForList(hereGraphics)" />
 							<tbody
@@ -194,23 +193,16 @@
 
 						new SelectorFindHelper(configFinder)
 
-						$("form#semester")
-								.submit(
-										function() {
-											selector
-													.find(
-															"option:not(:disabled)")
-													.each(
-															function(i) {
-																holder
-																		.find(
-																				".allCurriculumsTd")
-																		.append(
-																				'<input type="hidden" name="'
-																				+'eduProcGraphics[].curriculums['+
-	                                                    i+'].idCommonCurriculum" value="'+this.value+'"/>')
-															})
+						$("form#semester").submit(function() {
+							selector.find("option:not(:disabled)")
+								.each(function(i) {
+											holder.find(".allCurriculumsTd")
+													.append(
+															'<input type="hidden" name="'
+															+'eduProcGraphics[].curriculums['+
+	                                               i+'].idCommonCurriculum" value="'+this.value+'"/>')
 										})
+						})
 					})
 
 	$("form#semester").submit(function() {

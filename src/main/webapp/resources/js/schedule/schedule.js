@@ -1,7 +1,7 @@
 // Управляет интерфейсом расписания. Сокрыщения:
 // schi - schedule item, элемент расписания
 // glt - group lesson type
-// Каждая tr содержит массив[4] ссылок на schi
+// Каждая tr содержит два массива[4] ссылок на schi
 
 var schiId = 0 // счетчик schi, чтобы каждому присвоить уникальный id
 
@@ -9,8 +9,8 @@ var schiId = 0 // счетчик schi, чтобы каждому присвои�
 $("#schedule>tbody.weekday").each(function(i) {
 	this.index = i
 	$(this).find("tr.empty").each(function(j) {
-		this.schi = [ null, null, null, null ]
-		this.schi2 = [ null, null, null, null ]
+		this.schiBefore = [ null, null, null, null ]
+		this.schiAfter = [ null, null, null, null ]
 	})
 })
 
@@ -26,17 +26,36 @@ $(scheduleItemsInfo).find(".schiInfo").each(function(){
 	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5].trim())
 	
 	$(schi).find(".classrooms").append($(this).find(".classroomInput"))
-	
-	// анализ weekplan
-	tr.schi[0] = schi
-	tr.schi[1] = schi
-	tr.schi[2] = schi
-	tr.schi[3] = schi
+	schi.weekplan = ("00000000" + (parseInt(schiInfo[4])).toString(2))
+	schi.weekplan = schi.weekplan.substr(schi.weekplan.length - 8, 8)
+
+	writeSchiToTr(schi, tr)
+	if (schi.lab4) writeSchiToTr(schi, tr.nextElementSubling)
 })
 for (var i = 0; i < trsToNormalize.length; i++) {
 	normalizeTr(trsToNormalize[i])
 }
 $(".schi").each(function(){updateDetails(this)})
+function writeSchiToTr(schi, tr) {
+	for (var i = 0; i < 4; i++) if (schi.weekplan[i] == "1") {
+		if (tr.schiBefore[i]) removeSchi(tr.schiBefore[i])
+		tr.schiBefore[i] = schi
+	}
+	for (var i = 4; i < 8; i++) if (schi.weekplan[i] == "1") {
+		if (tr.schiAfter[i-4]) removeSchi(tr.schiAfter[i-4])
+		tr.schiAfter[i-4] = schi
+	}
+}
+
+//
+function removeSchiFromTr(schi, tr) {
+	for (var i = 0; i < 4; i++) if (schi.weekplan[i] == "1") {
+		tr.schiBefore[i] = null
+	}
+	for (var i = 4; i < 8; i++) if (schi.weekplan[i] == "1") {
+		tr.schiAfter[i-4] = null
+	}
+}
 
 // удалить schi
 function removeSchi(schi) {
@@ -46,12 +65,10 @@ function removeSchi(schi) {
     targetTd.removeChild(schi)
     var trOld = targetTd.parentElement
     // и из массива в tr
-	if (trOld) for(var i = 0;i<4;i++) {
-		if (trOld.schi[i] == schi) {
-			trOld.schi[i] = null
-			if (schi.classList.contains("lab4"))
-				trOld.nextElementSibling.schi[i] = null
-		}
+	if (trOld) {
+		removeSchiFromTr(schi, trOld)
+		if (schi.lab4)
+			removeSchiFromTr(schi, trOld.nextElementSubling)
 	}
 }
 function newTd(colSpan) {// создает новую ячейку td
@@ -71,20 +88,22 @@ function normalizeTr(tr) {
 		tr.removeChild(td)
 	}
 	var merge = 0 // определяет, сколько schi или null идут подряд
-	var schi = tr.schi[0]
-	for (var i = 0;i<tr.schi.length+1;i++) {// +1, чтобы последняя merge тоже
+	var schi = tr.schiBefore[0]
+	for (var i = 0;i<tr.schiBefore.length+1;i++) {// +1, чтобы последняя merge
+													// тоже
 											// создавалась
-		if (schi === tr.schi[i]) merge++ // если совпадает, инкрементируем
+		if (schi === tr.schiBefore[i]) merge++ // если совпадает,
+												// инкрементируем
 		// tr.schi[4]=undefined, поэтому последняя ячейка создается
 		else {// иначе создаем новую ячейку с результатом
 			var td = newTd(merge)
 			merge = 1
 			tr.appendChild(td)// и добавляем
-			if (schi) {if(schi.classList.contains("lab4")) {// однако если это
-															// lab4
+			if (schi) {if(schi.lab4) {// однако если это lab4
 				if (schi.parentElement) {// и если schi уже добавлена
 											// куда-то, то есть строкой выше
-					$(td).hide()// скрываем ячейку, чтобы потом при добавлении можно было их пересчитать
+					$(td).hide()// скрываем ячейку, чтобы потом при добавлении
+								// можно было их пересчитать
 					flagLab4Prev = true
 				}
 				else {
@@ -93,62 +112,59 @@ function normalizeTr(tr) {
 				}
 			} else td.appendChild(schi)}// а если обычная то просто добавляем
 		}
-		schi = tr.schi[i]
+		schi = tr.schiBefore[i]
 	}
 	
     if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
         tr.classList.add("empty")// и определяем класс
     else  tr.classList.remove("empty")
 }
+// удаляет с предыдущего места
+function flushSchi(schi, withoutTr) {
+	var tdOld = schi.parentElement
+	if (!tdOld) return;
+	var oldTr = tdOld.parentElement;
+	removeSchi(schi)
+	if (oldTr != tr){// и если это было в другой строке, нормализовать ее
+		normalizeTr(oldTr)
+		if( schi.lab4 && tr != oldTr.nextElementSibling)
+			normalizeTr(oldTr.nextElementSibling)
+		}
+}
 // добавляет shci в tr.schi, удаляет конфликты
 function addSchi(targetTd, schi) {
-	var tdOld = schi.parentElement
 	var tr = targetTd.parentElement
-	
-	if (tdOld) {// если schi был перемещен, то нужно удалить старые ссылки
-		var oldTr = tdOld.parentElement;
-		for(var i = 0;i<4;i++) {
-			if (oldTr.schi[i]==schi) {
-				oldTr.schi[i] = null
-				if(schi.classList.contains("lab4"))
-					oldTr.nextElementSibling.schi[i] = null
-			}
-		}
-		if(oldTr != tr){// и если это было в другой строке, нормализовать ее
-			normalizeTr(oldTr)
-			if(schi.classList.contains("lab4") && tr != oldTr.nextElementSibling)
-				normalizeTr(oldTr.nextElementSibling)
-			}
-	}
+	flushSchi(schi, tr)
 	
 	var j = -1// из-за ячейки с парой
-	for(var i=0;tr.cells[i]!=targetTd;i++)// считаем пропуски в этой строке
-		j+=tr.cells[i].colSpan
+	for(var i = 0; tr.cells[i] != targetTd; i++)
+		// считаем пропуски в этой строке
+		j += tr.cells[i].colSpan
     		
     var nextTr = tr.nextElementSibling
 		
-	for(var i = j;i<targetTd.colSpan+j;i++) {
-		var prew = tr.schi[i]
+	for(var i = j; i < targetTd.colSpan + j; i++) {
+		var prew = tr.schiBefore[i]
 		if (prew && prew != schi) {// если конфликт, удаляем его
 			removeSchi(prew)
-			if (prew.classList.contains("lab4"))
+			if (prew.lab4)
 				normalizeTr(tr.nextElementSibling)
 		}
-		tr.schi[i] = schi// записываем schi
-		if(schi.classList.contains("lab4")) { // если lab4, то запиываем и в
+		tr.schiBefore[i] = schi// записываем schi
+		if(schi.lab4) { // если lab4, то запиываем и в
 												// следующую строку
-			prew = nextTr.schi[i]
+			prew = nextTr.schiBefore[i]
 			if (prew && prew != schi) {
 				removeSchi(prew)// и удаляем конфликты
-				if (prew.classList.contains("lab4"))
+				if (prew.lab4)
 					normalizeTr(tr.nextElementSibling.nextElementSibling)
 			}
-			nextTr.schi[i] = schi
+			nextTr.schiBefore[i] = schi
 		}
 	}
 	
 	normalizeTr(tr)// и нормализуем
-	if(schi.classList.contains("lab4"))
+	if (schi.lab4)
 		normalizeTr(nextTr)
 		
 	updateDivider(schi)
@@ -171,7 +187,9 @@ function createSchi(glt) {
     discipline.append($(glt).find(".gltType").clone())
     discipline.append(" ")
     discipline.append($(glt).parent().find("b").clone())
+    if(schi.classList.contains("lab4")) schi.lab4 = true
     updateDetails(schi)
+    
     return schi
 }
 
@@ -209,6 +227,19 @@ function updateDivider(schi) {
 	}
 }
 
+
+
+// обработчик на кнопке удаления
+function processClickDelete(link) {
+	link = $(link).parents(".schi")[0]
+    var tr = $(link).parents("tr.scheduleTr")[0]
+    removeSchi(link)
+
+    normalizeTr(tr)
+    if(link.lab4)
+        normalizeTr(tr.nextElementSibling)
+}
+
 // обработчик перемещения в таблицу
 function dragDrop(ev) {
     var targetTd = ev.target
@@ -223,7 +254,7 @@ function dragDrop(ev) {
         var data = ev.dataTransfer.getData('GLTId')
         var glt = document.getElementById(data)
         schi = createSchi(glt)
-        if (schi.classList.contains("lab4") 
+        if (schi.lab4 
         		&& targetTr.parentElement.lastElementChild == targetTr)
         	break;
         addSchi(targetTd, schi)
@@ -231,7 +262,7 @@ function dragDrop(ev) {
     case "schi":
         var data = ev.dataTransfer.getData('SCHId')
         schi = document.getElementById(data)
-        if (schi.classList.contains("lab4") 
+        if (schi.lab4 
         		&& targetTr.parentElement.lastElementChild == targetTr)
         	break;
         var oldTr = schi.parentElement.parentElement
@@ -249,26 +280,14 @@ function dragStartGLT(ev) {
 }
 function dragStartSCHI(ev) {
     ev.dataTransfer.effectAllowed = 'move'
-    var schi = ev.target
-    while (!schi.classList.contains("schi")) {
-    	schi = schi.parentNode
-        if (schi == document) return
-    }
+    var schi = $(ev.target).parents(".schi")[0]
 	ev.dataTransfer.setData('SCHId', schi.getAttribute('id'))
     ev.dataTransfer.setData('type', "schi")
     return true
 }
 function dragEnter(ev) {
     event.preventDefault()
-    var td = ev.target
-    for (var i = 0; i < 10; i++) {
-        if (td.classList.contains("scheduleItem"))
-        	return true;
-        else {
-            td = td.parentNode
-            if (td == document) break
-            }
-    }
+    if ($(ev.target).closest(".scheduleItem")[0]) return true;
     ev.dataTransfer.dropEffect = "none"
     return false
 }
@@ -354,20 +373,6 @@ function mergeTwaise(schi, left, coef) {
     addSchi(td, schi)
 }
 
-// обработчик на кнопке удаления
-function processClickDelete(link) {
-    while (!link.classList.contains("schi")) {
-        link = link.parentNode
-        if (link == document) return
-    }
-    var tr = link.parentElement.parentElement
-    removeSchi(link)
-
-    normalizeTr(tr)
-    if(link.classList.contains("lab4"))
-        normalizeTr(tr.nextElementSibling)
-}
-
 scheduleForm.onsubmit = function() {
 	var configSubmit = {
 		listHolder : $(scheduleDisciplines),
@@ -393,6 +398,7 @@ scheduleForm.onsubmit = function() {
 			$(this).find("input[name*='idTwain']").val(
 					$(this).parents("tr.scheduleTr").find("input.twainInput").val()
 				)
+			$(this).find("input[name*='weekplan']").val(parseInt(this.weekplan, 2))
 			var inputId = $(this).find("input[name*='idScheduleItem']")
 			if (!inputId.val()) inputId.remove()
 			
@@ -412,3 +418,5 @@ scheduleForm.onsubmit = function() {
 		processDynamicListForm(configSubmit)
 	})
 }
+
+$(schi0).dblclick()

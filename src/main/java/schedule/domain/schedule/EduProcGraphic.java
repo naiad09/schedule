@@ -59,15 +59,15 @@ public class EduProcGraphic {
 	private List<Schedule> schedules = new ArrayList<>();
 	
 	@NotNull
-	@Column(name = "edu_start")
-	private LocalDate eduStart;
+	@Column(name = "semester_start")
+	private LocalDate semesterStart;
 	
-	@Column(name = "schedule_change_date")
-	private LocalDate scheduleChangeDate;
+	@Column(name = "schedule_change")
+	private LocalDate scheduleChange;
 	
 	@NotNull
-	@Column(name = "semestr_end")
-	private LocalDate semestrEnd;
+	@Column(name = "semester_end")
+	private LocalDate semesterEnd;
 	
 	@Column(name = "record_session_start")
 	private LocalDate recordSessionStart;
@@ -97,28 +97,28 @@ public class EduProcGraphic {
 		this.semester = semester;
 	}
 	
-	public LocalDate getEduStart() {
-		return eduStart;
+	public LocalDate getSemesterStart() {
+		return semesterStart;
 	}
 	
-	public void setEduStart(LocalDate eduStart) {
-		this.eduStart = eduStart;
+	public void setSemesterStart(LocalDate semesterStart) {
+		this.semesterStart = semesterStart;
 	}
 	
-	public LocalDate getScheduleChangeDate() {
-		return scheduleChangeDate;
+	public LocalDate getScheduleChange() {
+		return scheduleChange;
 	}
 	
-	public void setScheduleChangeDate(LocalDate scheduleChangeDate) {
-		this.scheduleChangeDate = scheduleChangeDate;
+	public void setScheduleChange(LocalDate scheduleChange) {
+		this.scheduleChange = scheduleChange;
 	}
 	
-	public LocalDate getSemestrEnd() {
-		return semestrEnd;
+	public LocalDate getSemesterEnd() {
+		return semesterEnd;
 	}
 	
-	public void setSemestrEnd(LocalDate semestrEnd) {
-		this.semestrEnd = semestrEnd;
+	public void setSemesterEnd(LocalDate semesterEnd) {
+		this.semesterEnd = semesterEnd;
 	}
 	
 	public LocalDate getRecordSessionStart() {
@@ -180,9 +180,9 @@ public class EduProcGraphic {
 	@Override
 	public String toString() {
 		return "EduProcGraphic [idEduPeriod=" + idEduPeriod + ", semester="
-				+ semester + ", eduStart=" + eduStart + ", scheduleChangeDate="
-				+ scheduleChangeDate + ", semestrEnd=" + semestrEnd
-				+ ", recordSessionStart=" + recordSessionStart
+				+ semester + ", semesterStart=" + semesterStart
+				+ ", scheduleChange=" + scheduleChange + ", semesterEnd="
+				+ semesterEnd + ", recordSessionStart=" + recordSessionStart
 				+ ", recordSessionEnd=" + recordSessionEnd
 				+ ", examsSessionStart=" + examsSessionStart
 				+ ", examsSessionEnd=" + examsSessionEnd + ", curriculums="

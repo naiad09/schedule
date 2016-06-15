@@ -2,12 +2,12 @@
 	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<td><input name="eduProcGraphics[].eduStart" type="date"
+<td><input name="eduProcGraphics[].semesterStart" type="date"
 	min="${dateMin}" max="${dateMax}"
-	value="${graphic!=null?graphic.eduStart:''}" /></td>
-<td><input name="eduProcGraphics[].semestrEnd" type="date"
+	value="${graphic!=null?graphic.semesterStart:''}" /></td>
+<td><input name="eduProcGraphics[].semesterEnd" type="date"
 	min="${dateMin}" max="${dateMax}"
-	value="${graphic!=null?graphic.semestrEnd:''}" /></td>
+	value="${graphic!=null?graphic.semesterEnd:''}" /></td>
 <td><input name="eduProcGraphics[].recordSessionStart" type="date"
 	min="${dateMin}" max="${dateMax}"
 	value="${graphic!=null?graphic.recordSessionStart:''}" /></td>

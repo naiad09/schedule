@@ -1,3 +1,4 @@
+var generatedId = 0
 function SelectorFindHelper(c) {
 	var options = c.selector.find("option")
 	var optionHeight = 16.75
@@ -12,6 +13,9 @@ function SelectorFindHelper(c) {
 	c.selector.attr("size", 2)
 	c.selector.append("<option id='notFound' disabled>Ничего не найдено</option>")
 	var notFound = c.selector.find("#notFound")
+	
+	if(!c.input.attr("id")) c.input.attr("id", "generatedId" + generatedId++)
+	if(!c.selector.attr("id")) c.selector.attr("id", "generatedId" + generatedId++)
 	
 	FormHider("click", c.input, 
 				"#" + c.input.attr("id") + ", #" + c.selector.attr("id"), dropSelection)

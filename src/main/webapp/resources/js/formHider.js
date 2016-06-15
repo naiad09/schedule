@@ -10,13 +10,13 @@ function FormHider(event, turner, selector, processHide, processShow) {
 			if (processShow)
 				processShow(e)
 
-			$(document).bind("click", clickDocument)
+			$(document).bind("mousedown", clickDocument)
 
 		}
 	})
 	function processUnbind() {
 		focus = false
-		$(document).unbind("click", clickDocument)
+		$(document).unbind("mousedown", clickDocument)
 	}
 	function clickDocument(e) {
 		var closestInForm = $(e.target).closest(selector);

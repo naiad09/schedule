@@ -34,18 +34,18 @@
 
 .scheduleSettingsForm {
     display: none;
-    input {
+    input[id *= 'Selector'] {
         width: 280px ! important;
     }
 
     select {
         width: 636px ! important;
     }
-    
+
     tr.toggleVisible {
         display: none;
     }
-    
+
     .classroom , .lecturer {
         display: inline-block;
         .grayBorder;
@@ -55,5 +55,10 @@
             margin: 1px;
         }
     }
+
+    tr#weekplan table td {
+        width: inherit;
+        text-align: left;
+    }
 }
- 
+
