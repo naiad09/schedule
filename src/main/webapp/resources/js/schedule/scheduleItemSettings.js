@@ -13,6 +13,14 @@ function Weekplan(code) {
 		 this.ac = n.ac
 	}
 	
+	this.invert = function() {
+		var w = new Weekplan(this.toString())
+		if(w.bc == w.ac) return false
+		w.bc = w.bc.replace(/1/g,"2").replace(/0/g,"1").replace(/2/g,"0")
+		w.ac = w.ac.replace(/1/g,"2").replace(/0/g,"1").replace(/2/g,"0")
+		return w 
+	}
+	
 	this.toString = function() {
 		var ac = this.ac
 		var bc = this.bc
@@ -35,7 +43,31 @@ function Weekplan(code) {
 		}
 		return (bc + "" + ac)
 	}
-	 
+	this.dominAfterHalf = function() {
+		return calcHalfOfWeekplan(this.toString())
+	}
+	this.breakTwise = function(left) {
+		if (this.base == "every") this.base = left?"den":"num"
+		else if(left) {
+			this.bc = "0" + this.bc[0]
+			this.ac = "0" + this.ac[0]
+		} else {
+			this.bc = this.bc[0] + "0"
+			this.ac = this.ac[0] + "0"
+		}
+		this.normalize()
+	}
+	this.mergeTwise = function(left) {
+		if (this.base != "every") this.base = "every"
+		else if(left) {
+			this.bc = this.bc[0] + this.bc[0]
+			this.ac = this.ac[0] + this.ac[0]
+		} else {
+			this.bc = this.bc[1] + this.bc[1]
+			this.ac = this.ac[1] + this.ac[1]
+		}
+		this.normalize()
+	}
 	
 	// вычисляет базу понедельного плана
 	function calcBase(weekplan) {
@@ -45,19 +77,18 @@ function Weekplan(code) {
 		if (domainHalf == "1111") return "every"
 		var domainDenominator = calcHalfOfWeekplan(domainHalf)
 		return domainDenominator ? "den" : "num";
-		
-		// вычисляет, какой половине принадлежит.
-		function calcHalfOfWeekplan(weekplan) {
-			var a = 0
-			var b = 0
-			for (var i = 0; i < weekplan.length / 2; i++)
-				if (weekplan[i] == "1")
-					a++
-			for (var i = weekplan.length / 2; i < weekplan.length; i++)
-				if (weekplan[i] == "1")
-					b++
-			return b > a
-		}
+	}
+	// вычисляет, какая половина больше
+	function calcHalfOfWeekplan(weekplan) {
+		var a = 0
+		var b = 0
+		for (var i = 0; i < weekplan.length / 2; i++)
+			if (weekplan[i] == "1")
+				a++
+		for (var i = weekplan.length / 2; i < weekplan.length; i++)
+			if (weekplan[i] == "1")
+				b++
+		return b > a
 	}
 	// вычисляет части понедельного плана до и после смены расписания
 	function calcBCAC(weekplanHalf, base) {
@@ -144,7 +175,7 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	updateDetails(schi)
 
 	dropScheduleItemSettingsForm()
-	nomalizeAllTrs()
+	normalizeAllTrs()
 }
 
 scheduleItemSettingsResetButton.onclick = dropScheduleItemSettingsForm

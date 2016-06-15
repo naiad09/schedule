@@ -141,14 +141,14 @@ public abstract class Person {
 	
 	@Transient
 	public String getFullName() {
-		return lastName + " " + firstName.charAt(0) + ". "
+		return lastName + "&nbsp;" + firstName.charAt(0) + ".&nbsp;"
 				+ middleName.charAt(0) + ".";
 	}
 	
 	@Transient
 	public String getFullNameReverse() {
-		return firstName.charAt(0) + ". " + middleName.charAt(0) + ". "
-				+ lastName;
+		return firstName.charAt(0) + ".&nbsp;" + middleName.charAt(0)
+				+ ".&nbsp;" + lastName;
 	}
 	
 	@Transient

@@ -17,14 +17,15 @@
 	id="dateChange" type="hidden" />
 <input type="date" value="${schedule.eduProcGraphic.semesterEnd}"
 	id="dateEnd" type="hidden" />
+<span id="info">инфа фсякая</span>
 
 <form action="edit" method="post" id="scheduleForm">
-	<table ondragenter="return dragEnter(event)"
-		ondrop="return dragDrop(event)" ondragover="return dragEnter(event)"
-		style="width: 1100px; margin-left: -50px;">
+	<table style="width: 1100px; margin-left: -50px;">
 		<tr>
 			<td style="padding: 0;"><div id="scheduleOverflow">
-					<table id="schedule" class="borderTable">
+					<table id="schedule" class="borderTable"
+						ondrop="return dragDrop(event)" 
+						ondragover="return dragEnter(event)">
 						<thead>
 							<tr>
 								<th rowspan="3" style="width: 21px;"></th>
@@ -139,6 +140,10 @@
 			</div>
 		</c:forEach>
 	</c:forEach>
+</div>
+
+<div class="vacancy" id="vacancyTemplate" ondrop="return dragDropVacancy(event)">
+	<span class="weekplan"></span>
 </div>
 
 <script

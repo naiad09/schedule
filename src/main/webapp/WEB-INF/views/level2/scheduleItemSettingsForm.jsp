@@ -48,7 +48,7 @@
 				id="classroomSelector">
 					<c:forEach items="${classrooms}" var="classroom">
 						<option value="${classroom.idClassroom}"
-							title="а. ${classroom.classroomNumber}">ауд.
+							title="а.&nbsp;${classroom.classroomNumber}">ауд.
 							${classroom.classroomNumber}, корпус ${classroom.campus}
 							<c:if test="${classroom.chair!=null}">
                                         , каф. ${classroom.chair.shortName}</c:if>
