@@ -15,13 +15,12 @@ $("#schedule>tbody.weekday").each(function(i) {
 })
 
 // парсинг scheduleInfo
-var trsToNormalize = []
 $(scheduleItemsInfo).find(".schiInfo").each(function(){
 	var schiInfo = this.innerText.split(/\|\n?\s*/, 6)
 	var schi = createSchi($("#glt" + schiInfo[2])[0])
 	var tr = $("tbody.weekday").eq(schiInfo[3])
 		.find("input.twainInput[value='" + schiInfo[1] + "']").parents("tr.scheduleTr")[0]
-	trsToNormalize[trsToNormalize.length] = tr
+	tr.needNormalize = true
 	$(schi).find("input[name*='idScheduleItem']").val(schiInfo[0])
 	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5].trim())
 	
@@ -32,11 +31,62 @@ $(scheduleItemsInfo).find(".schiInfo").each(function(){
 
 	writeSchiToTr(schi, tr)
 })
-for (var i = 0; i < trsToNormalize.length; i++) {
-	normalizeTr(trsToNormalize[i])
+function nomalizeAllTrs(){
+	$("tr.scheduleTr").each(function(){
+		if (this.needNormalize) {
+			this.needNormalize = undefined
+			normalizeTr(this)
+		}
+	})
+	// нормализует tr, то есть составляет правильные ячейки в соответствии с
+	// tr.schi[]
+	function normalizeTr(tr) {
+		var flagLab4Prev = false // нужен для выставления класса
+		var flagLab4Has = false // нужен нормалайза следующей строки, если лаба4
+		var length = tr.cells.length;
+		for (var i = 1; i< length;i++) { // удаляем все старые ячейки
+			var td = tr.lastElementChild;
+			if (td.firstElementChild) td.removeChild(td.firstElementChild)
+			tr.removeChild(td)
+		}
+		var merge = 0 // определяет, сколько schi или null идут подряд
+		var schi = tr.schiBefore[0]
+		for (var i = 0;i<tr.schiBefore.length+1;i++) {// +1, чтобы последняя merge
+														// тоже
+												// создавалась
+			if (schi === tr.schiBefore[i]) merge++ // если совпадает,
+													// инкрементируем
+			// tr.schi[4]=undefined, поэтому последняя ячейка создается
+			else {// иначе создаем новую ячейку с результатом
+				var td = newTd(merge)
+				merge = 1
+				tr.appendChild(td)// и добавляем
+				if (schi) {if (schi.lab4) {// однако если это lab4
+					if (schi.parentElement) {// и если schi уже добавлена
+												// куда-то, то есть строкой выше
+						$(td).hide()// скрываем ячейку, чтобы потом при добавлении
+									// можно было их пересчитать
+						flagLab4Prev = true
+					}
+					else {
+						td.rowSpan = 2// ианче ставим rowspan
+						flagLab4Has = true
+						td.appendChild(schi)
+					}
+				} else td.appendChild(schi)}// а если обычная то просто добавляем
+			}
+			schi = tr.schiBefore[i]
+		}
+		
+	    if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
+	        tr.classList.add("empty")// и определяем класс
+	    else  tr.classList.remove("empty")
+	    
+	    if (flagLab4Has) tr.nextElementSibling.needNormalize = true
+	}
 }
+nomalizeAllTrs()
 $(".schi").each(function(){updateDetails(this)})
-
 
 function writeSchiToTr(schi, tr, yet) {
 	var weekplan = schi.weekplan.toString();
@@ -72,58 +122,15 @@ function removeSchi(schi) {
     // и из массива в tr
 	if (trOld) {
 		removeSchiFromTr(schi, trOld)
-		if (schi.lab4)
+		trOld.needNormalize = true
+		if (schi.lab4) {
 			removeSchiFromTr(schi, trOld.nextElementSibling)
-		normalizeTr(trOld)
-	}
-    
-}
-// нормализует tr, то есть составляет правильные ячейки в соответствии с
-// tr.schi[]
-function normalizeTr(tr) {
-	var flagLab4Prev = false // нужен для выставления класса
-	var flagLab4Has = false // нужен нормалайза следующей строки, если лаба4
-	var length = tr.cells.length;
-	for (var i = 1; i< length;i++) { // удаляем все старые ячейки
-		var td = tr.lastElementChild;
-		if (td.firstElementChild) td.removeChild(td.firstElementChild)
-		tr.removeChild(td)
-	}
-	var merge = 0 // определяет, сколько schi или null идут подряд
-	var schi = tr.schiBefore[0]
-	for (var i = 0;i<tr.schiBefore.length+1;i++) {// +1, чтобы последняя merge
-													// тоже
-											// создавалась
-		if (schi === tr.schiBefore[i]) merge++ // если совпадает,
-												// инкрементируем
-		// tr.schi[4]=undefined, поэтому последняя ячейка создается
-		else {// иначе создаем новую ячейку с результатом
-			var td = newTd(merge)
-			merge = 1
-			tr.appendChild(td)// и добавляем
-			if (schi) {if(schi.lab4) {// однако если это lab4
-				if (schi.parentElement) {// и если schi уже добавлена
-											// куда-то, то есть строкой выше
-					$(td).hide()// скрываем ячейку, чтобы потом при добавлении
-								// можно было их пересчитать
-					flagLab4Prev = true
-				}
-				else {
-					td.rowSpan = 2// ианче ставим rowspan
-					flagLab4Has = true
-					td.appendChild(schi)
-				}
-			} else td.appendChild(schi)}// а если обычная то просто добавляем
+			trOld.nextElementSibling.needNormalize = true
 		}
-		schi = tr.schiBefore[i]
 	}
-	
-    if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
-        tr.classList.add("empty")// и определяем класс
-    else  tr.classList.remove("empty")
     
-    if (flagLab4Has) normalizeTr(tr.nextElementSibling)
 }
+
 // добавляет shci в tr.schi, удаляет конфликты
 function addSchi(targetTd, schi) {
 	var tr = targetTd.parentElement
@@ -144,7 +151,7 @@ function addSchi(targetTd, schi) {
 	
 	writeSchiToTr(schi, tr)
 	
-	normalizeTr(tr)// и нормализуем
+	tr.needNormalize = true// и нормализуем
 		
 	updateDivider(schi)
 }
@@ -251,6 +258,7 @@ function dragDrop(ev) {
         break
     }
     ev.stopPropagation()
+    nomalizeAllTrs()
     return false
 }
 function dragStartGLT(ev) {
@@ -298,6 +306,7 @@ $(".leftMover.mover").live("mousedown", function(e) {
         if (coef < 0.8) {
             breakTwaise(schi, true, coef)
         } if (coef > 1.2) mergeTwaise(schi, true, coef)
+        nomalizeAllTrs()
     }
 })
 
@@ -325,6 +334,7 @@ $(".rightMover.mover").live("mousedown", function(e) {
         if (coef < 0.8) {
             breakTwaise(schi, false, coef)
         } if (coef > 1.2) mergeTwaise(schi, false, coef)
+        nomalizeAllTrs()
     }
 })
 // разбиение ячейки

@@ -128,10 +128,10 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	var tr = $(scheduleItemSettingsForm.editingSchi).parents("tr.scheduleTr")[0];
 	removeSchi(schi)
 	schi.weekplan.bc = bc
-	schi.weekplan.bc = ac
+	schi.weekplan.ac = ac
 	schi.weekplan.normalize()
 	writeSchiToTr(schi, tr)
-	normalizeTr(tr)
+	tr.needNormalize = true
 	
 	var classrooms = $(scheduleItemSettingsForm).find(".classroom input")
 	scheduleItemSettingsForm.editingSchi.find(".classrooms").empty().append(
@@ -144,6 +144,7 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	updateDetails(schi)
 
 	dropScheduleItemSettingsForm()
+	nomalizeAllTrs()
 }
 
 scheduleItemSettingsResetButton.onclick = dropScheduleItemSettingsForm
