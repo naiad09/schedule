@@ -9,10 +9,10 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-<link href="${pageContext.request.contextPath}/resources/style.css"
+<link href="${pageContext.request.contextPath}/resources/style/style.css"
 	rel="stylesheet" />
 <link rel="stylesheet/less" type="text/css"
-	href="${pageContext.request.contextPath}/resources/style.less">
+	href="${pageContext.request.contextPath}/resources/style/style.less">
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>

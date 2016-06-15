@@ -84,7 +84,9 @@
 		</tr>
 	</table>
 </form>
-<t:insertTemplate template="level2/scheduleDiscSettingsDiv.jsp" />
+
+<t:insertTemplate template="level2/scheduleDiscSettingsForm.jsp" />
+<t:insertTemplate template="level2/scheduleItemSettingsForm.jsp" />
 
 <div style="display: none">
 	<table id="schiTemplate" class="schi"
@@ -98,12 +100,14 @@
 						<img src="../../resources/cross.png" class="button"
 							onclick="processClickDelete(this)" title="Удалить">
 					</div>
-					<div class="discipline"></div>
-					<input type="hidden" name="scheduleDisciplines[].scheduleItems[].idScheduleItem" />
-                    <input type="hidden" name="scheduleDisciplines[].scheduleItems[].weekplan" value="255" />
-					<input type="hidden" name="scheduleDisciplines[].scheduleItems[].comment" />
-                    <input type="hidden" name="scheduleDisciplines[].scheduleItems[].twain.idTwain" />
-                    <input type="hidden" name="scheduleDisciplines[].scheduleItems[].weekday" />
+					<div class="discipline"></div> <input type="hidden"
+					name="scheduleDisciplines[].scheduleItems[].idScheduleItem" /> <input
+					type="hidden" name="scheduleDisciplines[].scheduleItems[].weekplan"
+					value="255" /> <input type="hidden"
+					name="scheduleDisciplines[].scheduleItems[].comment" /> <input
+					type="hidden"
+					name="scheduleDisciplines[].scheduleItems[].twain.idTwain" /> <input
+					type="hidden" name="scheduleDisciplines[].scheduleItems[].weekday" />
 					<small class="details"> <span class="lecturers"></span> <span
 						class="divider"></span> <span class="classrooms"></span>
 				</small>
@@ -114,13 +118,21 @@
 	</table>
 </div>
 
-<div id="scheduleItemsInfo" style="display:none">
-<c:forEach items="${schedule.scheduleDisciplines}" var="glt">
-    <c:forEach items="${glt.scheduleItems}" var="schi">
-		<div class="schiInfo">${schi.idScheduleItem},
-		${schi.twain.idTwain}, ${glt.idScheduleDiscipline},
-		${schi.weekday}, ${schi.weekplan}, ${schi.note}</div>
-	</c:forEach></c:forEach></div>
+<div id="scheduleItemsInfo" style="display: none">
+	<c:forEach items="${schedule.scheduleDisciplines}" var="glt">
+		<c:forEach items="${glt.scheduleItems}" var="schi">
+			<div class="schiInfo">${schi.idScheduleItem}|
+				${schi.twain.idTwain}| ${glt.idScheduleDiscipline}| ${schi.weekday}|
+				${schi.weekplan}| ${schi.comment}
+				<c:forEach items="${schi.classrooms}" var="c">
+					<input type="hidden" class="classroomInput"
+						value="${c.idClassroom}"
+						name="scheduleDisciplines[].scheduleItems[].classrooms[].idClassroom" />
+				</c:forEach>
+			</div>
+		</c:forEach>
+	</c:forEach>
+</div>
 
 <script
 	src="${pageContext.request.contextPath}/resources/js/schedule/schedule.js"></script>

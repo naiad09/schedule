@@ -5,24 +5,27 @@
 
 var schiId = 0 // счетчик schi, чтобы каждому присвоить уникальный id
 
-//Расстановка номеров
+// Расстановка номеров
 $("#schedule>tbody.weekday").each(function(i) {
 	this.index = i
 	$(this).find("tr.empty").each(function(j) {
 		this.schi = [ null, null, null, null ]
+		this.schi2 = [ null, null, null, null ]
 	})
 })
 
 // парсинг scheduleInfo
 var trsToNormalize = []
 $(scheduleItemsInfo).find(".schiInfo").each(function(){
-	var schiInfo = this.innerHTML.split(/,\n?\s*/)
+	var schiInfo = this.innerText.split(/\|\n?\s*/, 6)
 	var schi = createSchi($("#glt" + schiInfo[2])[0])
 	var tr = $("tbody.weekday").eq(schiInfo[3])
 		.find("input.twainInput[value='" + schiInfo[1] + "']").parents("tr.scheduleTr")[0]
 	trsToNormalize[trsToNormalize.length] = tr
 	$(schi).find("input[name*='idScheduleItem']").val(schiInfo[0])
-	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5])
+	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5].trim())
+	
+	$(schi).find(".classrooms").append($(this).find(".classroomInput"))
 	
 	// анализ weekplan
 	tr.schi[0] = schi
@@ -33,6 +36,7 @@ $(scheduleItemsInfo).find(".schiInfo").each(function(){
 for (var i = 0; i < trsToNormalize.length; i++) {
 	normalizeTr(trsToNormalize[i])
 }
+$(".schi").each(function(){updateDetails(this)})
 
 // удалить schi
 function removeSchi(schi) {
@@ -80,7 +84,7 @@ function normalizeTr(tr) {
 															// lab4
 				if (schi.parentElement) {// и если schi уже добавлена
 											// куда-то, то есть строкой выше
-					td.remove()// удаляем ячейку
+					$(td).hide()// скрываем ячейку, чтобы потом при добавлении можно было их пересчитать
 					flagLab4Prev = true
 				}
 				else {
@@ -120,11 +124,6 @@ function addSchi(targetTd, schi) {
 	var j = -1// из-за ячейки с парой
 	for(var i=0;tr.cells[i]!=targetTd;i++)// считаем пропуски в этой строке
 		j+=tr.cells[i].colSpan
-		
-    var prevTr = tr.previousElementSibling// и из-за предыдущий lab4
-    for(var i=0;i<prevTr.cells.length && i<targetTd.colSpan;i++)
-    	if (prevTr.cells[i].rowSpan==2)
-    		j+=prevTr.cells[i].colSpan
     		
     var nextTr = tr.nextElementSibling
 		
@@ -179,6 +178,7 @@ function createSchi(glt) {
 function updateDetails(schi) {
 	var details2 = $(schi).find(".details span.classrooms")
 	var clrooms = details2.find("input")
+	details2.empty().append(clrooms)
 	clrooms.each(function(i){
 		var cl = $(classroomSelector).find("option[value='"+this.value+"']").attr("title")
 		details2.append(cl+((i<clrooms.size()-1)?", ":""))
@@ -395,6 +395,13 @@ scheduleForm.onsubmit = function() {
 				)
 			var inputId = $(this).find("input[name*='idScheduleItem']")
 			if (!inputId.val()) inputId.remove()
+			
+			var configSubmit = {
+				listHolder : $(this),
+				rowClass : "classroomInput",
+				listName : "classrooms"
+			}
+			processDynamicListForm(configSubmit)
 		})
 		
 		var configSubmit = {

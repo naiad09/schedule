@@ -1,6 +1,6 @@
 /* General */
 body {
-	background: url("pattern.png") repeat-x #F5F8FA fixed;
+	background: url("../pattern.png") repeat-x #F5F8FA fixed;
 }
 
 #page {
@@ -9,7 +9,7 @@ body {
 }
 
 #header {
-	background: transparent url("logo.png") no-repeat scroll left top;
+	background: transparent url("../logo.png") no-repeat scroll left top;
 	height: 120px;
 	padding: 30px 0px 0px 110px;
 	box-sizing: border-box;
@@ -296,23 +296,6 @@ td.scheduleItem[colspan='1'] {
     font-size: 12px;
 } 
 td.scheduleItem[colspan='1'] .divider{
-    display: none;
+    display: none !important;
 } 
 
-/*schedule settings*/
-.classroom, .lecturer {
-    display: inline-block;
-}
-#scheduleSettingsForm .classroom:not(.default) {
-    border: 1px solid gray;
-    padding: 3px;
-    margin-right: 6px;
-}
-#scheduleSettingsForm .classroom .button, #scheduleSettingsForm .lecturer .button {
-    margin: 1px;
-}
-#scheduleSettingsForm .lecturer:not(.default) {
-    border: 1px solid gray;
-    padding: 3px;
-    margin-right: 6px;
-}

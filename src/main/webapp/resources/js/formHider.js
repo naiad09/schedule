@@ -3,7 +3,7 @@
 // при клике вне обозначенного селектора - скрывается (processHide)
 function FormHider(event, turner, selector, processHide, processShow) {
 	var focus = false
-	turner.bind(event, function(e) {
+	turner.live(event, function(e) {
 		if (!focus) {
 			focus = true
 

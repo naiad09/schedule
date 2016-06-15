@@ -54,9 +54,9 @@ public class ScheduleItem {
 	@Column(name = "weekday")
 	private Integer weekday;
 	
-	@Column(name = "note")
+	@Column(name = "comment")
 	@Size(max = 512)
-	private String note;
+	private String comment;
 	
 	@ManyToMany()
 	@JoinTable(	name = "schedule_classroom",
@@ -105,12 +105,12 @@ public class ScheduleItem {
 		this.weekday = weekday;
 	}
 	
-	public String getNote() {
-		return note;
+	public String getComment() {
+		return comment;
 	}
 	
-	public void setNote(String note) {
-		this.note = note;
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	public List<Classroom> getClassrooms() {
@@ -126,8 +126,7 @@ public class ScheduleItem {
 		return "ScheduleItem [idScheduleItem=" + idScheduleItem + ", twain="
 				+ twain.getIdTwain() + ", scheduleDiscipline="
 				+ scheduleDiscipline.getIdScheduleDiscipline() + ", weekplan="
-				+ weekplan + ", weekday=" + weekday + ", note=" + note
-				+ ", classrooms="
+				+ weekplan + ", weekday=" + weekday + ", classrooms="
 				+ classrooms.stream().map(c -> c.getIdClassroom())
 						.collect(Collectors.toList()).toString()
 				+ "]";

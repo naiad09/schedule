@@ -1,3 +1,5 @@
+// DEPRECATED
+
 function settings(schi) {
 	settingsResetButton.click()
 	location.hash = "#"
