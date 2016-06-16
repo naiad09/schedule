@@ -24,7 +24,6 @@
 		<tr>
 			<td style="padding: 0;"><div id="scheduleOverflow">
 					<table id="schedule" class="borderTable"
-						ondrop="return dragDrop(event)" 
 						ondragover="return dragEnter(event)">
 						<thead>
 							<tr>
@@ -56,7 +55,8 @@
 												value="${twain.timeEnd}" pattern="HH' <sup>'mm'</sup>'" />
 											<input value="${twain.idTwain}" class="twainInput"
 											type="hidden" /></td>
-										<td colspan="4" class="scheduleItem"></td>
+										<td colspan="4" class="scheduleItem"
+											ondrop="return dragDropTd(event)"></td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -98,6 +98,7 @@
 
 <div style="display: none">
 	<table id="schiTemplate" class="schi"
+		ondrop="return dragDropSchi(event)"
 		title="Нажмите дважды, чтобы настроить">
 		<tbody>
 			<tr>
@@ -142,7 +143,8 @@
 	</c:forEach>
 </div>
 
-<div class="vacancy" id="vacancyTemplate" ondrop="return dragDropVacancy(event)">
+<div class="vacancy" id="vacancyTemplate"
+	ondrop="return dragDropVacancy(event)">
 	<span class="weekplan"></span>
 </div>
 

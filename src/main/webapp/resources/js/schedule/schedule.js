@@ -29,20 +29,120 @@ $(scheduleItemsInfo).find(".schiInfo").each(function(){
 	schi.weekplan = new Weekplan(schi.weekplan)
 
 	writeSchiToTr(schi, tr)
-	updateWeekplanLabel(schi)
 })
 function normalizeAllTrs(){
-	$("tr.scheduleTr").each(function(){
-		if (this.needNormalize) {
-			this.needNormalize = undefined
-			normalizeTr(this)
-		}
+	$("tr.scheduleTr").filter(function(){
+		return this.needNormalize
+	}).each(function(){
+		normalizeTr(this)
+	}).each(function(){
+		this.needNormalize = undefined
+		$(this).find(".schi").each(function(){
+			this.style.removeProperty("height")
+			this.style.removeProperty("font-size")
+		}).filter(":only-child").each(function(){
+			var newHeight = $(this.parentElement).height()-3
+			if (newHeight / $(this).height() > 1.5) {
+				this.style.fontSize = "large"
+			}
+			$(this).height(newHeight)
+		})
 	})
+	
+	function normalizeTr(tr) {
+		var flagLab4Prev = false
+		$(tr).find(".scheduleItem, .schi").remove()
+		
+		var dominSchiFlag
+		var dominSchi
+		var td
+		var newTdFlag
+		
+		for(var i = 0;i<4;) {
+			
+			var beforeSchi = tr.schiBefore[i]
+			var afterSchi = tr.schiAfter[i]
+			if (!beforeSchi && !afterSchi){
+				if (dominSchi || i==0) {
+					td = newTd(1)
+					newTdFlag = true
+					tr.appendChild(td)
+				}
+				dominSchi = undefined
+				td.colSpan = (newTdFlag)?1:td.colSpan+1
+						newTdFlag = false
+				i++
+			} else {
+				td = newTd(1)
+				tr.appendChild(td)
+				
+				var before = beforeSchi ? beforeSchi.weekplan.toString().match(/1/g).length : 0
+				var after  = afterSchi ? afterSchi.weekplan.toString().match(/1/g).length : 0
+				
+				dominSchiFlag = before < after
+						
+			    dominSchi = dominSchiFlag?afterSchi:beforeSchi
+			    td.colSpan = dominSchi.weekplan.colspanInDominHalf()
+			    if (dominSchi.lab4 && dominSchi.parentElement) {
+			    	$(td).hide()
+			    	flagLab4Prev = true
+			    	td = dominSchi.parentElement
+			    }
+			    		
+				appendSchiToTd(dominSchi, td)
+				if (dominSchi.lab4) td.rowSpan = 2
+				var newEnd = td.colSpan + i
+				var vac = 0
+			    for (;i<newEnd+1;i++) {
+			    	var nonDominSchi = (dominSchiFlag?tr.schiBefore:tr.schiAfter)[i]
+			    	if ((i == newEnd) || nonDominSchi) {
+			    		while (vac > 0) {
+			    			var minus = (vac == 4)?4:(i==vac && i>1)?2:(i-vac==1)?1:vac
+			    			var newWeekplan = Array(i-vac+1).join("0")
+			    				+ Array(minus+1).join("1") + Array(4-i+vac-minus+1).join("0")
+			    			newWeekplan = (dominSchiFlag?"":"0000") + newWeekplan + (dominSchiFlag?"0000":"")
+				    		appendSchiToTd(cloneVacancy(new Weekplan(newWeekplan)), td)
+				    		vac -= minus
+			    		}
+				    		
+			    		if ((i < newEnd) && nonDominSchi && !nonDominSchi.parentElement)
+			    			appendSchiToTd(nonDominSchi, td)
+			    	} else vac++
+			    }
+				if (dominSchiFlag) td.appendChild(dominSchi)
+				i--
+			}	
+					
+			
+		}
+		
+		
+		
+		
+		if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
+	        tr.classList.add("empty")// и определяем класс
+	    else  tr.classList.remove("empty")
+	}
+	
+	function cloneVacancy(weekplan) {
+		var vacancyClone = vacancyTemplate.cloneNode(true)
+		vacancyClone.weekplan = weekplan
+		vacancyClone.id = ""
+		return vacancyClone
+	}
+	
+	function appendSchiToTd(schi, td) {
+		if (!schi || schi.parentElement) return
+		td.appendChild(schi)
+		$(schi).attr("colspan",schi.weekplan.colspanInDominHalf())
+	    updateWeekplanLabel(schi)
+	    return schi
+	}
+	
 	// нормализует tr, то есть составляет правильные ячейки в соответствии с
 	// tr.schi[]
-	function normalizeTr(tr) {
+	function normalizeTr2(tr) {
 		var flagLab4Prev = false // нужен для выставления класса
-		var flagLab4Has = false // нужен нормалайза следующей строки, если лаба4
 		var length = tr.cells.length;
 		for (var i = 1; i< length;i++) { // удаляем все старые ячейки
 			var td = tr.lastElementChild;
@@ -59,7 +159,6 @@ function normalizeAllTrs(){
 				schi = array[i]
 			}
 			
-			// +1, чтобы последняя merge тоже создавалась
 			if (schi === array[i+1]) merge++ 
 			// если совпадает, инкрементируем
 			// tr.schi[4]=undefined, поэтому последняя ячейка создается
@@ -78,10 +177,10 @@ function normalizeAllTrs(){
 					}
 					else {
 						td.rowSpan = 2// ианче ставим rowspan
-						appendSchiToTd(schi, td)
+						appendSchiToTd2(schi, td)
 					}
 					// а если обычная то просто добавляем
-				} else appendSchiToTd(schi, td)}
+				} else appendSchiToTd2(schi, td)}
 			}
 		}
 		
@@ -90,7 +189,7 @@ function normalizeAllTrs(){
 	    else  tr.classList.remove("empty")
 	}
 	
-	function appendSchiToTd(schi, td) {
+	function appendSchiToTd2(schi, td) {
 		var invert = schi.weekplan.invert()
 		td.appendChild(schi)
 		if (invert) {
@@ -102,6 +201,15 @@ function normalizeAllTrs(){
 			updateWeekplanLabel(vacancyClone)
 		}
 	}
+	
+	// создает новую ячейку td
+	function newTd(colSpan) {
+		var td = document.createElement("td")
+		td.colSpan = colSpan
+		td.classList.add("scheduleItem")
+		td.ondrop = dragDropTd
+		return td
+	} 
 }
 normalizeAllTrs()
 $(".schi").each(function(){updateDetails(this)})
@@ -122,12 +230,11 @@ function writeSchiToTr(schi, tr, yet) {
 
 // удаляет schi из массивов schiBefore и schiAfter
 function removeSchiFromTr(schi, tr, yet) {
-	var weekplan = schi.weekplan.toString();
-	for (var i = 0; i < 4; i++) if (weekplan[i] == "1") {
+	for (var i = 0; i < 4; i++) if (tr.schiBefore[i] == schi) {
 		tr.schiBefore[i] = null
 	}
-	for (var i = 4; i < 8; i++) if (weekplan[i] == "1") {
-		tr.schiAfter[i-4] = null
+	for (var i = 0; i < 4; i++) if (tr.schiAfter[i] == schi) {
+		tr.schiAfter[i] = null
 	}
 	tr.needNormalize = true
 	if (schi.lab4 && !yet) removeSchiFromTr(schi, tr.nextElementSibling, true)
@@ -144,32 +251,9 @@ function removeSchi(schi) {
 	if (trOld) {
 		removeSchiFromTr(schi, trOld)
 		if (schi.lab4)
-			removeSchiFromTr(schi, trOld.nextElementSibling)
+			removeSchiFromTr(schi, trOld.nextElementSibling, true)
 	}
     
-}
-
-// добавляет shci в tr.schi, удаляет конфликты
-function addSchi(targetTd, schi) {
-	var tr = targetTd.parentElement
-	
-	var weekplan = "0000"
-	var j = -1
-	for (var i = 0; tr.cells[i] != targetTd; i++)
-		// считаем пропуски в этой строке
-		j += tr.cells[i].colSpan
-		
-	for (var i = j; i < targetTd.colSpan + j; i++) {
-		weekplan = weekplan.substr(0, i).concat("1").concat(weekplan.substring(i + 1))
-	}
-	
-	removeSchi(schi)
-	
-	schi.weekplan = new Weekplan(weekplan + "" + weekplan) // magic
-	
-	writeSchiToTr(schi, tr)
-		
-	updateDivider(schi)
 }
 
 // создает schi по glt
@@ -218,7 +302,7 @@ function updateDivider(schi) {
 	var details0 = $(schi).find(".details span.lecturers")
 	
 	var divider = $(schi).find(".details span.divider");
-	var width = $(schi).find("b").width() + 20
+	var width = $(schi).width()*0.4 + $(schi).find("b").width()*0.6 - 60
 	if(details2.width() && details0.width()) {
 		width-=details0.width()
 		width-=details2.width()
@@ -237,9 +321,10 @@ function updateWeekplanLabel(schi) {
 	
 	if (w.bc != w.ac) {
 		if (w.ac == "00") span.text("до смены расписания")
-		if (w.bc == "00") span.text("после смены расписания")
+		else if (w.bc == "00") span.text("со смены расписания")
+		else span.text(schi.weekplan.toString())
 	}
-	if(span.text()) span.text("(" + span.text() + ")")
+	if (span.text()) span.text("(" + span.text() + ")")
 }
 
 // обработчик на кнопке удаления
@@ -247,19 +332,6 @@ function processClickDelete(link) {
 	link = $(link).parents(".schi")[0]
     removeSchi(link)
 	normalizeAllTrs()
-}
-
-// обработчик перемещения в таблицу
-function dragDrop(ev) {
-    var targetTd = $(ev.target).closest(".scheduleItem")[0]        
-    var schi = getSchiForEvent(ev)
-    if (targetTd == schi.parentElement) return
-    addSchi(targetTd, schi)
-    ev.stopPropagation()
-    normalizeAllTrs()
-    updateDivider(schi)
-    updateWeekplanLabel(schi)
-    return false
 }
 
 // вытаскивает или создает schi из события
@@ -290,28 +362,26 @@ function dragStartGLT(ev) {
     return true
 }
 function dragStartSCHI(ev) {
-    ev.dataTransfer.effectAllowed = 'move'
+    ev.dataTransfer.effectAllowed = 'copyMove'
     var schi = $(ev.target).closest(".schi")[0]
 	ev.dataTransfer.setData('SCHId', schi.getAttribute('id'))
     ev.dataTransfer.setData('type', "schi")
     return true
 }
 
-
 function dragEnter(ev) {
     event.preventDefault()
-// info.innerHTML = ev.target.classList
     if ($(ev.target).closest(".scheduleItem")[0]) return true;
-// ev.dataTransfer.dropEffect = "none"
-// return false
-}
-document.ondragend = function(){
-	schedule.classList.remove('dragovering')
+    ev.dataTransfer.dropEffect = "none"
+    return false
 }
 
 function dragDropVacancy(ev) {
 	var vacancy = $(ev.target).closest(".vacancy")[0]
-	var schi = getSchiForEvent(ev);
+	var schi = getSchiForEvent(ev)
+	if (ev.ctrlKey) schi = schi.cloneNode(true) 
+	else removeSchi(schi)
+	
 	schi.weekplan = vacancy.weekplan;
 	
 	var tr = $(vacancy).closest("tr.scheduleTr")[0]
@@ -323,17 +393,74 @@ function dragDropVacancy(ev) {
     return false
 }
 
+function dragDropSchi(ev) {
+	var schiOld = $(ev.target).closest(".schi")[0]
+	var schiNew = getSchiForEvent(ev)
+	var trOld = $(schiOld).closest("tr.scheduleTr")[0]
+	var trNew = $(schiNew).closest("tr.scheduleTr")[0]
+	
+	removeSchi(schiNew)
+	removeSchi(schiOld)
+	
+	var w = schiNew.weekplan
+	schiNew.weekplan = schiOld.weekplan
+	schiOld.weekplan = w
+	
+	if (ev.ctrlKey && trNew) {
+		writeSchiToTr(schiOld, trNew)
+	}
+
+	writeSchiToTr(schiNew, trOld)
+	
+	ev.stopPropagation()
+	
+	normalizeAllTrs()
+    return false
+}
+
+function dragDropTd(ev) {
+	var td = ev.target
+	var schi = getSchiForEvent(ev)
+	if (ev.ctrlKey) schi = schi.cloneNode(true) 
+	else removeSchi(schi)
+	
+	schi.weekplan = calcWeekplan(td)
+	
+	var tr = $(td).closest("tr.scheduleTr")[0]
+	writeSchiToTr(schi, tr)
+	
+    ev.stopPropagation()
+	
+	normalizeAllTrs()
+    return false
+}
+
+function calcWeekplan(td) {
+	var tr = td.parentElement
+	var weekplan = "0000"
+	var j = -1
+	for (var i = 0; tr.cells[i] != td; i++)
+		// считаем пропуски в этой строке
+		j += tr.cells[i].colSpan
+		
+	for (var i = j; i < td.colSpan + j; i++) {
+		weekplan = weekplan.substr(0, i).concat("1").concat(weekplan.substring(i + 1))
+	}
+	return new Weekplan(weekplan + "" + weekplan)
+}
+
 $(".leftMover.mover").live("mousedown", function(e) {
     var schi = this.parentElement.parentElement.parentElement
     var startX = e.pageX
     var startWidth = schi.clientWidth
+    var startMargin = parseInt($(schi).css("margin-left"))
     
     var rightBound = schi.parentElement.parentElement.firstElementChild.getBoundingClientRect().right
     moveAt(e)
     function moveAt(e) {
         var newWidth = startWidth - e.pageX + startX + 2
         if (e.pageX < rightBound + 9 || newWidth < 180) return
-        schi.style.marginLeft = e.pageX - startX + 'px'
+        schi.style.marginLeft = e.pageX - startX + startMargin + 'px'
         schi.style.width = newWidth + 'px'
     }
     document.onmousemove = function(e) {
@@ -349,6 +476,7 @@ $(".leftMover.mover").live("mousedown", function(e) {
             breakTwaise(schi, true)
         } if (coef > 1.2) mergeTwaise(schi, true)
         normalizeAllTrs()
+        updateDivider(schi)
     }
 })
 
@@ -356,13 +484,15 @@ $(".rightMover.mover").live("mousedown", function(e) {
     var schi = this.parentElement.parentElement.parentElement
     var startX = e.pageX
     var startWidth = schi.clientWidth
+    var startMargin = parseInt($(schi).css("margin-right"))
+    info.innerHTML = startMargin
     
     var leftBound = $(schi).parents(".scheduleTr")[0].getBoundingClientRect().right
     moveAt(e)
     function moveAt(e) {
         var newWidth = startWidth + e.pageX - startX + 2
         if (e.pageX > leftBound - 9 || newWidth < 180) return
-        schi.style.marginRight = - e.pageX + startX + 'px'
+        schi.style.marginRight = - e.pageX + startX + startMargin + 'px'
         schi.style.width = newWidth + 'px'
     }
     document.onmousemove = function(e) {
@@ -377,22 +507,21 @@ $(".rightMover.mover").live("mousedown", function(e) {
             breakTwaise(schi, false)
         } if (coef > 1.2) mergeTwaise(schi, false)
         normalizeAllTrs()
+        updateDivider(schi)
     }
 })
 // разбиение ячейки
 function breakTwaise(schi, left) {
-    var td = schi.parentElement
-    if (td.colSpan == 1) return
-    var tr = td.parentElement
+    if (schi.attributes["colspan"].value == 1) return
+    var tr = $(schi).parents(".scheduleTr")[0]
     removeSchi(schi)
     schi.weekplan.breakTwise(left)
     writeSchiToTr(schi, tr)
 }
 // слияние ячеек
 function mergeTwaise(schi, left) {
-    var td = schi.parentElement
-    if (td.colSpan == 4) return
-    var tr = td.parentElement
+    if (schi.attributes["colspan"].value == 4) return
+    var tr = $(schi).parents(".scheduleTr")[0]
     removeSchi(schi)
     schi.weekplan.mergeTwise(left)
     writeSchiToTr(schi, tr)
@@ -444,10 +573,3 @@ scheduleForm.onsubmit = function() {
 	})
 }
 
-// создает новую ячейку td
-function newTd(colSpan) {
-	var td = document.createElement("td")
-	td.colSpan = colSpan
-	td.classList.add("scheduleItem")
-	return td
-} 

@@ -213,7 +213,7 @@ form table#schedule td:nth-child(1) {
 }
 
 #schedule tr.empty {
-	font-size: 10px;
+	font-size: 8px;
 }
 #schedule>tbody>tr:last-child {
     border-bottom: 1px double black;
@@ -235,6 +235,9 @@ div.glt {
 table.schi {
     border: 1px gray solid;
 	cursor: move;
+	margin: 2px 5px;
+	display: inline-table;
+	vertical-align: middle;
 }
 
 .schi td {
@@ -242,11 +245,11 @@ table.schi {
 }
 
 div.glt.lab, table.schi.lab, .lab .lecturer, .lab .classroom {
-	background: rgba(141, 209, 93, 0.3);
+    background: rgba(194, 162, 240, 0.3);
 }
 
 div.glt.lab4, table.schi.lab4, .lab4 .lecturer, .lab4 .classroom {
-	background: rgba(194, 162, 240, 0.3);
+    background: rgba(141, 209, 93, 0.3);
 }
 
 div.glt.pract, table.schi.pract, .pract .lecturer, .pract .classroom {
@@ -292,26 +295,36 @@ td.leftMover {
     margin: 0;
 }
 .scheduleItem {
-    padding: 2px 5px;
+    padding: 0;
 }
-td.scheduleItem[colspan='2'] {
+.schi[colspan='2'] {
 	font-size: 14px;
 }
-td.scheduleItem[colspan='1'] {
+.schi[colspan='1'] {
     font-size: 12px;
 } 
-td.scheduleItem[colspan='1'] .divider{
+.schi[colspan='1'] .divider{
     display: none !important;
-} 
+}
+.schi[colspan='2'], .vacancy[colspan='2'] {
+    width: 345px
+}
+.schi[colspan='1'], .vacancy[colspan='1'] {
+    width: 167px;
+}
+.schi[colspan='4'], .vacancy[colspan='4'] {
+    width: 701px;
+}
 
 .scheduleItem .vacancy {
-	display: block;
+    display: inline-block;
     border: 1px gray dotted;
-    margin: 3px;
+    margin: 5px;
     background: rgba(255,255,255,0.3);
     color: gray;
     padding: 6px;
     font-size: smaller;
+    box-sizing: border-box;
 }
 #vacancyTemplate.vacancy {
     display: none;

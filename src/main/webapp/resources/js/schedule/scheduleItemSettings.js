@@ -46,6 +46,9 @@ function Weekplan(code) {
 	this.dominAfterHalf = function() {
 		return calcHalfOfWeekplan(this.toString())
 	}
+	this.colspanInDominHalf = function() {
+		return this.toString().substr(this.dominAfterHalf()?4:0,4).match(/1/g).length
+	}
 	this.breakTwise = function(left) {
 		if (this.base == "every") this.base = left?"den":"num"
 		else if(left) {
@@ -58,13 +61,13 @@ function Weekplan(code) {
 		this.normalize()
 	}
 	this.mergeTwise = function(left) {
-		if (this.base != "every") this.base = "every"
+		if (this.base != "every" && this.colspanInDominHalf()>1) this.base = "every"
 		else if(left) {
-			this.bc = this.bc[0] + this.bc[0]
-			this.ac = this.ac[0] + this.ac[0]
-		} else {
 			this.bc = this.bc[1] + this.bc[1]
 			this.ac = this.ac[1] + this.ac[1]
+		} else {
+			this.bc = this.bc[0] + this.bc[0]
+			this.ac = this.ac[0] + this.ac[0]
 		}
 		this.normalize()
 	}
@@ -171,11 +174,11 @@ scheduleItemSettingsSaveButton.onclick = function() {
 	scheduleItemSettingsForm.editingSchi.find("[name*='comment']").val(
 			scheduleItemSettingsForm.elements['comment'].value)
 
-	updateWeekplanLabel(schi)
-	updateDetails(schi)
-
 	dropScheduleItemSettingsForm()
 	normalizeAllTrs()
+
+	updateWeekplanLabel(schi)
+	updateDetails(schi)
 }
 
 scheduleItemSettingsResetButton.onclick = dropScheduleItemSettingsForm
