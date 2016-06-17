@@ -35,7 +35,7 @@ public class ProfileDiscipline {
 	private int idProfDisc;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_chair", updatable = false, nullable = false)
+	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
 	@ManyToOne
@@ -87,6 +87,13 @@ public class ProfileDiscipline {
 	
 	public void setCommonDiscipline(CommonDiscipline commonDiscipline) {
 		this.commonDiscipline = commonDiscipline;
+	}
+	
+	@Override
+	public String toString() {
+		return "ProfileDiscipline [idProfDisc=" + idProfDisc + ", discipline="
+				+ discipline + ", curriculum=" + curriculum
+				+ ", commonDiscipline=" + commonDiscipline.getDiscCode() + "]";
 	}
 	
 }

@@ -40,7 +40,7 @@ public class Classroom {
 	
 	@Column(name = "campus")
 	@NotNull
-	private int campus = 1;
+	private String campus = "1";
 	
 	public int getIdClassroom() {
 		return idClassroom;
@@ -66,11 +66,11 @@ public class Classroom {
 		this.classroomNumber = classroomNumber;
 	}
 	
-	public int getCampus() {
+	public String getCampus() {
 		return campus;
 	}
 	
-	public void setCampus(int campus) {
+	public void setCampus(String campus) {
 		this.campus = campus;
 	}
 	

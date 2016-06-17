@@ -26,8 +26,8 @@
 			</select> <select name="twain" style="max-width: 100px;" disabled="disabled">
 					<c:forEach items="${twains}" var="twain">
 						<option value="${twain.idTwain}">
-							<fmt:formatDate value="${twain.timeStart}" pattern="HH:mm" /> -
-							<fmt:formatDate value="${twain.timeEnd}" pattern="HH:mm" />
+							<fmt:formatDate value="${twain.timeStart}" pattern="HH.mm" /> -
+							<fmt:formatDate value="${twain.timeEnd}" pattern="HH.mm" />
 						</option>
 					</c:forEach>
 			</select></td>

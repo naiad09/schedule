@@ -147,4 +147,11 @@ public class CommonDiscipline {
 			List<ProfileDiscipline> profileDisciplines) {
 		this.profileDisciplines = profileDisciplines;
 	}
+	
+	@Override
+	public String toString() {
+		return "ComDisc [id=" + idComDisc + ", discCode=" + discCode
+				+ ", variability=" + variability + "]";
+	}
+	
 }

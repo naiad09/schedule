@@ -43,9 +43,7 @@ h3 {
 }
 div#login {
 	width: 270px;
-	text-align: center;.weekplan, .details {
-    display: block;
-}
+	text-align: center;
 	margin-left: 100px;
 }
 
@@ -95,7 +93,7 @@ select {
 }
 
 button {
-    height: 28px;
+    min-height: 28px;
     background: rgba(187, 117, 42, 0.3);
     border: 1px solid gray;
 }
@@ -285,8 +283,13 @@ td.leftMover {
 .schi:hover .schiButtons {
     display: block;
 }
-.weekplan, .details {
+    
+.schi .weekplan, .details {
     display: block;
+}
+
+#scheduleForm .schi .numDen {
+	display: none;
 }
 
 .schi .button {

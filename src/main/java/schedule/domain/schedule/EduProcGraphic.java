@@ -186,8 +186,7 @@ public class EduProcGraphic {
 				+ ", recordSessionEnd=" + recordSessionEnd
 				+ ", examsSessionStart=" + examsSessionStart
 				+ ", examsSessionEnd=" + examsSessionEnd + ", curriculums="
-				+ curriculums + ", enroll=" + enroll + ", schedules="
-				+ schedules + "]";
+				+ curriculums + ", enroll=" + enroll + "]";
 	}
 	
 }

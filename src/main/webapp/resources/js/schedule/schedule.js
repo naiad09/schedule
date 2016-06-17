@@ -1,6 +1,6 @@
 // Управляет интерфейсом расписания. Сокрыщения:
 // schi - schedule item, элемент расписания
-// glt - group lesson type
+// glt - group lesson type, дисциплина расписания
 // Каждая tr содержит два массива[4] ссылок на schi
 
 var schiId = 0 // счетчик schi, чтобы каждому присвоить уникальный id
@@ -18,8 +18,8 @@ $("#schedule>tbody.weekday").each(function(i) {
 $(scheduleItemsInfo).find(".schiInfo").each(function(){
 	var schiInfo = this.innerText.split(/\|\n?\s*/, 6)
 	var schi = createSchi($("#glt" + schiInfo[2])[0])
-	var tr = $("tbody.weekday").eq(schiInfo[3])
-		.find("input.twainInput[value='" + schiInfo[1] + "']").parents("tr.scheduleTr")[0]
+	schi.twain = schiInfo[1]
+	var tr = $("tbody.weekday").eq(schiInfo[3]).find("tr.scheduleTr").eq(schi.twain-1)[0]
 	$(schi).find("input[name*='idScheduleItem']").val(schiInfo[0])
 	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5].trim())
 	
@@ -76,8 +76,10 @@ function normalizeAllTrs(){
 				td = newTd(1)
 				tr.appendChild(td)
 				
-				var before = beforeSchi ? beforeSchi.weekplan.toString().match(/1/g).length : 0
-				var after  = afterSchi ? afterSchi.weekplan.toString().match(/1/g).length : 0
+				var before = beforeSchi ? beforeSchi.weekplan
+						.toString().substr(0,4).match(/1/g).length : 0
+				var after  = afterSchi ? afterSchi.weekplan
+						.toString().substr(4,4).match(/1/g).length : 0
 				
 				dominSchiFlag = before < after
 						
@@ -101,7 +103,9 @@ function normalizeAllTrs(){
 			    			var newWeekplan = Array(i-vac+1).join("0")
 			    				+ Array(minus+1).join("1") + Array(4-i+vac-minus+1).join("0")
 			    			newWeekplan = (dominSchiFlag?"":"0000") + newWeekplan + (dominSchiFlag?"0000":"")
-				    		appendSchiToTd(cloneVacancy(new Weekplan(newWeekplan)), td)
+			    			var vacancy = cloneVacancy(new Weekplan(newWeekplan))
+				    		vacancy.twain = calcTwain(tr)
+				    		appendSchiToTd(vacancy, td)
 				    		vac -= minus
 			    		}
 				    		
@@ -119,7 +123,7 @@ function normalizeAllTrs(){
 		
 		
 		
-		if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
+		if (tr.getElementsByClassName("schi").length == 0) // && !flagLab4Prev)
 	        tr.classList.add("empty")// и определяем класс
 	    else  tr.classList.remove("empty")
 	}
@@ -137,69 +141,6 @@ function normalizeAllTrs(){
 		$(schi).attr("colspan",schi.weekplan.colspanInDominHalf())
 	    updateWeekplanLabel(schi)
 	    return schi
-	}
-	
-	// нормализует tr, то есть составляет правильные ячейки в соответствии с
-	// tr.schi[]
-	function normalizeTr2(tr) {
-		var flagLab4Prev = false // нужен для выставления класса
-		var length = tr.cells.length;
-		for (var i = 1; i< length;i++) { // удаляем все старые ячейки
-			var td = tr.lastElementChild;
-			if (td.firstElementChild) td.removeChild(td.firstElementChild)
-			tr.removeChild(td)
-		}
-		var merge = 1 // определяет, сколько schi или null идут подряд
-		var schi
-		for (var i = 0;i<tr.schiBefore.length;i++) {
-			var array = tr.schiBefore
-			schi = array[i]
-			if (!schi) {
-				array = tr.schiAfter
-				schi = array[i]
-			}
-			
-			if (schi === array[i+1]) merge++ 
-			// если совпадает, инкрементируем
-			// tr.schi[4]=undefined, поэтому последняя ячейка создается
-			else {// иначе создаем новую ячейку с результатом
-				var td = newTd(merge)
-				merge = 1
-				tr.appendChild(td)// и добавляем
-				if (schi) {if (schi.lab4) {// однако если это lab4
-					if (schi.parentElement) {
-						// и если schi уже добавлена куда-то, то есть строкой
-						// выше
-						$(td).hide()
-						// скрываем ячейку, чтобы потом при добавлении можно
-						// было их пересчитать
-						flagLab4Prev = true
-					}
-					else {
-						td.rowSpan = 2// ианче ставим rowspan
-						appendSchiToTd2(schi, td)
-					}
-					// а если обычная то просто добавляем
-				} else appendSchiToTd2(schi, td)}
-			}
-		}
-		
-	    if (tr.getElementsByClassName("schi").length == 0 && !flagLab4Prev) 
-	        tr.classList.add("empty")// и определяем класс
-	    else  tr.classList.remove("empty")
-	}
-	
-	function appendSchiToTd2(schi, td) {
-		var invert = schi.weekplan.invert()
-		td.appendChild(schi)
-		if (invert) {
-			var vacancyClone = vacancyTemplate.cloneNode(true)
-			vacancyClone.weekplan = invert
-			vacancyClone.id = ""
-			if (invert.dominAfterHalf()) td.appendChild(vacancyClone)
-			else td.insertBefore(vacancyClone, schi)
-			updateWeekplanLabel(vacancyClone)
-		}
 	}
 	
 	// создает новую ячейку td
@@ -315,127 +256,41 @@ function updateDivider(schi) {
 
 // обновляет название weekplan
 function updateWeekplanLabel(schi) {
-	var w = schi.weekplan
-	var span = $(schi).find(".weekplan")
-	span.text("")
+	var w = schi.weekplan.normalize()
+	var span = $(schi).find(".weekplan")[0]
+	var dominHalf = w.dominAfterHalf()
+	var nonDomin = !dominHalf?w.ac:w.bc
 	
 	if (w.bc != w.ac) {
-		if (w.ac == "00") span.text("до смены расписания")
-		else if (w.bc == "00") span.text("со смены расписания")
-		else span.text(schi.weekplan.toString())
+		if (nonDomin == "00") {
+			span.innerText = (dominHalf?"со":"до") + " смены расписания"
+		} else {
+			span.innerText = (!dominHalf?"со":"до") + " смены расписания по"
+			switch (nonDomin) {
+			case "10": if (w.base == "every") span.innerText += " числителю"
+				else span.innerText += " числам"
+				break
+			case "01": if (w.base == "every") span.innerText += " знаменателю"
+				else span.innerText += " числам"
+				break
+			}
+		}
+	} else if (w.base != "every" && nonDomin != "11") {
+		span.innerText = "по числам"
+	} else {
+		span.innerText = ""
 	}
-	if (span.text()) span.text("(" + span.text() + ")")
+	
+	$(schi).find(".numDen")[0].innerText = (w.base=="num")?"числ.":(w.base=="den")?"знам.":""
+		
+	var twainSpan = $(schi).find(".twain")[0]
+	if (schi.classList.contains("vacancy") || calcTwain($(schi).parents("tr.scheduleTr")[0]) != schi.twain)
+		twainSpan.innerText 
+				= $("select[name='twain'] option[value='" + schi.twain + "']").text().match(/\d\d\.\d\d/)
+	else twainSpan.innerText = ""
 }
 
-// обработчик на кнопке удаления
-function processClickDelete(link) {
-	link = $(link).parents(".schi")[0]
-    removeSchi(link)
-	normalizeAllTrs()
-}
-
-// вытаскивает или создает schi из события
-function getSchiForEvent(ev) {
-	var targetTd = $(ev.target).closest(".scheduleItem")[0]
-	var targetTr = targetTd.parentElement
-    var schi = null
-    
-    switch (ev.dataTransfer.getData('type')) {
-    case "glt":
-        var data = ev.dataTransfer.getData('GLTId')
-        var glt = document.getElementById(data)
-        schi = createSchi(glt)
-        break
-    case "schi":
-        var data = ev.dataTransfer.getData('SCHId')
-        schi = document.getElementById(data)
-        break
-    }
-    if (schi.lab4 && targetTr.parentElement.lastElementChild == targetTr)
-    	return null
-	return schi;
-}
-function dragStartGLT(ev) {
-    ev.dataTransfer.effectAllowed = 'move'
-    ev.dataTransfer.setData('GLTId', ev.target.getAttribute('id'))
-    ev.dataTransfer.setData('type', "glt")
-    return true
-}
-function dragStartSCHI(ev) {
-    ev.dataTransfer.effectAllowed = 'copyMove'
-    var schi = $(ev.target).closest(".schi")[0]
-	ev.dataTransfer.setData('SCHId', schi.getAttribute('id'))
-    ev.dataTransfer.setData('type', "schi")
-    return true
-}
-
-function dragEnter(ev) {
-    event.preventDefault()
-    if ($(ev.target).closest(".scheduleItem")[0]) return true;
-    ev.dataTransfer.dropEffect = "none"
-    return false
-}
-
-function dragDropVacancy(ev) {
-	var vacancy = $(ev.target).closest(".vacancy")[0]
-	var schi = getSchiForEvent(ev)
-	if (ev.ctrlKey) schi = schi.cloneNode(true) 
-	else removeSchi(schi)
-	
-	schi.weekplan = vacancy.weekplan;
-	
-	var tr = $(vacancy).closest("tr.scheduleTr")[0]
-	writeSchiToTr(schi, tr)
-	
-    ev.stopPropagation()
-	
-	normalizeAllTrs()
-    return false
-}
-
-function dragDropSchi(ev) {
-	var schiOld = $(ev.target).closest(".schi")[0]
-	var schiNew = getSchiForEvent(ev)
-	var trOld = $(schiOld).closest("tr.scheduleTr")[0]
-	var trNew = $(schiNew).closest("tr.scheduleTr")[0]
-	
-	removeSchi(schiNew)
-	removeSchi(schiOld)
-	
-	var w = schiNew.weekplan
-	schiNew.weekplan = schiOld.weekplan
-	schiOld.weekplan = w
-	
-	if (ev.ctrlKey && trNew) {
-		writeSchiToTr(schiOld, trNew)
-	}
-
-	writeSchiToTr(schiNew, trOld)
-	
-	ev.stopPropagation()
-	
-	normalizeAllTrs()
-    return false
-}
-
-function dragDropTd(ev) {
-	var td = ev.target
-	var schi = getSchiForEvent(ev)
-	if (ev.ctrlKey) schi = schi.cloneNode(true) 
-	else removeSchi(schi)
-	
-	schi.weekplan = calcWeekplan(td)
-	
-	var tr = $(td).closest("tr.scheduleTr")[0]
-	writeSchiToTr(schi, tr)
-	
-    ev.stopPropagation()
-	
-	normalizeAllTrs()
-    return false
-}
-
-function calcWeekplan(td) {
+function calcTdWeekplan(td) {
 	var tr = td.parentElement
 	var weekplan = "0000"
 	var j = -1
@@ -448,128 +303,3 @@ function calcWeekplan(td) {
 	}
 	return new Weekplan(weekplan + "" + weekplan)
 }
-
-$(".leftMover.mover").live("mousedown", function(e) {
-    var schi = this.parentElement.parentElement.parentElement
-    var startX = e.pageX
-    var startWidth = schi.clientWidth
-    var startMargin = parseInt($(schi).css("margin-left"))
-    
-    var rightBound = schi.parentElement.parentElement.firstElementChild.getBoundingClientRect().right
-    moveAt(e)
-    function moveAt(e) {
-        var newWidth = startWidth - e.pageX + startX + 2
-        if (e.pageX < rightBound + 9 || newWidth < 180) return
-        schi.style.marginLeft = e.pageX - startX + startMargin + 'px'
-        schi.style.width = newWidth + 'px'
-    }
-    document.onmousemove = function(e) {
-        moveAt(e)
-    }
-    document.onmouseup = function() {
-        document.onmousemove = null
-        document.onmouseup = null
-
-        var coef = schi.clientWidth / startWidth
-        schi.style=""
-        if (coef < 0.8) {
-            breakTwaise(schi, true)
-        } if (coef > 1.2) mergeTwaise(schi, true)
-        normalizeAllTrs()
-        updateDivider(schi)
-    }
-})
-
-$(".rightMover.mover").live("mousedown", function(e) {
-    var schi = this.parentElement.parentElement.parentElement
-    var startX = e.pageX
-    var startWidth = schi.clientWidth
-    var startMargin = parseInt($(schi).css("margin-right"))
-    info.innerHTML = startMargin
-    
-    var leftBound = $(schi).parents(".scheduleTr")[0].getBoundingClientRect().right
-    moveAt(e)
-    function moveAt(e) {
-        var newWidth = startWidth + e.pageX - startX + 2
-        if (e.pageX > leftBound - 9 || newWidth < 180) return
-        schi.style.marginRight = - e.pageX + startX + startMargin + 'px'
-        schi.style.width = newWidth + 'px'
-    }
-    document.onmousemove = function(e) {
-        moveAt(e)
-    }
-    document.onmouseup = function() {
-        document.onmousemove = null
-        document.onmouseup = null
-        var coef = schi.clientWidth / startWidth
-        schi.style=""
-        if (coef < 0.8) {
-            breakTwaise(schi, false)
-        } if (coef > 1.2) mergeTwaise(schi, false)
-        normalizeAllTrs()
-        updateDivider(schi)
-    }
-})
-// разбиение ячейки
-function breakTwaise(schi, left) {
-    if (schi.attributes["colspan"].value == 1) return
-    var tr = $(schi).parents(".scheduleTr")[0]
-    removeSchi(schi)
-    schi.weekplan.breakTwise(left)
-    writeSchiToTr(schi, tr)
-}
-// слияние ячеек
-function mergeTwaise(schi, left) {
-    if (schi.attributes["colspan"].value == 4) return
-    var tr = $(schi).parents(".scheduleTr")[0]
-    removeSchi(schi)
-    schi.weekplan.mergeTwise(left)
-    writeSchiToTr(schi, tr)
-}
-
-scheduleForm.onsubmit = function() {
-	var configSubmit = {
-		listHolder : $(scheduleDisciplines),
-		listName : "scheduleDisciplines",
-		rowClass : "glt"
-	}
-	processDynamicListForm(configSubmit)
-	
-	$(".glt").each(function(i) {
-		var configSubmit = {
-			listHolder : $(this),
-			listName : "lecturers",
-			rowClass : "lecturerInput"
-		}
-		processDynamicListForm(configSubmit)
-		
-		$(".schi." + this.id).each(function(){
-			$(this).find("input").each(function() {
-				this.name = this.name.replace(/scheduleDisciplines\[\d*\]/,
-						"scheduleDisciplines[" + i + "]")
-			})
-			$(this).find("input[name*='weekday']").val($(this).parents("tbody.weekday")[0].index)
-			$(this).find("input[name*='idTwain']").val(
-					$(this).parents("tr.scheduleTr").find("input.twainInput").val()
-				)
-			$(this).find("input[name*='weekplan']").val(parseInt(this.weekplan.toString(), 2))
-			var inputId = $(this).find("input[name*='idScheduleItem']")
-			if (!inputId.val()) inputId.remove()
-			
-			var configSubmit = {
-				listHolder : $(this),
-				rowClass : "classroomInput",
-				listName : "classrooms"
-			}
-			processDynamicListForm(configSubmit)
-		})
-		
-		var configSubmit = {
-			listHolder : $(schedule),
-			rowClass : "schi." + this.id,
-			listName : "scheduleItems"
-		}
-		processDynamicListForm(configSubmit)
-	})
-}
-

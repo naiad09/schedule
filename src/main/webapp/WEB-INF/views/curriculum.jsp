@@ -50,7 +50,6 @@
 		<t:insertTemplate template="level2/curDisc.jsp" />
 	</c:forEach>
 
-
 	<c:forEach items="${cur.curriculums}" var="profileCur" varStatus="i">
 		<t:insertTemplate template="level2/curriculumHead.jsp" />
 		<tr class="blockHead4">

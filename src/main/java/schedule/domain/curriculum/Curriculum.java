@@ -82,4 +82,9 @@ public class Curriculum {
 		this.groups = groups;
 	}
 	
+	@Override
+	public String toString() {
+		return "Curriculum [idCurriculum=" + idCurriculum + "]";
+	}
+	
 }

@@ -108,8 +108,8 @@
 					<div class="schiButtons">
 						<img src="../../resources/cross.png" class="button"
 							onclick="processClickDelete(this)" title="Удалить">
-					</div>
-					<div class="discipline"></div> <input type="hidden"
+					</div> <span class="twain"></span> <span class="numDen"></span> <span
+					class="discipline"></span> <input type="hidden"
 					name="scheduleDisciplines[].scheduleItems[].idScheduleItem" /> <input
 					type="hidden" name="scheduleDisciplines[].scheduleItems[].weekplan" />
 					<input type="hidden"
@@ -145,8 +145,10 @@
 
 <div class="vacancy" id="vacancyTemplate"
 	ondrop="return dragDropVacancy(event)">
-	<span class="weekplan"></span>
+	(<span class="twain"></span> <span class="numDen"></span> <span class="weekplan"></span>)
 </div>
 
+<script
+	src="${pageContext.request.contextPath}/resources/js/schedule/moves.js"></script>
 <script
 	src="${pageContext.request.contextPath}/resources/js/schedule/schedule.js"></script>

@@ -78,27 +78,33 @@
 	<c:forEach items="${semester.eduProcGraphics}" var="graphic">
 		<c:forEach items="${graphic.curriculums}" var="comCur">
 			<c:forEach items="${comCur.curriculums}" var="cur">
-				<c:forEach items="${cur.groups}" var="group">
+				<c:forEach items="${cur.groups}" var="thisGroup">
 					<tr>
-						<td>&nbsp;${group.groupNumber}, ${graphic.enroll.course}-ый
+						<td>${thisGroup.groupNumber},&nbsp;${graphic.enroll.course}-ый
 							курс</td>
-						<td><spring:eval
-								expression="graphic.schedules.^[group.idGroup==${group.idGroup}]"
-								var="schedule" /> <c:choose>
-								<c:when test="${schedule!=null}">${schedule}</c:when>
-								<c:otherwise>
-									<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<td><c:set value="${thisGroup.idGroup}" var="idThisGroup" />
+							<spring:eval var="schedule"
+								expression="graphic.schedules.^[group.idGroup==${idThisGroup}]" /></td>
+						<td><c:if test="${schedule!=null}">
+								<a href="schedule-${schedule.idSchedule}">Посмотреть</a>
+							</c:if></td>
+						<td><sec:authorize access="hasRole('ROLE_EDUDEP')">
+								<c:choose>
+									<c:when test="${schedule==null}">
 										<c:url value="new-schedule" var="semesterUrl" />
 										<form method="post" action="${semesterUrl}" name="schedule">
 											<input type="hidden" name="group.idGroup"
-												value="${group.idGroup}" /> <input type="hidden"
+												value="${thisGroup.idGroup}" /> <input type="hidden"
 												name="eduProcGraphic.idEduPeriod"
 												value="${graphic.idEduPeriod}" />
 											<button>Создать расписание</button>
 										</form>
-									</sec:authorize>
-								</c:otherwise>
-							</c:choose></td>
+									</c:when>
+									<c:otherwise>
+										<a href="schedule-${schedule.idSchedule}/edit">Редактировать</a>
+									</c:otherwise>
+								</c:choose>
+							</sec:authorize></td>
 					</tr>
 				</c:forEach>
 			</c:forEach>

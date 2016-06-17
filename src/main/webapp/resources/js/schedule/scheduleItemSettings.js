@@ -11,6 +11,7 @@ function Weekplan(code) {
 		 this.base = n.base
 		 this.bc = n.bc
 		 this.ac = n.ac
+		 return this
 	}
 	
 	this.invert = function() {
@@ -124,8 +125,7 @@ function showScheduleItemSettingsForm(e) {
 
 	scheduleItemSettingsForm.elements['weekday'].value = $(schi).parents(
 			"tbody.weekday")[0].index
-	scheduleItemSettingsForm.elements['twain'].value = $(schi).parents(
-			"tr.scheduleTr").find("input.twainInput").val()
+	scheduleItemSettingsForm.elements['twain'].value = schi[0].twain
 	scheduleItemSettingsForm.elements['comment'].value = $(schi).find(
 			"[name*='comment']").val()
 

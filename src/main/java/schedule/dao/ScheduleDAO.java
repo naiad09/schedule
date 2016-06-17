@@ -42,7 +42,6 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 	
 	// Вычисляем подходящие дисциплины для расписания данной группы
 	public void create(Schedule schedule) {
-		System.out.println("here");
 		// рефреш
 		Group group = schedule.getGroup();
 		currentSession().refresh(group);
