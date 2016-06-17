@@ -267,18 +267,18 @@ function updateWeekplanLabel(schi) {
 			if (w.base != "every" && (dominHalf?w.ac:w.bc)!= "11") 
 				span.innerText += " по числам: " + perDays()			
 		} else {
-			span.innerText = (!dominHalf?"со":"до") + " смены расписания"
+			span.innerText = (!dominHalf?"со":"до") + " смены расписания по"
 			switch (nonDomin) {
 			case "10": if (w.base == "every") span.innerText += " числителю"
-				else span.innerText += " по числам: " + perDays()
+				else span.innerText += " числам: " + perDays()
 				break
 			case "01": if (w.base == "every") span.innerText += " знаменателю"
-				else span.innerText += " по числам: " + perDays()
+				else span.innerText += " числам: " + perDays()
 				break
 			}
 		}
 	} else {
-		span.innerText = ""
+		span.innerText = perDays()
 	}
 	
 	$(schi).find(".numDen")[0].innerText = (w.base=="num")?"числ.":(w.base=="den")?"знам.":""
