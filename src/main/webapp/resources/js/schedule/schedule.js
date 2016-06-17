@@ -290,10 +290,10 @@ function updateWeekplanLabel(schi) {
 	else twainSpan.innerText = ""
 		
 	function perDays() {
+		var days = schi.weekplan.getDates($(schi).parents("tbody.weekday")[0].index)
+		if (!days) return ""
 		var a = ""
 		var options = {month: 'numeric',day: 'numeric'}
-		
-		var days = schi.weekplan.getDates($(schi).parents("tbody.weekday")[0].index)
 		for (var i = 0; i < days.length; i++) {
 			a += days[i].toLocaleDateString("ru", options) + ", "
 		}
