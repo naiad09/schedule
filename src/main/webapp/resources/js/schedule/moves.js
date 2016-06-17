@@ -157,7 +157,6 @@ $(".rightMover.mover").live("mousedown", function(e) {
     var startX = e.pageX
     var startWidth = schi.clientWidth
     var startMargin = parseInt($(schi).css("margin-right"))
-    info.innerHTML = startMargin
     
     var leftBound = $(schi).parents(".scheduleTr")[0].getBoundingClientRect().right
     moveAt(e)

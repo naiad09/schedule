@@ -96,6 +96,7 @@ button {
     min-height: 28px;
     background: rgba(187, 117, 42, 0.3);
     border: 1px solid gray;
+    margin: 2px;
 }
 button:active {
     border: black 1px solid;
@@ -212,9 +213,10 @@ form table#schedule td:nth-child(1) {
 
 #schedule tr.empty {
 	font-size: 8px;
+	height: 0px;
 }
 #schedule>tbody>tr:last-child {
-    border-bottom: 1px double black;
+    border-bottom: 1px solid black;
 }
 
 #scheduleOverflow {
@@ -284,7 +286,7 @@ td.leftMover {
     display: block;
 }
     
-.schi .weekplan, .details {
+.schi .weekplan, .details, .vacancy[colspan='1'] .weekplan {
     display: block;
 }
 

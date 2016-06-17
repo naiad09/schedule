@@ -11,13 +11,12 @@
 	${schedule.eduProcGraphic.semester.fallSpring?'весна':'осень'},
 	расписание группы ${schedule.group.groupNumber}</h1>
 
-<input type="date" value="${schedule.eduProcGraphic.semesterStart}"
+<input type="hidden" value="${schedule.eduProcGraphic.semesterStart}"
 	id="dateStart" type="hidden" />
-<input type="date" value="${schedule.eduProcGraphic.scheduleChange}"
+<input type="hidden" value="${schedule.eduProcGraphic.scheduleChange}"
 	id="dateChange" type="hidden" />
-<input type="date" value="${schedule.eduProcGraphic.semesterEnd}"
+<input type="hidden" value="${schedule.eduProcGraphic.semesterEnd}"
 	id="dateEnd" type="hidden" />
-<span id="info">инфа фсякая</span>
 
 <form action="edit" method="post" id="scheduleForm">
 	<table style="width: 1100px; margin-left: -50px;">
@@ -88,6 +87,10 @@
 					</div>
 				</c:forEach>
 				<button>Сохранить</button>
+				<br>
+				<button type="button" style="font-size: 9px; margin-top: 3px;"
+					onclick="if(confirm('Продолжить?\nВсе текущие изменения будут отменены')) location = location">
+					Отменить изменения</button>
 			</td>
 		</tr>
 	</table>
@@ -145,7 +148,8 @@
 
 <div class="vacancy" id="vacancyTemplate"
 	ondrop="return dragDropVacancy(event)">
-	(<span class="twain"></span> <span class="numDen"></span> <span class="weekplan"></span>)
+	<span class="twain"></span> <span class="numDen"></span> <span
+		class="weekplan"></span>
 </div>
 
 <script

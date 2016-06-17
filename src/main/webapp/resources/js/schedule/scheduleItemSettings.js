@@ -105,6 +105,36 @@ function Weekplan(code) {
 			return weekplanHalf.substr(2,2)
 		}
 	}
+	
+	this.getDates = function(weekday) {
+		this.normalize()
+		if (this.base == "every") return false
+		
+		var dates = []
+		
+		var aa = this.ac.match(/1/g)
+		
+		var domin = (aa && aa.length == 1) ? this.ac : this.bc
+		var week = (domin == "10") ? 0 : 2
+		if (this.base == "den") week++
+		
+		var start = new Date($("#dateStart").val())
+		while (start.getDay() != 1 ) {
+			start.setDate(start.getDate()-1)
+		}
+		
+		var dateStart = new Date($((this.bc !="00" && this.bc !="11")?"#dateStart":"#dateChange").val())
+		var dateEnd = new Date($((this.ac !="00" && this.ac !="11")?"#dateEnd":"#dateChange").val())
+		
+		var days = 1000 * 60 * 60 * 24
+		
+		for (var i = start.getTime() + (weekday + week * 7) * days;
+			i <= dateEnd.getTime(); i += 7 * 4 * days) {
+			if (i >= dateStart.getTime()) dates[dates.length] = new Date(i)
+		}
+		
+		return dates 
+	}
 }
 
 // отображает форму редактирования элемента расписания

@@ -264,19 +264,19 @@ function updateWeekplanLabel(schi) {
 	if (w.bc != w.ac) {
 		if (nonDomin == "00") {
 			span.innerText = (dominHalf?"со":"до") + " смены расписания"
+			if (w.base != "every" && (dominHalf?w.ac:w.bc)!= "11") 
+				span.innerText += " по числам: " + perDays()			
 		} else {
-			span.innerText = (!dominHalf?"со":"до") + " смены расписания по"
+			span.innerText = (!dominHalf?"со":"до") + " смены расписания"
 			switch (nonDomin) {
 			case "10": if (w.base == "every") span.innerText += " числителю"
-				else span.innerText += " числам"
+				else span.innerText += " по числам: " + perDays()
 				break
 			case "01": if (w.base == "every") span.innerText += " знаменателю"
-				else span.innerText += " числам"
+				else span.innerText += " по числам: " + perDays()
 				break
 			}
 		}
-	} else if (w.base != "every" && nonDomin != "11") {
-		span.innerText = "по числам"
 	} else {
 		span.innerText = ""
 	}
@@ -288,6 +288,18 @@ function updateWeekplanLabel(schi) {
 		twainSpan.innerText 
 				= $("select[name='twain'] option[value='" + schi.twain + "']").text().match(/\d\d\.\d\d/)
 	else twainSpan.innerText = ""
+		
+	function perDays() {
+		var a = ""
+		var options = {month: 'numeric',day: 'numeric'}
+		
+		var days = schi.weekplan.getDates($(schi).parents("tbody.weekday")[0].index)
+		for (var i = 0; i < days.length; i++) {
+			a += days[i].toLocaleDateString("ru", options) + ", "
+		}
+			
+		return a.substr(0, a.length-2);
+	}
 }
 
 function calcTdWeekplan(td) {
