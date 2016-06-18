@@ -26,8 +26,7 @@ import schedule.domain.struct.Enrollment;
 
 @Entity
 @Table(	name = "common_curriculum",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "id_edu_prog",
-				"id_enroll" }))
+		uniqueConstraints = @UniqueConstraint(columnNames = { "id_edu_prog", "id_enroll" }))
 public class CommonCurriculum {
 	
 	@Id
@@ -49,8 +48,7 @@ public class CommonCurriculum {
 	private List<Curriculum> curriculums = new ArrayList<Curriculum>(0);
 	
 	@OneToMany(mappedBy = "commonCurriculum")
-	private List<CommonDiscipline> commonDisciplines = new ArrayList<CommonDiscipline>(
-			0);
+	private List<CommonDiscipline> commonDisciplines = new ArrayList<CommonDiscipline>(0);
 	
 	@ManyToMany(mappedBy = "curriculums")
 	private List<EduProcGraphic> eduProcGraphics;
@@ -105,8 +103,8 @@ public class CommonCurriculum {
 	
 	@Override
 	public String toString() {
-		return super.toString() + "[idCommonCurriculum=" + idCommonCurriculum
-				+ ", enrollment=" + enrollment + "]";
+		return super.toString() + "[idCommonCurriculum=" + idCommonCurriculum + ", enrollment="
+				+ enrollment + "]";
 	}
 	
 }

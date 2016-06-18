@@ -50,8 +50,7 @@ public class Schedule {
 	@ManyToOne
 	private EduProcGraphic eduProcGraphic;
 	
-	@OneToMany(	mappedBy = "schedule", cascade = CascadeType.ALL,
-				fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "schedule", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Valid
 	private List<ScheduleDiscipline> scheduleDisciplines = new ArrayList<ScheduleDiscipline>();
 	
@@ -83,8 +82,7 @@ public class Schedule {
 		return scheduleDisciplines;
 	}
 	
-	public void setScheduleDisciplines(
-			List<ScheduleDiscipline> scheduleDisciplines) {
+	public void setScheduleDisciplines(List<ScheduleDiscipline> scheduleDisciplines) {
 		this.scheduleDisciplines = scheduleDisciplines;
 	}
 	
@@ -106,17 +104,15 @@ public class Schedule {
 						return s1.compareTo(s2);
 					}
 				});
-		Map<DiscTerm, List<ScheduleDiscipline>> collect = getScheduleDisciplines()
-				.stream()
+		Map<DiscTerm, List<ScheduleDiscipline>> collect = getScheduleDisciplines().stream()
 				.collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
 		map.putAll(collect);
 		return map;
 	}
 	
 	public String toString() {
-		StringBuilder string = new StringBuilder(
-				"Schedule [idSchedule=" + idSchedule + ", groupId="
-						+ group.getIdGroup() + ", scheduleDisciplines:");
+		StringBuilder string = new StringBuilder("Schedule [idSchedule=" + idSchedule + ", groupId="
+				+ group.getIdGroup() + ", scheduleDisciplines:");
 		scheduleDisciplines.forEach(s -> string.append("\n    " + s));
 		return string.toString();
 	}

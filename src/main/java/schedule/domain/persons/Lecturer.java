@@ -35,8 +35,7 @@ public class Lecturer extends Person {
 	@Column(name = "degree", columnDefinition = "enum(dtn,ctn)")
 	private Degree degree;
 	
-	@OneToMany(	mappedBy = "id.lecturer", cascade = CascadeType.ALL,
-				fetch = FetchType.EAGER)
+	@OneToMany(mappedBy = "id.lecturer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@Valid
 	@ElementCollection(targetClass = LecturerJob.class)
 	@NotEmpty

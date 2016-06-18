@@ -45,8 +45,7 @@ public class RefsContainer {
 		return DisciplineVariability.values();
 	}
 	
-	public static EduProcGraphic getDefaultEduProcGraphicForList(
-			List<EduProcGraphic> list) {
+	public static EduProcGraphic getDefaultEduProcGraphicForList(List<EduProcGraphic> list) {
 		return list.stream().sorted(new Comparator<EduProcGraphic>() {
 			public int compare(EduProcGraphic o1, EduProcGraphic o2) {
 				return o1.getCurriculums().size() - o2.getCurriculums().size();

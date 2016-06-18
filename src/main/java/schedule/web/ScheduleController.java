@@ -50,14 +50,12 @@ public class ScheduleController {
 	}
 	
 	// @Secured("ROLE_EDUDEP")
-	@RequestMapping(path = "schedule-{idSchedule}/edit",
-					method = RequestMethod.GET)
+	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.GET)
 	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
 		
 		Schedule schedule = scheduleDAO.get(idSchedule);
 		if (schedule == null) throw new ResourceNotFoundException();
 		model.addAttribute("schedule", schedule);
-		System.err.println(schedule);
 		
 		model.addAttribute("twains", twainDAO.getAll());
 		
@@ -67,32 +65,33 @@ public class ScheduleController {
 		
 		model.addAttribute("classrooms", classroomDAO.getAll());
 		
-		return "common/editSchedule";
+		return "editSchedule";
 	}
 	
 	// @Secured("ROLE_EDUDEP")
-	@RequestMapping(path = "schedule-{idSchedule}/edit",
-					method = RequestMethod.POST)
-	public String editSchedulePost(RawSchedule rawSchedule, Model model,
-			SessionStatus ss) {
+	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.POST)
+	public String editSchedulePost(RawSchedule rawSchedule, Model model, SessionStatus ss) {
 		
 		Schedule schedule = (Schedule) model.asMap().get("schedule");
 		
 		System.err.println("=== START SAVING");
 		
 		scheduleDAO.update(schedule, rawSchedule);
+		
+		System.err.println("== Я СОХРАНИЛСЯ!!!! ==");
+		
+		scheduleDAO.searchConflicts(schedule);
 		ss.setComplete();
 		
 		System.err.println("=== END SAVING");
-		
+		// return "ewgewgwegweg";
 		return "redirect:edit";
 	}
 	
 	@ResponseBody
 	@RequestMapping(value = "schedule-{idSchedule}/edit/conflict-classrooms",
 					method = RequestMethod.GET)
-	public List<Integer> getConflictingClassrooms(
-			@RequestBody ScheduleItem scheduleItem) {
+	public List<Integer> getConflictingClassrooms(@RequestBody ScheduleItem scheduleItem) {
 		return scheduleDAO.getConflictingClassrooms(scheduleItem);
 	}
 }

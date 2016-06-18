@@ -27,9 +27,8 @@ import schedule.domain.struct.SkillProfile;
  * ссылки на массив предметов, на график учебного процесса и список групп.
  */
 @Entity
-@Table(	name = "curriculum",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "id_profile",
-				"id_common_curriculum" }))
+@Table(name = "curriculum", uniqueConstraints = @UniqueConstraint(columnNames = { "id_profile",
+		"id_common_curriculum" }))
 public class Curriculum {
 	
 	@Id
@@ -43,8 +42,7 @@ public class Curriculum {
 	private SkillProfile skillProfile;
 	
 	@ManyToOne
-	@JoinColumn(name = "id_common_curriculum", updatable = false,
-				nullable = false)
+	@JoinColumn(name = "id_common_curriculum", updatable = false, nullable = false)
 	private CommonCurriculum commonCurriculum;
 	
 	@OneToMany(mappedBy = "curriculum")

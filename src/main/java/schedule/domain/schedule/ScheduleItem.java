@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -18,6 +19,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.annotations.Formula;
 
 
 /**
@@ -31,14 +34,12 @@ import javax.validation.constraints.Size;
 public class ScheduleItem {
 	
 	@Id
-	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_schedule_item", updatable = false)
-	private long idScheduleItem;
+	private Long idScheduleItem;
 	
-	@ManyToOne
-	@JoinColumn(name = "id_schedule_discipline", updatable = false,
-				nullable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_schedule_discipline", updatable = false, nullable = false)
 	private ScheduleDiscipline scheduleDiscipline;
 	
 	@ManyToOne
@@ -58,18 +59,25 @@ public class ScheduleItem {
 	@Size(max = 512)
 	private String comment;
 	
-	@ManyToMany()
+	@ManyToMany
 	@JoinTable(	name = "schedule_classroom",
-				joinColumns = { @JoinColumn(name = "id_schedule_item",
-											updatable = false) },
+				joinColumns = { @JoinColumn(name = "id_schedule_item", updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
-	public long getIdScheduleItem() {
+	// @OneToMany(mappedBy = "schiFrom", cascade = CascadeType.ALL)
+	// @Fetch(FetchMode.SUBSELECT)
+	// private List<Conflict> conflicts;
+	
+	@Formula("exists(select * from conflict where conflict.id_schedule_item_from "
+			+ "= id_schedule_item or conflict.id_schedule_item_to = id_schedule_item)")
+	private boolean conflict;
+	
+	public Long getIdScheduleItem() {
 		return idScheduleItem;
 	}
 	
-	public void setIdScheduleItem(long idScheduleItem) {
+	public void setIdScheduleItem(Long idScheduleItem) {
 		this.idScheduleItem = idScheduleItem;
 	}
 	
@@ -121,14 +129,21 @@ public class ScheduleItem {
 		this.classrooms = classrooms;
 	}
 	
+	public boolean isConflict() {
+		return conflict;
+	}
+	
+	public void setConflict(boolean conflict) {
+		this.conflict = conflict;
+	}
+	
 	@Override
 	public String toString() {
-		return "ScheduleItem [idScheduleItem=" + idScheduleItem + ", twain="
-				+ twain.getIdTwain() + ", scheduleDiscipline="
-				+ scheduleDiscipline.getIdScheduleDiscipline() + ", weekplan="
-				+ weekplan + ", weekday=" + weekday + ", classrooms="
-				+ classrooms.stream().map(c -> c.getIdClassroom())
-						.collect(Collectors.toList()).toString()
+		return "ScheduleItem [idScheduleItem=" + idScheduleItem + ", twain=" + twain.getIdTwain()
+				+ ", scheduleDiscipline=" + scheduleDiscipline.getIdScheduleDiscipline()
+				+ ", weekplan=" + weekplan + ", weekday=" + weekday + ", classrooms="
+				+ classrooms.stream().map(c -> c.getIdClassroom()).collect(Collectors.toList())
+						.toString()
 				+ "]";
 	}
 	

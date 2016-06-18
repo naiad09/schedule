@@ -26,8 +26,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(	name = "com_discipline",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "id_com_cur",
-				"disc_code" }))
+		uniqueConstraints = @UniqueConstraint(columnNames = { "id_com_cur", "disc_code" }))
 public class CommonDiscipline {
 	
 	@Id
@@ -143,15 +142,14 @@ public class CommonDiscipline {
 		return profileDisciplines;
 	}
 	
-	public void setProfileDisciplines(
-			List<ProfileDiscipline> profileDisciplines) {
+	public void setProfileDisciplines(List<ProfileDiscipline> profileDisciplines) {
 		this.profileDisciplines = profileDisciplines;
 	}
 	
 	@Override
 	public String toString() {
-		return "ComDisc [id=" + idComDisc + ", discCode=" + discCode
-				+ ", variability=" + variability + "]";
+		return "ComDisc [id=" + idComDisc + ", discCode=" + discCode + ", variability="
+				+ variability + "]";
 	}
 	
 }

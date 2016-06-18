@@ -20,11 +20,8 @@ public class SemesterDAO extends GenericDAO<Semester> {
 		Semester currentSemester = Semester.getCurrentSemester();
 		
 		return (Semester) getCriteriaDaoType()
-				.add(Restrictions.eq("semesterYear",
-						currentSemester.getSemesterYear()))
-				.add(Restrictions.eq("fallSpring",
-						currentSemester.getFallSpring()))
-				.uniqueResult();
+				.add(Restrictions.eq("semesterYear", currentSemester.getSemesterYear()))
+				.add(Restrictions.eq("fallSpring", currentSemester.getFallSpring())).uniqueResult();
 	}
 	
 	@SuppressWarnings("unchecked")

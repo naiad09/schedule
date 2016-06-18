@@ -28,9 +28,8 @@ import schedule.domain.struct.EduProgram.EduQual;
 
 
 @Entity
-@Table(	name = "enrollment",
-		uniqueConstraints = @UniqueConstraint(columnNames = { "edu_mode",
-				"qual_type", "year_start" }))
+@Table(name = "enrollment", uniqueConstraints = @UniqueConstraint(columnNames = { "edu_mode",
+		"qual_type", "year_start" }))
 public class Enrollment {
 	
 	@Id
@@ -44,8 +43,7 @@ public class Enrollment {
 	private Integer yearStart;
 	
 	@NotNull
-	@Column(name = "edu_mode", updatable = false,
-			columnDefinition = "enum(och,zao,oz)")
+	@Column(name = "edu_mode", updatable = false, columnDefinition = "enum(och,zao,oz)")
 	@Enumerated(EnumType.STRING)
 	private EduMode eduMode;
 	
@@ -115,8 +113,8 @@ public class Enrollment {
 	
 	@Override
 	public String toString() {
-		return "Enrollment [idEnroll=" + idEnroll + ", yearStart=" + yearStart
-				+ ", eduMode=" + eduMode + ", eduQual=" + eduQual + "]";
+		return "Enrollment [idEnroll=" + idEnroll + ", yearStart=" + yearStart + ", eduMode="
+				+ eduMode + ", eduQual=" + eduQual + "]";
 	}
 	
 	public Integer getPeriodYears() {
@@ -142,8 +140,7 @@ public class Enrollment {
 	
 	@Transient
 	public Integer getYearEnd() {
-		return LocalDate.of(getYearStart(), Month.AUGUST, 1)
-				.plus(getTrainingPeriod()).getYear();
+		return LocalDate.of(getYearStart(), Month.AUGUST, 1).plus(getTrainingPeriod()).getYear();
 	}
 	
 	@Transient

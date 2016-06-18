@@ -62,8 +62,7 @@ public class FormatDateTag extends TagSupport {
 		
 		// Create formatter
 		if (this.pattern != null) {
-			final DateTimeFormatter formatter = DateTimeFormatter
-					.ofPattern(this.pattern);
+			final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(this.pattern);
 			formatted = formatter.format(this.value);
 		} else {
 			// no formatting locale available, use Date.toString()

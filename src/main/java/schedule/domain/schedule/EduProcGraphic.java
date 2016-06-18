@@ -45,12 +45,10 @@ public class EduProcGraphic {
 	private Semester semester;
 	
 	@JoinTable(	name = "curriculum_semester",
-				joinColumns = @JoinColumn(	name = "id_edu_period",
-											updatable = false),
+				joinColumns = @JoinColumn(name = "id_edu_period", updatable = false),
 				inverseJoinColumns = @JoinColumn(name = "id_common_curriculum"))
 	@ManyToMany(fetch = FetchType.EAGER)
-	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(
-			0);
+	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(0);
 	
 	@Transient
 	private Enrollment enroll;
@@ -179,13 +177,11 @@ public class EduProcGraphic {
 	
 	@Override
 	public String toString() {
-		return "EduProcGraphic [idEduPeriod=" + idEduPeriod + ", semester="
-				+ semester + ", semesterStart=" + semesterStart
-				+ ", scheduleChange=" + scheduleChange + ", semesterEnd="
-				+ semesterEnd + ", recordSessionStart=" + recordSessionStart
-				+ ", recordSessionEnd=" + recordSessionEnd
-				+ ", examsSessionStart=" + examsSessionStart
-				+ ", examsSessionEnd=" + examsSessionEnd + ", curriculums="
+		return "EduProcGraphic [idEduPeriod=" + idEduPeriod + ", semester=" + semester
+				+ ", semesterStart=" + semesterStart + ", scheduleChange=" + scheduleChange
+				+ ", semesterEnd=" + semesterEnd + ", recordSessionStart=" + recordSessionStart
+				+ ", recordSessionEnd=" + recordSessionEnd + ", examsSessionStart="
+				+ examsSessionStart + ", examsSessionEnd=" + examsSessionEnd + ", curriculums="
 				+ curriculums + ", enroll=" + enroll + "]";
 	}
 	

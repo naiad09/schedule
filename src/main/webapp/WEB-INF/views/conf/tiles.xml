@@ -7,37 +7,7 @@
 			value="/WEB-INF/views/utils/loginWidget.jsp" />
 	</definition>
 
-	<definition name="person" extends="main">
-		<put-attribute name="content" value="/WEB-INF/views/person.jsp" />
-		<put-attribute name="title" expression="${person.fullName}" />
-	</definition>
-
-	<definition name="curriculum" extends="main">
-		<put-attribute name="content" value="/WEB-INF/views/curriculum.jsp" />
-		<put-attribute name="title" expression="Учебный план" />
-	</definition>
-
-	<definition name="semester" extends="main">
-		<put-attribute name="content" value="/WEB-INF/views/semester.jsp" />
-		<put-attribute name="title"
-			expression="${semester.semesterYear}/${semester.semesterYear+1}-ый учебный год,
-            ${semester.fallSpring?'весна':'осень'}" />
-	</definition>
-
-	<definition name="chair" extends="main">
-		<put-attribute name="content" value="/WEB-INF/views/chair.jsp" />
-		<put-attribute name="title" expression="Кафедра ${chair.shortName}" />
-	</definition>
-
-	<definition name="faculty" extends="main">
-		<put-attribute name="content" value="/WEB-INF/views/faculty.jsp" />
-		<put-attribute name="title"
-			value="/WEB-INF/views/utils/titleFromProperties.jsp" />
-		<put-attribute name="toTitle" expression="${faculty}.fullName"
-			cascade="true" />
-	</definition>
-
-	<definition name="common/*" extends="faculty">
+	<definition name="*" extends="main">
 		<put-attribute name="content" value="/WEB-INF/views/{1}.jsp" />
 		<put-attribute name="toTitle" value="{1}" cascade="true" />
 	</definition>

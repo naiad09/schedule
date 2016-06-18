@@ -16,12 +16,13 @@ $("#schedule>tbody.weekday").each(function(i) {
 
 // парсинг scheduleInfo
 $(scheduleItemsInfo).find(".schiInfo").each(function(){
-	var schiInfo = this.innerText.split(/\|\n?\s*/, 6)
+	var schiInfo = this.innerText.split(/\,\n?\s*/, 6)
 	var schi = createSchi($("#glt" + schiInfo[2])[0])
 	schi.twain = schiInfo[1]
 	var tr = $("tbody.weekday").eq(schiInfo[3]).find("tr.scheduleTr").eq(schi.twain-1)[0]
 	$(schi).find("input[name*='idScheduleItem']").val(schiInfo[0])
-	if (schiInfo[5]) $(schi).find("input[name*='comment']").val(schiInfo[5].trim())
+	if (schiInfo[6]) $(schi).find("input[name*='comment']").val(schiInfo[6].trim())
+	if (schiInfo[5] == "true") schi.classList.add("conflict")
 	
 	$(schi).find(".classrooms").append($(this).find(".classroomInput"))
 	schi.weekplan = ("00000000" + (parseInt(schiInfo[4])).toString(2))
@@ -42,7 +43,7 @@ function normalizeAllTrs(){
 			this.style.removeProperty("font-size")
 		}).filter(":only-child").each(function(){
 			var newHeight = $(this.parentElement).height()-3
-			if (newHeight / $(this).height() > 1.5) {
+			if (newHeight / $(this).height() > 1.8) {
 				this.style.fontSize = "large"
 			}
 			$(this).height(newHeight)

@@ -37,7 +37,8 @@
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-				<value>page-titles</value>
+                <value>page-titles</value>
+                <value>pages</value>
 				<value>transcript</value>
 				<value>validation-error-messages</value>
 			</list>

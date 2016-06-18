@@ -7,8 +7,7 @@ import javax.persistence.Converter;
 
 
 @Converter(autoApply = true)
-public class LocalTimeAttributeConverter
-		implements AttributeConverter<LocalTime, String> {
+public class LocalTimeAttributeConverter implements AttributeConverter<LocalTime, String> {
 	
 	@Override
 	public String convertToDatabaseColumn(LocalTime locTime) {

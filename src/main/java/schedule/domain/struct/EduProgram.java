@@ -30,7 +30,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Table(name = "edu_program")
 public class EduProgram {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_edu_prog", unique = true, updatable = false)
 	private Integer idEduProg;

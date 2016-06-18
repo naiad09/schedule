@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -21,7 +22,8 @@ import schedule.domain.struct.Chair;
  * корпусу.
  */
 @Entity
-@Table(name = "classroom")
+@Table(	name = "classroom",
+		uniqueConstraints = @UniqueConstraint(columnNames = { "classroom_number", "campus" }))
 public class Classroom {
 	
 	@Id
@@ -34,8 +36,9 @@ public class Classroom {
 	@JoinColumn(name = "id_chair", updatable = false)
 	private Chair chair;
 	
-	@Column(name = "classroom_number", unique = true, updatable = false)
+	@Column(name = "classroom_number", updatable = false)
 	@Size(max = 5, min = 2)
+	@NotNull
 	private String classroomNumber;
 	
 	@Column(name = "campus")
@@ -74,4 +77,8 @@ public class Classroom {
 		this.campus = campus;
 	}
 	
+	@Override
+	public String toString() {
+		return "a." + classroomNumber + "(" + idClassroom + ")";
+	}
 }

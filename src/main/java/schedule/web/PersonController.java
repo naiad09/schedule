@@ -52,10 +52,9 @@ public class PersonController {
 	private ChairDAO chairDAO;
 	
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public String getPersons(Model model,
-			@ModelAttribute PersonFinder personFinder) {
+	public String getPersons(Model model, @ModelAttribute PersonFinder personFinder) {
 		model.addAttribute("persons", personDAO.getAll(personFinder));
-		return "common/persons";
+		return "persons";
 	}
 	
 	/**
@@ -84,7 +83,7 @@ public class PersonController {
 	@RequestMapping(path = "uid-{personId}/edit", method = RequestMethod.GET)
 	public String editPerson(@PathVariable int personId, Model model) {
 		getPerson(personId, model);
-		return "common/editPerson";
+		return "editPerson";
 	}
 	
 	// TODO
@@ -93,14 +92,12 @@ public class PersonController {
 			+ "(isAuthenticated() and principal.uid == #personId)")
 	@RequestMapping(path = "uid-{personId}/edit", method = RequestMethod.POST)
 	public String editPersonPost(@PathVariable int personId,
-			@Valid @ModelAttribute("person") Person person,
-			BindingResult result, Model model) {
+			@Valid @ModelAttribute("person") Person person, BindingResult result, Model model) {
 		// TODO
 		if (result.hasErrors()) {
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
 			model.addAttribute("person", person);
-			return "common/editPerson";
+			return "editPerson";
 		}
 		
 		personDAO.update(person);
@@ -123,7 +120,7 @@ public class PersonController {
 			model.addAttribute("chairs", chairDAO.getAll());
 		}
 		
-		return "common/newPerson";
+		return "newPerson";
 	}
 	
 	/**
@@ -137,19 +134,16 @@ public class PersonController {
 	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = "new-{personType}", method = RequestMethod.POST)
 	public String newPersonPost(@Valid @ModelAttribute("person") Person person,
-			BindingResult result, Model model, @RequestParam boolean returnHere,
-			SessionStatus ss) {
+			BindingResult result, Model model, @RequestParam boolean returnHere, SessionStatus ss) {
 		
 		if (result.hasErrors()) {
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
 			return returnWithError(person, model, returnHere);
 		}
 		try {
 			personDAO.saveOrUpdate(person);
 		} catch (DataIntegrityViolationException e) {
-			Matcher matcher = Pattern.compile("(login|email)")
-					.matcher(e.getRootCause().toString());
+			Matcher matcher = Pattern.compile("(login|email)").matcher(e.getRootCause().toString());
 			matcher.find();
 			String group = matcher.group();
 			result.rejectValue("authData." + group, "Unique." + group);
@@ -167,19 +161,16 @@ public class PersonController {
 	 * Возвращает на тсраницу редактирования с ошибкой. Обнуляет пароль для
 	 * того, чтобы он не передавался обратно в нешифрованном виде.
 	 */
-	private String returnWithError(Person person, Model model,
-			boolean returnHere) {
-		if (person.getAuthData() != null)
-			person.getAuthData().setPassword(null);
+	private String returnWithError(Person person, Model model, boolean returnHere) {
+		if (person.getAuthData() != null) person.getAuthData().setPassword(null);
 		model.addAttribute("error", true);
 		model.addAttribute("returnHere", returnHere);
-		return "common/newPerson";
+		return "newPerson";
 	}
 	
 	/** Определяет, что можно забирать из формы строки == null */
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(String.class,
-				new StringTrimmerEditor(true));
+		binder.registerCustomEditor(String.class, new StringTrimmerEditor(true));
 	}
 }

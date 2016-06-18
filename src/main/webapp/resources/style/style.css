@@ -239,13 +239,16 @@ table.schi {
 	display: inline-table;
 	vertical-align: middle;
 }
+.schi.conflict {
+	border-color: maroon;
+}
 
 .schi td {
 	border: none;
 }
 
 div.glt.lab, table.schi.lab, .lab .lecturer, .lab .classroom {
-    background: rgba(194, 162, 240, 0.3);
+    background: rgba(240, 162, 162, 0.3);
 }
 
 div.glt.lab4, table.schi.lab4, .lab4 .lecturer, .lab4 .classroom {
@@ -253,7 +256,7 @@ div.glt.lab4, table.schi.lab4, .lab4 .lecturer, .lab4 .classroom {
 }
 
 div.glt.pract, table.schi.pract, .pract .lecturer, .pract .classroom {
-	background: rgba(240, 162, 162, 0.3);
+    background: rgba(194, 162, 240, 0.3);
 }
 
 div.glt.lec, table.schi.lec, .lec .lecturer, .lec .classroom {

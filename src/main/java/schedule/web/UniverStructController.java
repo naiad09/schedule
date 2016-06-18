@@ -33,23 +33,20 @@ public class UniverStructController {
 		model.addAttribute("faculty", f);
 		model.addAttribute("chairs", chairs);
 		
-		return "common/faculty";
+		return "faculty";
 	}
 	
 	@RequestMapping("{chairShort}")
-	public String getChair(HttpServletRequest req,
-			@PathVariable String chairShort, Model model) {
+	public String getChair(HttpServletRequest req, @PathVariable String chairShort, Model model) {
 		Chair findChair = chairDAO.findFull(chairShort);
-		if (findChair == null
-				|| findChair.getFaculty() != getFacultyFromRequest(req))
+		if (findChair == null || findChair.getFaculty() != getFacultyFromRequest(req))
 			throw new ResourceNotFoundException();
 		model.addAttribute("chair", findChair);
 		return "chair";
 	}
 	
 	private Faculty getFacultyFromRequest(HttpServletRequest req) {
-		Matcher matcher = Pattern.compile("^/([a-z]+)/?")
-				.matcher(req.getServletPath());
+		Matcher matcher = Pattern.compile("^/([a-z]+)/?").matcher(req.getServletPath());
 		matcher.find();
 		String group = matcher.group(1);
 		Faculty f = Faculty.valueOf(group);

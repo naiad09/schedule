@@ -13,6 +13,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -49,15 +50,14 @@ public class ScheduleDiscipline {
 	private int idScheduleDiscipline;
 	
 	@JoinColumn(name = "id_schedule", updatable = false, nullable = false)
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Schedule schedule;
 	
 	@JoinColumn(name = "id_disc_sem", updatable = false, nullable = false)
 	@ManyToOne
 	private DiscTerm discTerm;
 	
-	@OneToOne(	cascade = CascadeType.ALL, optional = true,
-				mappedBy = "scheduleDiscipline")
+	@OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "scheduleDiscipline")
 	@Embedded
 	@Valid
 	private Exam exam;
@@ -68,8 +68,7 @@ public class ScheduleDiscipline {
 	
 	@ManyToMany()
 	@JoinTable(	name = "lecturers_lessons",
-				joinColumns = { @JoinColumn(name = "id_schedule_discipline",
-											updatable = false) },
+				joinColumns = { @JoinColumn(name = "id_schedule_discipline", updatable = false) },
 				inverseJoinColumns = { @JoinColumn(name = "id_lecturer") })
 	private List<Lecturer> lecturers = new ArrayList<Lecturer>(0);
 	
@@ -86,8 +85,8 @@ public class ScheduleDiscipline {
 		super();
 	}
 	
-	public ScheduleDiscipline(Schedule schedule, DiscTerm discTerm,
-			LessonType lessonType, Discipline disc) {
+	public ScheduleDiscipline(Schedule schedule, DiscTerm discTerm, LessonType lessonType,
+			Discipline disc) {
 		this.schedule = schedule;
 		this.discTerm = discTerm;
 		this.lessonType = lessonType;
@@ -159,11 +158,11 @@ public class ScheduleDiscipline {
 	}
 	
 	public String toString() {
-		StringBuilder string = new StringBuilder("ScheduleDiscipline [id="
-				+ idScheduleDiscipline + ", lessonType=" + lessonType
-				+ ", lecturers=" + lecturers.stream().map(c -> c.getUid())
-						.collect(Collectors.toList()).toString()
-				+ "]");
+		StringBuilder string = new StringBuilder(
+				"ScheduleDiscipline [id=" + idScheduleDiscipline
+						+ ", lessonType=" + lessonType + ", lecturers=" + lecturers.stream()
+								.map(c -> c.getUid()).collect(Collectors.toList()).toString()
+						+ "]");
 		scheduleItems.forEach(s -> string.append("\n        " + s));
 		return string.toString();
 	}

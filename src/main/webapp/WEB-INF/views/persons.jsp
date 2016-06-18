@@ -15,7 +15,7 @@
 	<table>
 		<tr>
 			<td>Имя (часть имени)<br> <form:input style="width:300px"
-					path="name" placeholder="Введите часть имени"/></td>
+					path="name" placeholder="Введите часть имени" /></td>
 			<td style="width: 260px;">Роль<br> <form:select path="role"
 					id="roleSelector">
 					<form:option value=""> -- Не важно -- </form:option>
@@ -25,7 +25,7 @@
 				</form:select>
 			</td>
 			<td><div class="studentSelector selector">
-					Номер зачетной книжки
+					Номер зачетной книжки<br>
 					<form:input path="recordBookNumber" pattern="\d{5}" />
 				</div>
 				<div class="lecturerSelector selector">
@@ -39,17 +39,20 @@
 		</tr>
 		<tr>
 			<td style="vertical-align: top;">Пол: <form:radiobutton
-					path="gender" value=""
-					checked="${personFinder.gender==null?'cheked':''}" /> Любой <t:insertTemplate
+					path="gender" value="" id="anyGender"
+					checked="${personFinder.gender==null?'cheked':''}" /> <label
+				for="anyGender">Любой</label> <t:insertTemplate
 					template="level2/genderSelector.jsp" /></td>
-			<td>Логин: <form:radiobutton path="loginExists"
+			<td>Логин: <form:radiobutton path="loginExists" value=""
 					required="required"
-					checked="${personFinder.loginExists==null?'cheked':''}" value="" />
-				Не важно <form:radiobutton path="loginExists" value="true" /> Есть<form:radiobutton
-					path="loginExists" value="false" /> Нет<br> <form:input
-					path="login" disabled="true" placeholder="Введите логин" /></td>
+					checked="${personFinder.loginExists==null?'cheked':''}" /> <label
+				for="loginExists1">Не важно</label> <form:radiobutton
+					path="loginExists" value="true" /> <label for="loginExists2">Есть</label>
+				<form:radiobutton path="loginExists" value="false" /> <label
+				for="loginExists3">Нет</label><br> <form:input path="login"
+					disabled="true" placeholder="Введите логин" /></td>
 			<td><div class="lecturerSelector selector">
-					Выберите должность
+					Выберите должность<br>
 					<c:set var="tempPath" scope="request" value="jobType" />
 					<t:insertTemplate template="level2/jobTypeSelector.jsp" />
 				</div></td>

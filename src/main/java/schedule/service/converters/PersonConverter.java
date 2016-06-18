@@ -24,8 +24,7 @@ public class PersonConverter implements Converter<String, Person> {
 				person = new EduDep();
 				break;
 			default:
-				throw new IllegalArgumentException(
-						"Unknown person type:" + personType);
+				throw new IllegalArgumentException("Unknown person type:" + personType);
 		}
 		return person;
 	}

@@ -31,19 +31,22 @@
 			<spring:message code="${person.degree}.fullName" />
 			<br>
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
-				<spring:message code="${job.jobType}.fullName" /> кафедры
-                   ${job.chair.shortName}
-                   <c:if test="${!loop.last }">
+				<spring:message code="${job.jobType}.fullName" />
+				<a
+					href="${pageContext.request.contextPath}/${job.chair.faculty}/${job.chair.shortNameEng}">
+					кафедры ${job.chair.shortName}</a>
+				<c:if test="${!loop.last }">
 					,<br>
 				</c:if>
 			</c:forEach>
 		</c:when>
 
 		<c:when test="${person.role == 'edudep'}">
-		    учебный отдел
-		    <c:if test="${person.faculty != null}">
-				<br>диспетчер <spring:message
-					code="${person.faculty}.shortName" />
+			<a href="${pageContext.request.contextPath}/ed">учебный отдел</a>
+			<c:if test="${person.faculty != null}">
+				<br>диспетчер <a
+					href="${pageContext.request.contextPath}/${job.chair.faculty}"><spring:message
+						code="${person.faculty}.shortName" /></a>
 			</c:if>
 		</c:when>
 
@@ -58,7 +61,7 @@
 	</c:choose>
 	<c:if test="${person.birthday != null}">
 		<br>Дата рождения: <fmt:formatDate value="${person.birthday}"
-			pattern="d MMMMM yyyy" />
+			pattern="d MMMM yyyy" />
 	</c:if>
 
 </p>

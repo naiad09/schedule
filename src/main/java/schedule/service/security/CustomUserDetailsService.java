@@ -24,8 +24,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 	private PersonDAO personDAO;
 	
 	@Override
-	public UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
 		Person person = personDAO.find(username);
 		if (person == null) throw new UsernameNotFoundException(username);
@@ -33,21 +32,17 @@ public class CustomUserDetailsService implements UserDetailsService {
 		// return null;
 		
 		AuthData authData = person.getAuthData();
-		return new CustomUserDetails(authData.getLogin(),
-				authData.getPassword(), getAuthorities(person),
-				authData.isActive(), authData.getAuthUid());
+		return new CustomUserDetails(authData.getLogin(), authData.getPassword(),
+				getAuthorities(person), authData.isActive(), authData.getAuthUid());
 	}
 	
-	private Collection<? extends GrantedAuthority> getAuthorities(
-			Person person) {
+	private Collection<? extends GrantedAuthority> getAuthorities(Person person) {
 		
 		ArrayList<GrantedAuthority> ar = new ArrayList<GrantedAuthority>();
-		ar.add(new SimpleGrantedAuthority(
-				"ROLE_" + person.getRole().toUpperCase()));
+		ar.add(new SimpleGrantedAuthority("ROLE_" + person.getRole().toUpperCase()));
 		
 		if (person instanceof EduDep) {
-			if (((EduDep) person).isAdmin())
-				ar.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+			if (((EduDep) person).isAdmin()) ar.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		
 		return ar;

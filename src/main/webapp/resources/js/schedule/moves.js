@@ -42,6 +42,10 @@ function dragStartSCHI(ev) {
 
 function dragEnter(ev) {
 	event.preventDefault()
+	if (!$(ev.target).closest("td.scheduleItem")[0]) {
+		ev.dataTransfer.dropEffect = "none"
+		return false
+	}
 	if (ev.ctrlKey) ev.dataTransfer.dropEffect = "copy"
 	else ev.dataTransfer.dropEffect = "move"
 	return true

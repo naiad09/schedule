@@ -118,9 +118,8 @@ public class AuthData {
 	
 	@Override
 	public String toString() {
-		return "AuthData [authUid=" + authUid + ", login=" + login
-				+ ", password=" + password + ", active=" + active + ", email="
-				+ email + ", submit=" + submit + "]";
+		return "AuthData [authUid=" + authUid + ", login=" + login + ", password=" + password
+				+ ", active=" + active + ", email=" + email + ", submit=" + submit + "]";
 	}
 	
 }

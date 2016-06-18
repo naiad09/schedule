@@ -30,19 +30,19 @@ public class CurriculumDAO extends GenericDAO<CommonCurriculum> {
 	public List<Curriculum> getCurriculumsById(Integer key) {
 		SimpleExpression eq = Restrictions.eq("idCurriculum", key);
 		
-		DetachedCriteria oneEnroll = DetachedCriteria.forClass(Curriculum.class)
-				.add(eq).setProjection(Projections.property("enrollment"));
+		DetachedCriteria oneEnroll = DetachedCriteria.forClass(Curriculum.class).add(eq)
+				.setProjection(Projections.property("enrollment"));
 		
-		DetachedCriteria oneEduProg = DetachedCriteria
-				.forClass(EduProgram.class).setProjection(Projections.id())
-				.createCriteria("skillProfiles").createCriteria("curriculums")
-				.add(eq).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
+		DetachedCriteria oneEduProg = DetachedCriteria.forClass(EduProgram.class)
+				.setProjection(Projections.id()).createCriteria("skillProfiles")
+				.createCriteria("curriculums").add(eq)
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY)
 				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		
 		List<Curriculum> list = getCriteriaDaoType()
-				.add(Subqueries.propertyEq("enrollment", oneEnroll))
-				.createCriteria("skillProfile").createCriteria("eduProgram")
-				.add(Subqueries.propertyEq("idEduProg", oneEduProg)).list();
+				.add(Subqueries.propertyEq("enrollment", oneEnroll)).createCriteria("skillProfile")
+				.createCriteria("eduProgram").add(Subqueries.propertyEq("idEduProg", oneEduProg))
+				.list();
 		
 		// Object[] array = list.stream().map(c ->
 		// c.getIdCurriculum()).toArray();

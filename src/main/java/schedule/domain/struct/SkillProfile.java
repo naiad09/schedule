@@ -26,11 +26,11 @@ import schedule.domain.curriculum.Curriculum;
  * кафедре. Также имеет название.
  */
 @Entity
-@Table(	name = "skill_profile",
-		uniqueConstraints = @UniqueConstraint(columnNames = "profile_name"))
+@Table(name = "skill_profile", uniqueConstraints = @UniqueConstraint(columnNames = "profile_name"))
 public class SkillProfile {
 	
-	@Id@NotNull
+	@Id
+	@NotNull
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "id_profile", updatable = false, unique = true)
 	private int idProfile;

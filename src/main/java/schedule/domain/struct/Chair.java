@@ -74,8 +74,7 @@ public class Chair {
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
 	
 	@OneToMany(mappedBy = "chair")
-	private List<ProfileDiscipline> curDisciplines = new ArrayList<ProfileDiscipline>(
-			0);
+	private List<ProfileDiscipline> curDisciplines = new ArrayList<ProfileDiscipline>(0);
 	
 	public int getIdChair() {
 		return idChair;

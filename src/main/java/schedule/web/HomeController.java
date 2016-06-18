@@ -49,18 +49,18 @@ public class HomeController {
 				.collect(Collectors.groupingBy(c -> c.getFaculty()));
 		model.addAttribute("chairsMap", collect);
 		
-		return "common/home";
+		return "home";
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
 	public String login(Principal principal) {
-		if (principal == null) return "common/login";
+		if (principal == null) return "login";
 		else return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/error{errorCode}")
 	public String error(@PathVariable int errorCode) {
-		return "common/error" + errorCode;
+		return "error" + errorCode;
 	}
 	
 }

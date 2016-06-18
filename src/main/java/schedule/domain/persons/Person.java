@@ -71,8 +71,7 @@ public abstract class Person {
 	
 	@Enumerated(EnumType.STRING)
 	@NotNull
-	@Column(name = "gender", updatable = false,
-			columnDefinition = "enum('m','f')")
+	@Column(name = "gender", updatable = false, columnDefinition = "enum('m','f')")
 	private Gender gender;
 	
 	@Column(name = "birthday")
@@ -141,14 +140,12 @@ public abstract class Person {
 	
 	@Transient
 	public String getFullName() {
-		return lastName + "&nbsp;" + firstName.charAt(0) + ".&nbsp;"
-				+ middleName.charAt(0) + ".";
+		return lastName + "&nbsp;" + firstName.charAt(0) + ".&nbsp;" + middleName.charAt(0) + ".";
 	}
 	
 	@Transient
 	public String getFullNameReverse() {
-		return firstName.charAt(0) + ".&nbsp;" + middleName.charAt(0)
-				+ ".&nbsp;" + lastName;
+		return firstName.charAt(0) + ".&nbsp;" + middleName.charAt(0) + ".&nbsp;" + lastName;
 	}
 	
 	@Transient

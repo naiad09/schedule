@@ -61,10 +61,8 @@ public class PersonDAO extends GenericDAO<Person> {
 	 * Возвращает пользователя по конкретному логину, или null, если такого нет
 	 */
 	public Person find(String username) {
-		DetachedCriteria detCrit = DetachedCriteria
-				.forClass(AuthData.class, "ha")
-				.add(Restrictions.eq("ha.login", username))
-				.setProjection(Projections.id());
+		DetachedCriteria detCrit = DetachedCriteria.forClass(AuthData.class, "ha")
+				.add(Restrictions.eq("ha.login", username)).setProjection(Projections.id());
 		
 		return (Person) currentSession().createCriteria(Person.class, "per")
 				.add(Subqueries.propertyEq("per.uid", detCrit)).uniqueResult();
@@ -78,14 +76,12 @@ public class PersonDAO extends GenericDAO<Person> {
 		AuthData authData = entity.getAuthData();
 		if (authData != null) {
 			authData.setPerson(entity);
-			authData.setPassword(
-					pswEncoder.encodePassword(authData.getPassword(), null));
+			authData.setPassword(pswEncoder.encodePassword(authData.getPassword(), null));
 		}
 		if (entity instanceof Lecturer) {
 			Lecturer lecturer = (Lecturer) entity;
-			List<LecturerJob> lecturerJobs = lecturer.getLecturerJobs().stream()
-					.distinct().peek(j -> j.setLecturer(lecturer))
-					.collect(Collectors.toList());
+			List<LecturerJob> lecturerJobs = lecturer.getLecturerJobs().stream().distinct()
+					.peek(j -> j.setLecturer(lecturer)).collect(Collectors.toList());
 			lecturer.setLecturerJobs(lecturerJobs);
 		}
 	}
@@ -100,43 +96,35 @@ public class PersonDAO extends GenericDAO<Person> {
 		Criteria crit;
 		if (pf.getRole() == null) crit = getCriteriaDaoType();
 		else {
-			Class<? extends Person> class1 = new PersonConverter()
-					.convert(pf.getRole()).getClass();
+			Class<? extends Person> class1 = new PersonConverter().convert(pf.getRole()).getClass();
 			crit = currentSession().createCriteria(class1);
 			
 			if (class1 == Student.class) {
 				if (pf.getRecordBookNumber() != null) {
-					crit.add(Restrictions.eq("recordBookNumber",
-							pf.getRecordBookNumber()));
+					crit.add(Restrictions.eq("recordBookNumber", pf.getRecordBookNumber()));
 				}
 			} else if (class1 == Lecturer.class) {
-				if (pf.getDegree() != null)
-					crit.add(Restrictions.eq("degree", pf.getDegree()));
+				if (pf.getDegree() != null) crit.add(Restrictions.eq("degree", pf.getDegree()));
 				if (pf.getJobType() != null) {
-					DetachedCriteria dc = DetachedCriteria
-							.forClass(LecturerJob.class)
+					DetachedCriteria dc = DetachedCriteria.forClass(LecturerJob.class)
 							.add(Restrictions.eq("jobType", pf.getJobType()))
 							.setProjection(Projections.property("id.lecturer"));
 					crit.add(Subqueries.propertyIn("uid", dc));
 				}
 			} else if (class1 == EduDep.class) {
-				if (pf.getFaculty() != null)
-					crit.add(Restrictions.eq("faculty", pf.getFaculty()));
+				if (pf.getFaculty() != null) crit.add(Restrictions.eq("faculty", pf.getFaculty()));
 			}
 		}
-		if (pf.getGender() != null)
-			crit.add(Restrictions.eq("gender", pf.getGender()));
+		if (pf.getGender() != null) crit.add(Restrictions.eq("gender", pf.getGender()));
 		if (pf.getName() != null) {
-			crit.add(Restrictions.like("fullTextName", pf.getName(),
-					MatchMode.ANYWHERE));
+			crit.add(Restrictions.like("fullTextName", pf.getName(), MatchMode.ANYWHERE));
 		}
 		if (pf.getLoginExists() != null) {
-			DetachedCriteria detCrit = DetachedCriteria
-					.forClass(AuthData.class);
+			DetachedCriteria detCrit = DetachedCriteria.forClass(AuthData.class);
 			detCrit.setProjection(Projections.id());
 			if (pf.getLoginExists()) {
-				if (pf.getLogin() != null) detCrit.add(
-						Restrictions.like("login", "%" + pf.getLogin() + "%"));
+				if (pf.getLogin() != null)
+					detCrit.add(Restrictions.like("login", "%" + pf.getLogin() + "%"));
 				crit.add(Subqueries.propertyIn("uid", detCrit));
 			} else crit.add(Subqueries.propertyNotIn("uid", detCrit));
 		}

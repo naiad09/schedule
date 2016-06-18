@@ -49,8 +49,7 @@ public class LecturerJobId implements java.io.Serializable {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((chair == null) ? 0 : chair.hashCode());
-		result = prime * result
-				+ ((lecturer == null) ? 0 : lecturer.hashCode());
+		result = prime * result + ((lecturer == null) ? 0 : lecturer.hashCode());
 		return result;
 	}
 	

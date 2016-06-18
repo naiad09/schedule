@@ -23,9 +23,10 @@ import schedule.domain.struct.Chair;
  * общей для всех профилей или принадлежит только одному профилю.
  */
 @Entity
-@Table(name = "profile_discipline", uniqueConstraints = {
-		@UniqueConstraint(columnNames = { "id_curriculum", "id_common_disc" }),
-		@UniqueConstraint(columnNames = { "id_curriculum", "id_disc_name" }) })
+@Table(	name = "profile_discipline",
+		uniqueConstraints = {
+				@UniqueConstraint(columnNames = { "id_curriculum", "id_common_disc" }),
+				@UniqueConstraint(columnNames = { "id_curriculum", "id_disc_name" }) })
 public class ProfileDiscipline {
 	
 	@Id
@@ -91,9 +92,9 @@ public class ProfileDiscipline {
 	
 	@Override
 	public String toString() {
-		return "ProfileDiscipline [idProfDisc=" + idProfDisc + ", discipline="
-				+ discipline + ", curriculum=" + curriculum
-				+ ", commonDiscipline=" + commonDiscipline.getDiscCode() + "]";
+		return "ProfileDiscipline [idProfDisc=" + idProfDisc + ", discipline=" + discipline
+				+ ", curriculum=" + curriculum + ", commonDiscipline="
+				+ commonDiscipline.getDiscCode() + "]";
 	}
 	
 }

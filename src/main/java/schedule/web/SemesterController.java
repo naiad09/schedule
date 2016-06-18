@@ -39,35 +39,31 @@ public class SemesterController {
 	public String allSemesters(Model model) {
 		List<Semester> all = semesterDAO.getAll();
 		model.addAttribute("semesters", all);
-		return "common/ed";
+		return "ed";
 	}
 	
 	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.GET)
 	public String newSemester(Model model) {
-		model.addAttribute("semester",
-				Semester.getNextSemester(Semester.getCurrentSemester()));
-		return "common/newSemester";
+		model.addAttribute("semester", Semester.getNextSemester(Semester.getCurrentSemester()));
+		return "newSemester";
 	}
 	
 	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.POST)
-	public String newSemesterPost(
-			@Valid @ModelAttribute("semester") Semester semester,
+	public String newSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
 			BindingResult result, SessionStatus ss) {
 		
 		if (result.hasErrors()) {
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
-			return "common/newSemester";
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+			return "newSemester";
 		}
 		try {
 			semesterDAO.saveOrUpdate(semester);
 		} catch (ConstraintViolationException exc) {
 			result.rejectValue("semesterYear", "Unique");
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
-			return "common/newSemester";
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+			return "newSemester";
 		}
 		ss.setComplete();
 		
@@ -79,16 +75,14 @@ public class SemesterController {
 		Semester semester = semesterDAO.get(id);
 		if (semester == null) throw new ResourceNotFoundException();
 		model.addAttribute("semester", semester);
-		List<Enrollment> actualEnrolls = enrollmentDAO
-				.trainingInSemester(semester);
+		List<Enrollment> actualEnrolls = enrollmentDAO.trainingInSemester(semester);
 		model.addAttribute("actualEnrolls", actualEnrolls);
 		
 		System.out.println("from db: " + semester.getEduProcGraphics());
 		semester.getEduProcGraphics().forEach(g -> {
 			if (g.getCurriculums().size() > 0) {
 				CommonCurriculum commonCurriculum = g.getCurriculums().get(0);
-				if (commonCurriculum != null)
-					g.setEnroll(commonCurriculum.getEnrollment());
+				if (commonCurriculum != null) g.setEnroll(commonCurriculum.getEnrollment());
 			}
 		});
 		
@@ -101,24 +95,21 @@ public class SemesterController {
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.GET)
 	public String editSemester(@PathVariable Integer id, Model model) {
 		showSemester(id, model);
-		return "common/editSemester";
+		return "editSemester";
 	}
 	
 	// @Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.POST)
-	public String editSemesterPost(
-			@Valid @ModelAttribute("semester") Semester semester,
+	public String editSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
 			BindingResult result, SessionStatus ss,
 			@ModelAttribute("actualEnrolls") List<Enrollment> actualEnrolls) {
 		
 		if (result.hasErrors()) {
-			result.getAllErrors()
-					.forEach(e -> System.out.println(e.toString()));
-			return "common/editSemester";
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+			return "editSemester";
 		}
 		
-		semester.getEduProcGraphics().stream()
-				.forEach(g -> g.setSemester(semester));
+		semester.getEduProcGraphics().stream().forEach(g -> g.setSemester(semester));
 		semesterDAO.saveOrUpdate(semester);
 		
 		System.out.println("SUCCESS!!!!!!");

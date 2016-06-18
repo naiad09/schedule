@@ -28,17 +28,19 @@
 							<tr>
 								<th rowspan="3" style="width: 21px;"></th>
 								<th rowspan="3">Пара</th>
-								<th colspan="4">Дисциплины</th>
+								<th colspan="4" style="font-size: 26px;">${schedule.group.groupNumber}</th>
 							</tr>
 							<tr>
-								<th colspan="2" style="width: 43%;">Числитель</th>
-								<th colspan="2" style="width: 43%;">Знаменатель</th>
+								<th colspan="2"
+									style="width: 43%; border-bottom: none; padding-bottom: 0">Числитель</th>
+								<th colspan="2"
+									style="width: 43%; border-bottom: none; padding-bottom: 0">Знаменатель</th>
 							</tr>
 							<tr>
-								<th style="width: 21%;"></th>
-								<th style="width: 21%;"></th>
-								<th style="width: 21%;"></th>
-								<th style="width: 21%;"></th>
+								<th style="width: 21%; border-top: none; border-right: none;"></th>
+								<th style="width: 21%; border-top: none; border-left: none;"></th>
+								<th style="width: 21%; border-top: none; border-right: none;"></th>
+								<th style="width: 21%; border-top: none; border-left: none;"></th>
 							</tr>
 						</thead>
 						<c:forEach items="${refsContainer.daysOfWeek}" var="day">
@@ -86,8 +88,7 @@
 						</c:forEach>
 					</div>
 				</c:forEach>
-				<button>Сохранить</button>
-				<br>
+				<button>Сохранить</button> <br>
 				<button type="button" style="font-size: 9px; margin-top: 3px;"
 					onclick="if(confirm('Продолжить?\nВсе текущие изменения будут отменены')) location = location">
 					Отменить изменения</button>
@@ -133,9 +134,9 @@
 <div id="scheduleItemsInfo" style="display: none">
 	<c:forEach items="${schedule.scheduleDisciplines}" var="glt">
 		<c:forEach items="${glt.scheduleItems}" var="schi">
-			<div class="schiInfo">${schi.idScheduleItem}|
-				${schi.twain.idTwain}| ${glt.idScheduleDiscipline}| ${schi.weekday}|
-				${schi.weekplan}| ${schi.comment}
+			<div class="schiInfo">${schi.idScheduleItem},
+				${schi.twain.idTwain}, ${glt.idScheduleDiscipline}, ${schi.weekday},
+				${schi.weekplan}, ${schi.isConflict()}, ${schi.comment}
 				<c:forEach items="${schi.classrooms}" var="c">
 					<input type="hidden" class="classroomInput"
 						value="${c.idClassroom}"
