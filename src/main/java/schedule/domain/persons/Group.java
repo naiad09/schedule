@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -41,9 +43,11 @@ public class Group {
 	@NotNull
 	@Column(name = "group_number", updatable = false)
 	@Size(max = 5, min = 2)
+	@OrderColumn
 	private String groupNumber;
 	
 	@OneToMany(mappedBy = "group")
+	@OrderBy("lastName, firstName, middleName")
 	private List<Student> students = new ArrayList<Student>(0);
 	
 	@OneToMany(mappedBy = "group")

@@ -37,10 +37,6 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 		return u == 0 ? false : true;
 	}
 	
-	public Schedule get(Integer key) {
-		return currentSession().get(daoType, key);
-	}
-	
 	// Вычисляем подходящие дисциплины для расписания данной группы
 	public void create(Schedule schedule) {
 		// рефреш
@@ -155,9 +151,9 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 																		.getUid())
 																.findAny().isPresent());
 								
-								boolean discipline = false && schi1.getScheduleDiscipline()
-										.getDisc().getIdDiscName() == schi2.getScheduleDiscipline()
-												.getDisc().getIdDiscName();
+								boolean discipline = schi1.getScheduleDiscipline().getDisc()
+										.getIdDiscName() == schi2.getScheduleDiscipline().getDisc()
+												.getIdDiscName();
 								
 								if ((classrooms || lecturers) && !discipline) {
 									Conflict conflict = currentSession().get(Conflict.class,

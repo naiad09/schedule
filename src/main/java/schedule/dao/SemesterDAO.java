@@ -30,8 +30,4 @@ public class SemesterDAO extends GenericDAO<Semester> {
 				.addOrder(Order.desc("fallSpring")).list();
 	}
 	
-	public Semester get(Integer key) {
-		return currentSession().get(daoType, key);
-	}
-	
 }

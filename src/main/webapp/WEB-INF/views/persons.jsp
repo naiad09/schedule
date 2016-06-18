@@ -10,14 +10,13 @@
 <h1>Пользователи</h1>
 
 <form:form action="" method="get" commandName="personFinder"
-	id="personFindForm"
-	onsubmit="${person.role == 'lecturer' ? 'prerareChairs()' : ''}">
+	id="personFindForm">
 	<table>
 		<tr>
-			<td>Имя (часть имени)<br> <form:input style="width:300px"
+			<td>Имя (часть имени)<br> <form:input style="width:400px"
 					path="name" placeholder="Введите часть имени" /></td>
 			<td style="width: 260px;">Роль<br> <form:select path="role"
-					id="roleSelector">
+					style="width: 260px;" id="roleSelector">
 					<form:option value=""> -- Не важно -- </form:option>
 					<form:option value="student">Студент</form:option>
 					<form:option value="lecturer">Преподаватель</form:option>
@@ -67,8 +66,8 @@
 					<form:option value="50" />
 					<form:option value="100" />
 				</form:select></td>
-			<td><button onclick="prepareForm()">Искать</button>
-				<button type="button" onclick="resetForm()">Сбросить</button></td>
+			<td><button>Искать</button>
+				<button type="reset" onclick="resetForm()">Сбросить</button></td>
 			<td><form:input type="hidden" path="page" /></td>
 		</tr>
 	</table>
@@ -76,7 +75,7 @@
 
 <script>
     $("input[name='loginExists']").click(function() {
-    	if($(this).val()=="true") 
+    	if(this.value=="true") 
     		$("input[name=login]").removeAttr("disabled")
     	else 
     		$("input[name=login]").val("").attr("disabled","true")
@@ -87,32 +86,18 @@
 	    $("#personFindForm").submit()
 	    }
 	    
-	$("#roleSelector option").click(function(){
-			    $(".selector").hide();
-			    $(".selector:not(."+$(this).val()+"Selector)").find("input, select").val("")
-			    $("."+$(this).val()+"Selector").show()
-			})     
+    $("#roleSelector").change(function() {
+            $(".selector").hide();
+            $(".selector:not(."+this.value+"Selector)").find("input, select").val("")
+            $("."+this.value+"Selector").show()
+    })
 	$("#roleSelector option[selected], input[type=radio][checked]").click();
+    $("#roleSelector").change()
 	
 	function resetForm() {
-		$("form input:not([type=radio]):not([type=hidden]), form select").val("")
-		$("input[type=radio][value=''], #roleSelector option:first-child").click()
+        $("#roleSelector option:first-child").click()
 	}
 	
-	// Подготавливает форму к отправке, удаляя имена у пустых атрибутов
-	function prepareForm() {
-		$("select").filter(
-				function(){
-					if($(this).val()=="") return true
-					}
-				)
-		.add("input[value='']:not([type='radio'])").attr("name","")
-		$("input[type=radio][value='']:checked").each(function(){
-			 $("input[type=radio][name="+$(this).attr("name")+"]")
-			     .removeAttr("required")
-			     .removeAttr("name")
-			 })
-	}
 </script>
 
 <c:choose>

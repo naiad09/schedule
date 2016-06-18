@@ -3,6 +3,7 @@ package schedule.web;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,14 +43,14 @@ public class ScheduleController {
 	@Autowired
 	private PersonDAO personDAO;
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-schedule", method = RequestMethod.POST)
 	public String createSchedulePost(Schedule schedule) {
 		scheduleDAO.create(schedule);
 		return "redirect:schedule-" + schedule.getIdSchedule() + "/edit";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.GET)
 	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
 		
@@ -68,7 +69,7 @@ public class ScheduleController {
 		return "editSchedule";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.POST)
 	public String editSchedulePost(RawSchedule rawSchedule, Model model, SessionStatus ss) {
 		
@@ -84,7 +85,6 @@ public class ScheduleController {
 		ss.setComplete();
 		
 		System.err.println("=== END SAVING");
-		// return "ewgewgwegweg";
 		return "redirect:edit";
 	}
 	

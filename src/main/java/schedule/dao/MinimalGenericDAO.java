@@ -21,6 +21,10 @@ public class MinimalGenericDAO<E> {
 		this.daoType = type;
 	}
 	
+	public E get(Integer key) {
+		return currentSession().get(daoType, key);
+	}
+	
 	@SuppressWarnings("unchecked")
 	public List<E> getAll() {
 		return getCriteriaDaoType().list();

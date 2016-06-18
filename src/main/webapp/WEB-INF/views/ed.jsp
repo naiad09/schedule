@@ -9,9 +9,13 @@
 
 <c:forEach items="${semesters}" var="s">
 	<p>
-		<a href="ed/semester-${s.idSemester}">${s.semesterYear}/${s.semesterYear+1}-ый учебный год,
-			${s.fallSpring?'весна':'осень'}</a>
+		<a href="ed/semester-${s.idSemester}">${s.semesterYear}/${s.semesterYear+1}-ый
+			учебный год, ${s.fallSpring?'весна':'осень'}</a>
 	</p>
 </c:forEach>
 
-<h3><a href="ed/new-semester">Создать новый семестр</a></h3>
+<h3>
+	<sec:authorize access="hasRole('ROLE_EDUDEP')">
+		<a href="ed/new-semester">Создать новый семестр</a>
+	</sec:authorize>
+</h3>

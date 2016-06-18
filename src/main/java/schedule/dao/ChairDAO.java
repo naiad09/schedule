@@ -23,15 +23,12 @@ public class ChairDAO extends MinimalGenericDAO<Chair> {
 	
 	@SuppressWarnings("unchecked")
 	public List<Chair> findAllByFaculty(Faculty faculty) {
-		return getCriteriaDaoType().add(Restrictions.eq("faculty", faculty))
-				.addOrder(Order.asc("faculty")).list();
+		return getCriteriaDaoType().add(Restrictions.eq("faculty", faculty)).list();
 	}
 	
 	public Chair findFull(String shortName) {
-		return (Chair) getCriteriaDaoType()
-				// .setFetchMode("lecturerJobs", FetchMode.JOIN)
-				// .setFetchMode("skillProfiles", FetchMode.JOIN)
-				.add(Restrictions.eq("shortNameEng", shortName)).uniqueResult();
+		return (Chair) getCriteriaDaoType().add(Restrictions.eq("shortNameEng", shortName))
+				.uniqueResult();
 	}
 	
 }

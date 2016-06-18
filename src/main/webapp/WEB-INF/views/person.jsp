@@ -20,11 +20,11 @@
 	<c:choose>
 
 		<c:when test="${person.role == 'student'}">
-			<c:set var="course" value="${person.group.curriculum.course}" />
+			<c:set var="course" value="${person.group.curriculum.commonCurriculum.enrollment.course}" />
 			<c:choose>
 				<c:when test="${course == null}">выпускник группы ${person.group.groupNumber},</c:when>
 				<c:otherwise>cтудент группы ${person.group.groupNumber}, ${course}-ый курс,</c:otherwise>
-			</c:choose> выпуск ${person.group.curriculum.yearEnd}
+			</c:choose> выпуск ${person.group.curriculum.commonCurriculum.enrollment.yearEnd}
         </c:when>
 
 		<c:when test="${person.role == 'lecturer'}">

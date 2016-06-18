@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import schedule.dao.CurriculumDAO;
+import schedule.dao.MinimalGenericDAO;
 import schedule.domain.curriculum.CommonCurriculum;
 import schedule.service.ResourceNotFoundException;
 
@@ -16,9 +16,9 @@ import schedule.service.ResourceNotFoundException;
 public class CurriculumController {
 	
 	@Autowired
-	private CurriculumDAO curriculumDAO;
+	private MinimalGenericDAO<CommonCurriculum> curriculumDAO;
 	
-	@RequestMapping("id-{idCur}")
+	@RequestMapping("cur-{idCur}")
 	public String getCurriculum(@PathVariable Integer idCur, Model model) {
 		CommonCurriculum cur = curriculumDAO.get(idCur);
 		if (cur == null) throw new ResourceNotFoundException();

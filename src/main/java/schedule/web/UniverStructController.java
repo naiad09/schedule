@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import schedule.dao.ChairDAO;
+import schedule.dao.MinimalGenericDAO;
+import schedule.domain.persons.Group;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Chair.Faculty;
 import schedule.service.ResourceNotFoundException;
@@ -24,6 +26,8 @@ public class UniverStructController {
 	
 	@Autowired
 	private ChairDAO chairDAO;
+	@Autowired
+	private MinimalGenericDAO<Group> groupDAO;
 	
 	@RequestMapping("")
 	public String getFaculty(HttpServletRequest req, Model model) {
@@ -43,6 +47,14 @@ public class UniverStructController {
 			throw new ResourceNotFoundException();
 		model.addAttribute("chair", findChair);
 		return "chair";
+	}
+	
+	@RequestMapping("group-{idGroup}")
+	public String getGroup(@PathVariable Integer idGroup, Model model) {
+		Group group = groupDAO.get(idGroup);
+		if (group == null) throw new ResourceNotFoundException();
+		model.addAttribute(group);
+		return "group";
 	}
 	
 	private Faculty getFacultyFromRequest(HttpServletRequest req) {

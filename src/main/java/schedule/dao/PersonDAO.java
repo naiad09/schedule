@@ -35,10 +35,6 @@ public class PersonDAO extends GenericDAO<Person> {
 		super(Person.class);
 	}
 	
-	public Person get(Integer key) {
-		return currentSession().get(daoType, key);
-	}
-	
 	@Secured("ROLE_ADMIN")
 	public void saveOrUpdate(Person entity) {
 		prepare(entity);

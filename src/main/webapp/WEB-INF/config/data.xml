@@ -44,4 +44,10 @@
 
 	<bean name="classroomDAO" class="schedule.dao.MinimalGenericDAO"
 		c:type="schedule.domain.schedule.Classroom" />
+
+	<bean name="groupDAO" class="schedule.dao.MinimalGenericDAO"
+		c:type="schedule.domain.persons.Group" />
+
+	<bean name="curriculumDAO" class="schedule.dao.MinimalGenericDAO"
+		c:type="schedule.domain.curriculum.CommonCurriculum" />
 </beans>

@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -42,14 +43,14 @@ public class SemesterController {
 		return "ed";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.GET)
 	public String newSemester(Model model) {
 		model.addAttribute("semester", Semester.getNextSemester(Semester.getCurrentSemester()));
 		return "newSemester";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-semester", method = RequestMethod.POST)
 	public String newSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
 			BindingResult result, SessionStatus ss) {
@@ -91,14 +92,14 @@ public class SemesterController {
 		return "semester";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.GET)
 	public String editSemester(@PathVariable Integer id, Model model) {
 		showSemester(id, model);
 		return "editSemester";
 	}
 	
-	// @Secured("ROLE_EDUDEP")
+	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.POST)
 	public String editSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
 			BindingResult result, SessionStatus ss,

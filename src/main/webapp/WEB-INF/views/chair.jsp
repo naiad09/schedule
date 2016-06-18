@@ -4,10 +4,7 @@
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
-<h1>Кафедра "${chair.fullName}"</h1>
-<p>
-	<spring:message code="${chair.faculty}.fullName" />
-</p>
+<h1>Кафедра &laquo;${chair.fullName}&raquo;</h1>
 <c:if test="${!empty chair.lecturerJobs}">
 	<h2>Преподаватели кафедры</h2>
 	<table>

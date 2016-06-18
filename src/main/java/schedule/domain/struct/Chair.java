@@ -21,7 +21,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
-import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.persons.LecturerJob;
 import schedule.domain.schedule.Classroom;
 
@@ -63,7 +62,6 @@ public class Chair {
 	@OneToMany(mappedBy = "id.chair")
 	@OrderBy("jobType") // , lecturer.degree, lecturer.lastName,
 						// lecturer.firstName, lecturer.middleName")
-	// TODO order by not works...
 	@ElementCollection(targetClass = LecturerJob.class)
 	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>(0);
 	
@@ -72,9 +70,6 @@ public class Chair {
 	
 	@OneToMany(mappedBy = "chair")
 	private List<SkillProfile> skillProfiles = new ArrayList<SkillProfile>(0);
-	
-	@OneToMany(mappedBy = "chair")
-	private List<ProfileDiscipline> curDisciplines = new ArrayList<ProfileDiscipline>(0);
 	
 	public int getIdChair() {
 		return idChair;
@@ -138,14 +133,6 @@ public class Chair {
 	
 	public void setSkillProfiles(List<SkillProfile> skillProfiles) {
 		this.skillProfiles = skillProfiles;
-	}
-	
-	public List<ProfileDiscipline> getCurDisciplines() {
-		return curDisciplines;
-	}
-	
-	public void setCurDisciplines(List<ProfileDiscipline> curDisciplines) {
-		this.curDisciplines = curDisciplines;
 	}
 	
 	public String getChairShortNameEng() {
