@@ -1,4 +1,4 @@
-package schedule.service;
+package schedule.dao.util;
 
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.LecturerJob;

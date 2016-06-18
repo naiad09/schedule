@@ -10,6 +10,12 @@ import schedule.domain.struct.Chair;
 import schedule.domain.struct.Chair.Faculty;
 
 
+/**
+ * DAO кафедры, наследует {@link MinimalGenericDAO}. Переопределяет метод
+ * выборки всех групп, устанавливая сортировку, и добавляет публичные методы
+ * выборки всех кафедр факультета и выборки кафедры по ее сокращению на
+ * латинице;
+ */
 @Repository
 public class ChairDAO extends MinimalGenericDAO<Chair> {
 	public ChairDAO() {

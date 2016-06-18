@@ -3,10 +3,9 @@ package schedule.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.hibernate.criterion.Projections;
-import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import schedule.dao.util.RawSchedule;
 import schedule.domain.curriculum.Curriculum;
 import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.curriculum.Semester;
@@ -20,21 +19,24 @@ import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleDiscipline;
 import schedule.domain.schedule.ScheduleDiscipline.LessonType;
 import schedule.domain.schedule.ScheduleItem;
-import schedule.web.RawSchedule;
 
 
+/**
+ * DAO расписания, наследует {@link GenericDAO}. Метод создания расписания
+ * содержит алгоритм генерации дисциплин расписания по учебному плану. Метод
+ * поиска конфликтующих аудиторий производит выборку из базы данных тех
+ * аудиторий, которые будут конфликтовать с редактируемым элементом расписания,
+ * переданным в качестве параметра. Метод сохранения расписания собирает
+ * расписание из класса {@link RawSchedule}, удаляя ненужные более элемента
+ * расписания. Метод поиска конфликтов ищет конфликты всех элементов
+ * сохраняемого расписания с уже имеющимися в базе элементами расписания: это
+ * могут быть конфликты преподавателей или аудиторий, но при этом физкультура и
+ * поточные лекции конфликтами не считаются.
+ */
 @Repository
 public class ScheduleDAO extends GenericDAO<Schedule> {
 	public ScheduleDAO() {
 		super(Schedule.class);
-	}
-	
-	public boolean isExists(Schedule schedule) {
-		Long u = (Long) getCriteriaDaoType().add(Restrictions.eq("group", schedule.getGroup()))
-				.add(Restrictions.eq("eduProcGraphic", schedule.getEduProcGraphic()))
-				.setProjection(Projections.rowCount()).uniqueResult();
-		
-		return u == 0 ? false : true;
 	}
 	
 	// Вычисляем подходящие дисциплины для расписания данной группы

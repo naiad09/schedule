@@ -1,4 +1,4 @@
-package schedule.web;
+package schedule.dao.util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,12 @@ import java.util.List;
 import schedule.domain.schedule.ScheduleDiscipline;
 
 
+/**
+ * класс-слепок реального расписания. Содержит коллекцию дисциплин расписания.
+ * Используется для автоматического связывания при приемке данных с формы
+ * редактирования семестра.
+ *
+ */
 public class RawSchedule {
 	private List<ScheduleDiscipline> scheduleDisciplines = new ArrayList<ScheduleDiscipline>();
 	

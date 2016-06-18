@@ -1,5 +1,9 @@
 package schedule.dao;
 
+/**
+ * Параметризированные расширение {@link MinimalGenericDAO}. Содержит также
+ * публичные методы сохранения, обновления и удаления сущности.
+ */
 public class GenericDAO<E> extends MinimalGenericDAO<E> {
 	
 	public GenericDAO(Class<E> type) {

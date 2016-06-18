@@ -31,7 +31,7 @@ public class AuthData {
 	@PrimaryKeyJoinColumn(name = "auth_uid")
 	private int authUid;
 	
-	@OneToOne()
+	@OneToOne
 	@MapsId
 	@JoinColumn(name = "auth_uid", updatable = false)
 	private Person person;

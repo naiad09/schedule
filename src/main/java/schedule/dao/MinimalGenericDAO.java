@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 
+/**
+ * Параметризированный DAO для классов модели, не подлежащих редактированию.
+ * Содержит наследуемые методы доступа к Hibernate-сессии и публичные методы
+ * выборки всех экземпляров сущности и одного экземпляра по id.
+ */
 @Transactional
 public class MinimalGenericDAO<E> {
 	

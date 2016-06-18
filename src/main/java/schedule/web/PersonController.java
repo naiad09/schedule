@@ -26,11 +26,11 @@ import org.springframework.web.bind.support.SessionStatus;
 import schedule.dao.ChairDAO;
 import schedule.dao.MinimalGenericDAO;
 import schedule.dao.PersonDAO;
+import schedule.dao.util.PersonFinder;
 import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
-import schedule.service.PersonFinder;
 import schedule.service.ResourceNotFoundException;
 
 

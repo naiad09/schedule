@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
-import schedule.dao.EnrollmentDAO;
 import schedule.dao.SemesterDAO;
 import schedule.domain.curriculum.CommonCurriculum;
 import schedule.domain.curriculum.Semester;
@@ -32,9 +31,6 @@ public class SemesterController {
 	
 	@Autowired
 	private SemesterDAO semesterDAO;
-	
-	@Autowired
-	private EnrollmentDAO enrollmentDAO;
 	
 	@RequestMapping("")
 	public String allSemesters(Model model) {
@@ -76,7 +72,7 @@ public class SemesterController {
 		Semester semester = semesterDAO.get(id);
 		if (semester == null) throw new ResourceNotFoundException();
 		model.addAttribute("semester", semester);
-		List<Enrollment> actualEnrolls = enrollmentDAO.trainingInSemester(semester);
+		List<Enrollment> actualEnrolls = semesterDAO.trainingInSemester(semester);
 		model.addAttribute("actualEnrolls", actualEnrolls);
 		
 		System.out.println("from db: " + semester.getEduProcGraphics());

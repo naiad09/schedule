@@ -17,12 +17,13 @@ import org.springframework.web.bind.support.SessionStatus;
 import schedule.dao.MinimalGenericDAO;
 import schedule.dao.PersonDAO;
 import schedule.dao.ScheduleDAO;
+import schedule.dao.util.PersonFinder;
+import schedule.dao.util.RawSchedule;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleItem;
 import schedule.domain.schedule.Twain;
-import schedule.service.PersonFinder;
 import schedule.service.ResourceNotFoundException;
 
 

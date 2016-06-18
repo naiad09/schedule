@@ -10,21 +10,25 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
+import schedule.dao.util.PersonFinder;
 import schedule.domain.persons.AuthData;
 import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.persons.LecturerJob;
 import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
-import schedule.service.PersonFinder;
 import schedule.service.converters.PersonConverter;
 
 
+/**
+ * DAO персон, наследует {@link GenericDAO}. Переопределяет методы создания и
+ * обновления персоны, добавляя в них кодирование пароля. Добавляет публичные
+ * методы поиска пользователя по логину и персон по критериям поиска, собранным
+ * в {@link PersonFinder}.
+ */
 @Repository
 public class PersonDAO extends GenericDAO<Person> {
 	
@@ -35,33 +39,23 @@ public class PersonDAO extends GenericDAO<Person> {
 		super(Person.class);
 	}
 	
-	@Secured("ROLE_ADMIN")
 	public void saveOrUpdate(Person entity) {
 		prepare(entity);
 		currentSession().persist(entity);
 	}
 	
-	@PreAuthorize("hasRole('ROLE_ADMIN') or "
-			+ "(isAuthenticated() and principal.uid == #entity.uid)")
 	public void update(Person entity) {
 		prepare(entity);
 		currentSession().update(entity);
-	}
-	
-	@Secured("ROLE_ADMIN")
-	public void delete(Person entity) {
-		super.delete(entity);
 	}
 	
 	/**
 	 * Возвращает пользователя по конкретному логину, или null, если такого нет
 	 */
 	public Person find(String username) {
-		DetachedCriteria detCrit = DetachedCriteria.forClass(AuthData.class, "ha")
-				.add(Restrictions.eq("ha.login", username)).setProjection(Projections.id());
-		
-		return (Person) currentSession().createCriteria(Person.class, "per")
-				.add(Subqueries.propertyEq("per.uid", detCrit)).uniqueResult();
+		return (Person) getCriteriaDaoType().createCriteria("authData")
+				.add(Restrictions.eq("login", username))
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult();
 	}
 	
 	/**
