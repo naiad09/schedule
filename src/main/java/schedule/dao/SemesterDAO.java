@@ -8,7 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
-import schedule.domain.curriculum.Semester;
+import schedule.domain.semester.Semester;
 import schedule.domain.struct.Enrollment;
 
 
@@ -26,7 +26,7 @@ public class SemesterDAO extends GenericDAO<Semester> {
 	}
 	
 	public Semester getCurrent() {
-		Semester currentSemester = Semester.getCurrentSemester();
+		Semester currentSemester = Semester.calcCurrentSemester();
 		
 		return (Semester) getCriteriaDaoType()
 				.add(Restrictions.eq("semesterYear", currentSemester.getSemesterYear()))
@@ -41,7 +41,7 @@ public class SemesterDAO extends GenericDAO<Semester> {
 	
 	@SuppressWarnings("unchecked")
 	public List<Enrollment> trainingInSemester(Semester semester) {
-		List<Enrollment> list = getCriteriaDaoType()
+		List<Enrollment> list = currentSession().createCriteria(Enrollment.class)
 				.add(Restrictions
 						.sqlRestriction("year_start+period_years+ IF(period_months>0,0.5,0) > "
 								+ semester.getSemesterYear() + "+IF(" + semester.getFallSpring()

@@ -7,18 +7,19 @@ import org.springframework.stereotype.Repository;
 
 import schedule.dao.util.RawSchedule;
 import schedule.domain.curriculum.Curriculum;
+import schedule.domain.curriculum.Discipline;
 import schedule.domain.curriculum.ProfileDiscipline;
-import schedule.domain.curriculum.Semester;
 import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
 import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.Conflict;
 import schedule.domain.schedule.ConflictId;
-import schedule.domain.schedule.EduProcGraphic;
 import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleDiscipline;
 import schedule.domain.schedule.ScheduleDiscipline.LessonType;
 import schedule.domain.schedule.ScheduleItem;
+import schedule.domain.semester.EduProcGraphic;
+import schedule.domain.semester.Semester;
 
 
 /**
@@ -92,6 +93,7 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 	}
 	
 	public List<Integer> getConflictingClassrooms(ScheduleItem scheduleItem) {
+		// TODO
 		return null;
 	}
 	
@@ -153,9 +155,23 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 																		.getUid())
 																.findAny().isPresent());
 								
-								boolean discipline = schi1.getScheduleDiscipline().getDisc()
-										.getIdDiscName() == schi2.getScheduleDiscipline().getDisc()
+								Discipline disc = schi1
+										//
+										.getScheduleDiscipline()
+										//
+										.getDisc();
+								System.err.println(disc);
+								
+								boolean discipline = disc
+										//
+										.getIdDiscName() == schi2
+												//
+												.getScheduleDiscipline()
+												//
+												.getDisc()
+												//
 												.getIdDiscName();
+								//
 								
 								if ((classrooms || lecturers) && !discipline) {
 									Conflict conflict = currentSession().get(Conflict.class,

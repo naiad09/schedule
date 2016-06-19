@@ -65,7 +65,7 @@ public class Discipline {
 	
 	@Override
 	public String toString() {
-		return "Discipline [discName=" + discName + "]";
+		return "Discipline [idDiscName=" + idDiscName + ", discName=" + discName + "]";
 	}
 	
 }

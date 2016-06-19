@@ -20,11 +20,10 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import schedule.domain.curriculum.Curriculum;
-import schedule.domain.schedule.Schedule;
 
 
 /**
- * Класс группы. Имеет номер, учебный план, список студентов и предметов.
+ * Класс группы. Имеет номер, учебный план и список студентов.
  */
 @Entity
 @Table(name = "`group`")
@@ -49,9 +48,6 @@ public class Group {
 	@OneToMany(mappedBy = "group")
 	@OrderBy("lastName, firstName, middleName")
 	private List<Student> students = new ArrayList<Student>(0);
-	
-	@OneToMany(mappedBy = "group")
-	private List<Schedule> schedules = new ArrayList<Schedule>(0);
 	
 	public Integer getIdGroup() {
 		return idGroup;

@@ -10,6 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,8 +29,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 
 /**
- * Суперкласс пользователя. Может быть либо студентом, либо преподавателем, либо
- * работником учебного отдела.
+ * Абстрактный суперкласс пользователя. Может быть либо студентом, либо
+ * преподавателем, либо работником учебного отдела. Имеет имя, фамилию и
+ * отчество, данные авторизации, пол и день рождения;
  */
 @Entity
 @Table(name = "person")
@@ -43,7 +45,8 @@ public abstract class Person {
 	@Column(name = "uid", unique = true, updatable = false)
 	private int uid;
 	
-	@OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "person")
+	@OneToOne(	cascade = CascadeType.ALL, optional = true, mappedBy = "person",
+				fetch = FetchType.LAZY)
 	@Embedded
 	@Valid
 	private AuthData authData;

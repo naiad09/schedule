@@ -24,6 +24,13 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
+/**
+ * Общая дисциплина. Отражает, какие общие характеристики есть у Профильных
+ * дисциплин в расписании. Хранит количество часов разных видов занятий (лекций,
+ * лабораторных практик), код дисциплины, вариативность (базовая, вариативная,
+ * по выбору). Связана с Общим учебным планом, имеет список Дисциплин в семестре
+ * и список Профильных дисциплин.
+ */
 @Entity
 @Table(	name = "com_discipline",
 		uniqueConstraints = @UniqueConstraint(columnNames = { "id_com_cur", "disc_code" }))
@@ -63,7 +70,7 @@ public class CommonDiscipline {
 	
 	@OneToMany(mappedBy = "commonDiscipline")
 	@Fetch(FetchMode.JOIN)
-	private List<DiscTerm> discTerms;
+	private List<SemesterDiscipline> discTerms;
 	
 	@OneToMany(mappedBy = "commonDiscipline")
 	@Fetch(FetchMode.SUBSELECT)
@@ -130,11 +137,11 @@ public class CommonDiscipline {
 		this.variability = variability;
 	}
 	
-	public List<DiscTerm> getDiscTerms() {
+	public List<SemesterDiscipline> getDiscTerms() {
 		return discTerms;
 	}
 	
-	public void setDiscTerms(List<DiscTerm> discTerms) {
+	public void setDiscTerms(List<SemesterDiscipline> discTerms) {
 		this.discTerms = discTerms;
 	}
 	

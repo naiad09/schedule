@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 
 
 /**
- * Пара. Имеет время начала и конца.
+ * Пара. Имеет время начала и конца, а также номер.
  */
 @Entity
 @Table(name = "twain")

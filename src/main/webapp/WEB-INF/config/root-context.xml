@@ -30,15 +30,15 @@
 
 	<bean id="viewResolver"
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
-		p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView" p:exposedContextBeanNames="refsContainer"/>
+		p:viewClass="org.springframework.web.servlet.view.tiles3.TilesView"
+		p:exposedContextBeanNames="refsContainer" />
 
 
 	<bean id="messageSource"
 		class="org.springframework.context.support.ResourceBundleMessageSource">
 		<property name="basenames">
 			<list>
-                <value>page-titles</value>
-                <value>pages</value>
+				<value>pages</value>
 				<value>transcript</value>
 				<value>validation-error-messages</value>
 			</list>

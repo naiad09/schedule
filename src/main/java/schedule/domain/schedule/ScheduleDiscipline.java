@@ -29,15 +29,16 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import schedule.domain.curriculum.DiscTerm;
+import schedule.domain.curriculum.SemesterDiscipline;
 import schedule.domain.curriculum.Discipline;
 import schedule.domain.persons.Lecturer;
 
 
 /**
- * Класс, определяющий, какие предметы будут вестись у какой группы в данном
- * семестре. К нему привязываетсяя расписание, а также преподаватели, которые
- * будут этот предмет вести.
+ * Дисциплина расписания и Вид занятий по ней, которая имеет место в данном
+ * Расписании. Привязана к Расписанию, Дисциплине в семестре, имеет кеширующую
+ * связь с Дисциплиной. К ней привязан список Преподавателей и список Элементов
+ * расписания, а также, возможно, Экзамен.
  */
 @Entity
 @Table(name = "schedule_discipline")
@@ -55,7 +56,7 @@ public class ScheduleDiscipline {
 	
 	@JoinColumn(name = "id_disc_sem", updatable = false, nullable = false)
 	@ManyToOne
-	private DiscTerm discTerm;
+	private SemesterDiscipline discTerm;
 	
 	@OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "scheduleDiscipline")
 	@Embedded
@@ -85,7 +86,7 @@ public class ScheduleDiscipline {
 		super();
 	}
 	
-	public ScheduleDiscipline(Schedule schedule, DiscTerm discTerm, LessonType lessonType,
+	public ScheduleDiscipline(Schedule schedule, SemesterDiscipline discTerm, LessonType lessonType,
 			Discipline disc) {
 		this.schedule = schedule;
 		this.discTerm = discTerm;
@@ -141,11 +142,11 @@ public class ScheduleDiscipline {
 		this.scheduleItems = scheduleItems;
 	}
 	
-	public DiscTerm getDiscTerm() {
+	public SemesterDiscipline getDiscTerm() {
 		return discTerm;
 	}
 	
-	public void setDiscTerm(DiscTerm discTerm) {
+	public void setDiscTerm(SemesterDiscipline discTerm) {
 		this.discTerm = discTerm;
 	}
 	

@@ -24,10 +24,15 @@ import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
-import schedule.domain.curriculum.DiscTerm;
+import schedule.domain.curriculum.SemesterDiscipline;
 import schedule.domain.persons.Group;
+import schedule.domain.semester.EduProcGraphic;
 
 
+/**
+ * Расписание. Привязано к группе и Графику учебного процесса, имеет флаг,
+ * указывающий, что расписание составлено, а также список дисциплин расписания.
+ */
 @Entity
 @Table(name = "schedule")
 public class Schedule {
@@ -95,16 +100,16 @@ public class Schedule {
 	}
 	
 	@Transient
-	public SortedMap<DiscTerm, List<ScheduleDiscipline>> getScheduleDisciplinesMap() {
-		SortedMap<DiscTerm, List<ScheduleDiscipline>> map = new TreeMap<DiscTerm, List<ScheduleDiscipline>>(
-				new Comparator<DiscTerm>() {
-					public int compare(DiscTerm o1, DiscTerm o2) {
+	public SortedMap<SemesterDiscipline, List<ScheduleDiscipline>> getScheduleDisciplinesMap() {
+		SortedMap<SemesterDiscipline, List<ScheduleDiscipline>> map = new TreeMap<SemesterDiscipline, List<ScheduleDiscipline>>(
+				new Comparator<SemesterDiscipline>() {
+					public int compare(SemesterDiscipline o1, SemesterDiscipline o2) {
 						String s1 = o1.getCommonDiscipline().getDiscCode();
 						String s2 = o2.getCommonDiscipline().getDiscCode();
 						return s1.compareTo(s2);
 					}
 				});
-		Map<DiscTerm, List<ScheduleDiscipline>> collect = getScheduleDisciplines().stream()
+		Map<SemesterDiscipline, List<ScheduleDiscipline>> collect = getScheduleDisciplines().stream()
 				.collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
 		map.putAll(collect);
 		return map;

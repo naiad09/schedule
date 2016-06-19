@@ -19,7 +19,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import schedule.dao.SemesterDAO;
 import schedule.domain.curriculum.CommonCurriculum;
-import schedule.domain.curriculum.Semester;
+import schedule.domain.semester.Semester;
 import schedule.domain.struct.Enrollment;
 import schedule.service.ResourceNotFoundException;
 
@@ -33,38 +33,10 @@ public class SemesterController {
 	private SemesterDAO semesterDAO;
 	
 	@RequestMapping("")
-	public String allSemesters(Model model) {
+	public String getAllSemesters(Model model) {
 		List<Semester> all = semesterDAO.getAll();
 		model.addAttribute("semesters", all);
 		return "ed";
-	}
-	
-	@Secured("ROLE_EDUDEP")
-	@RequestMapping(path = "new-semester", method = RequestMethod.GET)
-	public String newSemester(Model model) {
-		model.addAttribute("semester", Semester.getNextSemester(Semester.getCurrentSemester()));
-		return "newSemester";
-	}
-	
-	@Secured("ROLE_EDUDEP")
-	@RequestMapping(path = "new-semester", method = RequestMethod.POST)
-	public String newSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
-			BindingResult result, SessionStatus ss) {
-		
-		if (result.hasErrors()) {
-			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
-			return "newSemester";
-		}
-		try {
-			semesterDAO.saveOrUpdate(semester);
-		} catch (ConstraintViolationException exc) {
-			result.rejectValue("semesterYear", "Unique");
-			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
-			return "newSemester";
-		}
-		ss.setComplete();
-		
-		return "redirect:semester-" + semester.getIdSemester();
 	}
 	
 	@RequestMapping(path = "semester-{id}", method = RequestMethod.GET)
@@ -88,14 +60,42 @@ public class SemesterController {
 		return "semester";
 	}
 	
-	@Secured("ROLE_EDUDEP")
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(path = "new-semester", method = RequestMethod.GET)
+	public String newSemester(Model model) {
+		model.addAttribute("semester", Semester.calcNextSemester(Semester.calcCurrentSemester()));
+		return "newSemester";
+	}
+	
+	@Secured("ROLE_ADMIN")
+	@RequestMapping(path = "new-semester", method = RequestMethod.POST)
+	public String newSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
+			BindingResult result, SessionStatus ss) {
+		
+		if (result.hasErrors()) {
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+			return "newSemester";
+		}
+		try {
+			semesterDAO.saveOrUpdate(semester);
+		} catch (ConstraintViolationException exc) {
+			result.rejectValue("semesterYear", "Unique");
+			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
+			return "newSemester";
+		}
+		ss.setComplete();
+		
+		return "redirect:semester-" + semester.getIdSemester();
+	}
+	
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.GET)
 	public String editSemester(@PathVariable Integer id, Model model) {
 		showSemester(id, model);
 		return "editSemester";
 	}
 	
-	@Secured("ROLE_EDUDEP")
+	@Secured("ROLE_ADMIN")
 	@RequestMapping(path = "semester-{id}/edit", method = RequestMethod.POST)
 	public String editSemesterPost(@Valid @ModelAttribute("semester") Semester semester,
 			BindingResult result, SessionStatus ss,

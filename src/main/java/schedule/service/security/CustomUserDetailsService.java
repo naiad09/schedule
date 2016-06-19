@@ -17,6 +17,10 @@ import schedule.domain.persons.EduDep;
 import schedule.domain.persons.Person;
 
 
+/**
+ * Сервис, поставляющий системе безопасности Детали пользователя и роли. Связан
+ * с DAO персон.
+ */
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
 	

@@ -22,7 +22,7 @@
 	<h1>Студенты</h1>
 	<c:forEach items="${group.students}" var="student">
 		<p>
-			<a href="persons/uid-${student.uid}">${student.fullTextName}</a>
+			<a href="../persons/uid-${student.uid}">${student.fullTextName}</a>
 		</p>
 	</c:forEach>
 </c:if>

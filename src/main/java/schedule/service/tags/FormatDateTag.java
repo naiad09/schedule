@@ -12,6 +12,9 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.taglibs.standard.tag.common.core.Util;
 
 
+/**
+ * Тег для форматирования даты;
+ */
 public class FormatDateTag extends TagSupport {
 	
 	private static final long serialVersionUID = 1L;

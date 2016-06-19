@@ -11,6 +11,10 @@ import schedule.domain.curriculum.CommonCurriculum;
 import schedule.service.ResourceNotFoundException;
 
 
+/**
+ * Контроллер Учебного плана. Позволяет просмотреть выбранный учебный план.
+ * Связан с DAO учебного плана. *
+ */
 @Controller
 @RequestMapping("cur")
 public class CurriculumController {

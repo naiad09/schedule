@@ -27,6 +27,12 @@ import schedule.domain.curriculum.CommonCurriculum;
 import schedule.domain.struct.EduProgram.EduQual;
 
 
+/**
+ * Совокупность образовательных программ с определенной квалификацией и формой
+ * обучения, на которые был объявлен набор в конкретном году. Содержит год
+ * начала обучения, срок обучения, форму обучения, квалификацию выпускника, а
+ * также список связанных Учебных планов.
+ */
 @Entity
 @Table(name = "enrollment", uniqueConstraints = @UniqueConstraint(columnNames = { "edu_mode",
 		"qual_type", "year_start" }))
@@ -161,6 +167,9 @@ public class Enrollment {
 		return now.isBefore(end) ? Integer.valueOf(dif.getYears() + 1) : null;
 	}
 	
+	/**
+	 * Перечень форм обучения: очное, заочное, очно-заочное обучение;
+	 */
 	public enum EduMode {
 		och, zao, oz
 	}

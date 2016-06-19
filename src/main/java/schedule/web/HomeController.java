@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -23,6 +22,10 @@ import schedule.domain.struct.Chair.Faculty;
 import schedule.service.security.CustomUserDetails;
 
 
+/**
+ * Домашний контроллер, управляет главной страницей, страницей входа
+ * пользователей и страницей ошибки 404.
+ */
 @Controller
 public class HomeController {
 	
@@ -58,9 +61,14 @@ public class HomeController {
 		else return "redirect:/";
 	}
 	
-	@RequestMapping(value = "/error{errorCode}")
-	public String error(@PathVariable int errorCode) {
-		return "error" + errorCode;
+	@RequestMapping(value = "/error404")
+	public String error404() {
+		return "error404";
+	}
+	
+	@RequestMapping(value = "/error403")
+	public String error403() {
+		return "error403";
 	}
 	
 }

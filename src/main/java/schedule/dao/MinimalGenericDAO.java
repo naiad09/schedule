@@ -1,5 +1,6 @@
 package schedule.dao;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -26,7 +27,7 @@ public class MinimalGenericDAO<E> {
 		this.daoType = type;
 	}
 	
-	public E get(Integer key) {
+	public E get(Serializable key) {
 		return currentSession().get(daoType, key);
 	}
 	

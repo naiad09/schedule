@@ -53,9 +53,9 @@ public class PersonDAO extends GenericDAO<Person> {
 	 * Возвращает пользователя по конкретному логину, или null, если такого нет
 	 */
 	public Person find(String username) {
-		return (Person) getCriteriaDaoType().createCriteria("authData")
-				.add(Restrictions.eq("login", username))
-				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).uniqueResult();
+		return (Person) getCriteriaDaoType().createCriteria("authData", "au")
+				.add(Restrictions.eq("au.login", username))
+				.setResultTransformer(Criteria.ROOT_ENTITY).uniqueResult();
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class PersonDAO extends GenericDAO<Person> {
 			detCrit.setProjection(Projections.id());
 			if (pf.getLoginExists()) {
 				if (pf.getLogin() != null)
-					detCrit.add(Restrictions.like("login", "%" + pf.getLogin() + "%"));
+					detCrit.add(Restrictions.like("login", pf.getLogin(), MatchMode.ANYWHERE));
 				crit.add(Subqueries.propertyIn("uid", detCrit));
 			} else crit.add(Subqueries.propertyNotIn("uid", detCrit));
 		}

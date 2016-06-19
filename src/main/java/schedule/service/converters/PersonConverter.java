@@ -8,6 +8,11 @@ import schedule.domain.persons.Person;
 import schedule.domain.persons.Student;
 
 
+/**
+ * Конвертер типа персоны. Используется в формах, которые могут поставлять все
+ * типы персон. Создает экземпляр Персоны нужного класса (Студента,
+ * Преподавателя или Работника учебного плана.)
+ */
 public class PersonConverter implements Converter<String, Person> {
 	
 	public Person convert(String personType) {

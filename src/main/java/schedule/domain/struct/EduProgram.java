@@ -107,6 +107,10 @@ public class EduProgram {
 		this.skillProfiles = skillProfiles;
 	}
 	
+	/**
+	 * Перечень возможных квалификаций выпускника: бакалавр, магистр,
+	 * специалист, аспирант;
+	 */
 	public enum EduQual {
 		bac, mag, spec, asp;
 	}

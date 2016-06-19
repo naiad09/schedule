@@ -4,7 +4,6 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,8 +55,10 @@
 	<div id="page">
 		<div id="header">
 			<div id="title">
-				<a href="${pageContext.request.contextPath}">Рязанский
-					Государственный Радиотехнический Университет</a>
+				Рязанский Государственный Радиотехнический Университет <br>
+				<span style="font-size: 2.1em">Расписание занятий и сессии</span><br>
+				<a href="${pageContext.request.contextPath}/ed">Учебный отдел</a> &laquo;
+				<a href="${pageContext.request.contextPath}/persons">Пользователи</a>
 			</div>
 			<div id="login">
 				<t:insertAttribute name="loginWidget" />

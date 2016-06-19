@@ -6,6 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 
+/**
+ * Детали пользователя, расширяют стандартный класс деталей пользователя Spring
+ * Security, добавляя id пользователя.
+ */
 public class CustomUserDetails extends User {
 	private static final long serialVersionUID = 1L;
 	

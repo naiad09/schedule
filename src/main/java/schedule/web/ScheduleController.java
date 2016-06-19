@@ -27,8 +27,19 @@ import schedule.domain.schedule.Twain;
 import schedule.service.ResourceNotFoundException;
 
 
+/**
+ * Контроллер редактирования расписания, доступен только для работников учебного
+ * отдела. Разграничивает доступ к расписаниям в соответствии с факультетом, к
+ * которому прикреплен Работник учебного отдела. Связан с DAO расписания, DAO
+ * персон, DAO учебных пар, DAO аудиторий. Хранит в атрибутах сессии список
+ * преподавателей, список кафедр, редактируемое расписание и список аудиторий.
+ * Позволяет создать новое расписание, редактировать расписание, а также
+ * получить список конфликтных аудиторий для редактируемого элемента расписания.
+ */
+
 @Controller
 @RequestMapping("ed")
+@Secured("ROLE_EDUDEP")
 @SessionAttributes({ "schedule", "twains", "lecturers", "classrooms" })
 public class ScheduleController {
 	
@@ -44,14 +55,12 @@ public class ScheduleController {
 	@Autowired
 	private PersonDAO personDAO;
 	
-	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "new-schedule", method = RequestMethod.POST)
 	public String createSchedulePost(Schedule schedule) {
 		scheduleDAO.create(schedule);
 		return "redirect:schedule-" + schedule.getIdSchedule() + "/edit";
 	}
 	
-	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.GET)
 	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
 		
@@ -70,7 +79,6 @@ public class ScheduleController {
 		return "editSchedule";
 	}
 	
-	@Secured("ROLE_EDUDEP")
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.POST)
 	public String editSchedulePost(RawSchedule rawSchedule, Model model, SessionStatus ss) {
 		
