@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -37,10 +36,10 @@
 									style="width: 43%; border-bottom: none; padding-bottom: 0">Знаменатель</th>
 							</tr>
 							<tr>
-								<th style="width: 21%; border-top: none; border-right: none;"></th>
-								<th style="width: 21%; border-top: none; border-left: none;"></th>
-								<th style="width: 21%; border-top: none; border-right: none;"></th>
-								<th style="width: 21%; border-top: none; border-left: none;"></th>
+								<th style="width: 21%; border-top: none; border-right: none; height: 0"></th>
+								<th style="width: 21%; border-top: none; border-left: none; height: 0"></th>
+								<th style="width: 21%; border-top: none; border-right: none; height: 0"></th>
+								<th style="width: 21%; border-top: none; border-left: none; height: 0"></th>
 							</tr>
 						</thead>
 						<c:forEach items="${refsContainer.daysOfWeek}" var="day">
@@ -106,11 +105,12 @@
 		title="Нажмите дважды, чтобы настроить">
 		<tbody>
 			<tr>
-				<td class="leftMover mover"></td>
+				<td class="leftMover mover"
+					title="Потяните, чтобы настроить понедельный план"></td>
 				<td class="inner" draggable="true"
 					ondragstart="return dragStartSCHI(event)">
 					<div class="schiButtons">
-						<img src="../../resources/cross.png" class="button"
+						<img src="${baseUrl}/resources/img/cross.png" class="button"
 							onclick="processClickDelete(this)" title="Удалить">
 					</div> <span class="twain"></span> <span class="numDen"></span> <span
 					class="discipline"></span> <input type="hidden"
@@ -125,7 +125,8 @@
 						class="divider"></span> <span class="classrooms"></span>
 				</small> <small class="weekplan"></small>
 				</td>
-				<td class="rightMover mover"></td>
+				<td class="rightMover mover"
+					title="Потяните, чтобы настроить понедельный план"></td>
 			</tr>
 		</tbody>
 	</table>
@@ -154,6 +155,6 @@
 </div>
 
 <script
-	src="${pageContext.request.contextPath}/resources/js/schedule/moves.js"></script>
+	src="${baseUrl}/resources/js/schedule/moves.js"></script>
 <script
-	src="${pageContext.request.contextPath}/resources/js/schedule/schedule.js"></script>
+	src="${baseUrl}/resources/js/schedule/schedule.js"></script>

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/custom.tld" prefix="fmt"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -22,12 +21,12 @@
 								<input type="hidden" class="lecturerInput"
 								name="scheduleDisciplines[].lecturers[].uid" /> <span></span> <img
 								class="delete${lessonType}LecturerLink button"
-								src="../../resources/cross.png" title="Удалить">
+								src="${baseUrl}/resources/img/cross.png" title="Удалить">
 						</span>
 						</span> <input id="${lessonType}LecturerSelectorInput"
 							placeholder="Найти преподавателя по имени или кафедре" />
 					</div> <img class="button" id="clear${lessonType}LecturerSelection"
-					src="../../resources/cross.png" title="Очистить"> <select
+					src="${baseUrl}/resources/img/cross.png" title="Очистить"> <select
 					id="${lessonType}LecturerSelector">
 						<c:forEach items="${lecturers}" var="lecturer">
 							<c:if test="${!empty lecturer.lecturerJobs}">
@@ -92,5 +91,4 @@
 
 
 
-<script
-	src="${pageContext.request.contextPath}/resources/js/schedule/scheduleDiscSettings.js"></script>
+<script src="${baseUrl}/resources/js/schedule/scheduleDiscSettings.js"></script>

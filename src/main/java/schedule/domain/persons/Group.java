@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import schedule.domain.curriculum.Curriculum;
+import schedule.domain.schedule.Schedule;
 
 
 /**
@@ -48,6 +49,9 @@ public class Group {
 	@OneToMany(mappedBy = "group")
 	@OrderBy("lastName, firstName, middleName")
 	private List<Student> students = new ArrayList<Student>(0);
+	
+	@OneToMany(mappedBy = "group")
+	private List<Schedule> schedules = new ArrayList<Schedule>(0);
 	
 	public Integer getIdGroup() {
 		return idGroup;
@@ -79,6 +83,14 @@ public class Group {
 	
 	public void setStudents(List<Student> students) {
 		this.students = students;
+	}
+	
+	public List<Schedule> getSchedules() {
+		return schedules;
+	}
+	
+	public void setSchedules(List<Schedule> schedules) {
+		this.schedules = schedules;
 	}
 	
 	@Override

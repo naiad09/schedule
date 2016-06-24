@@ -16,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -67,9 +68,11 @@ public class ScheduleItem {
 				inverseJoinColumns = { @JoinColumn(name = "id_classroom") })
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
-	// @OneToMany(mappedBy = "schiFrom", cascade = CascadeType.ALL)
-	// @Fetch(FetchMode.SUBSELECT)
-	// private List<Conflict> conflicts;
+	@OneToMany(mappedBy = "conflictId.schiFrom")
+	private List<Conflict> conflictsFrom;
+	
+	@OneToMany(mappedBy = "conflictId.schiTo")
+	private List<Conflict> conflictsTo;
 	
 	@Formula("exists(select * from conflict where conflict.id_schedule_item_from "
 			+ "= id_schedule_item or conflict.id_schedule_item_to = id_schedule_item)")
@@ -137,6 +140,22 @@ public class ScheduleItem {
 	
 	public void setConflict(boolean conflict) {
 		this.conflict = conflict;
+	}
+	
+	public List<Conflict> getConflictsFrom() {
+		return conflictsFrom;
+	}
+	
+	public void setConflictsFrom(List<Conflict> conflictsFrom) {
+		this.conflictsFrom = conflictsFrom;
+	}
+	
+	public List<Conflict> getConflictsTo() {
+		return conflictsTo;
+	}
+	
+	public void setConflictsTo(List<Conflict> conflictsTo) {
+		this.conflictsTo = conflictsTo;
 	}
 	
 	@Override

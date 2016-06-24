@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
@@ -118,7 +119,7 @@ public class PersonDAO extends GenericDAO<Person> {
 				crit.add(Subqueries.propertyIn("uid", detCrit));
 			} else crit.add(Subqueries.propertyNotIn("uid", detCrit));
 		}
-		return crit.list();
+		return crit.addOrder(Order.asc("fullTextName")).list();
 	}
 	
 }

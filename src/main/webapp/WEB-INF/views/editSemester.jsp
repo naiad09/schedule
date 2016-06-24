@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -17,17 +16,16 @@
 
 <form:form action="edit" method="post" commandName="semester">
 
-	<table>
+	<table class="borderTable" style="border: 0">
 		<thead>
 			<tr>
-				<th>Курс, образовательная программа</th>
+				<th style="padding: 7px">Курс, образовательная программа</th>
 				<th>Начало семестра</th>
 				<th>Конец семестра</th>
 				<th>Начало зачетной недели</th>
 				<th>Конец зачетной недели</th>
 				<th>Начало экзаменационной сессии</th>
 				<th>Конец экзаменационной сессии</th>
-				<th></th>
 			</tr>
 		</thead>
 		<c:forEach items="${refsContainer.eduModes}" var="eduMode">
@@ -37,7 +35,7 @@
 					var="enrolls" />
 				<c:if test="${!empty enrolls}">
 					<tr>
-						<td colspan="20"><h3 style="text-align: center">
+						<td colspan="7"><h3 style="text-align: center">
 								Форма обучения:
 								<spring:message code="${eduMode}" />
 								.
@@ -55,19 +53,20 @@
 							<tbody
 								class="eduProcGraphics ${eduMode} ${qual} course${i.index}">
 								<tr class="selectCurriculum toggleVisiable">
-									<td></td>
-									<td colspan="20"><input class="curriculumSelectorInput"
-										placeholder="Найти образовательную программу по названию" /><img
-										class="button clearSelection" src="../../resources/cross.png"
-										title="Очистить"><br> <select
-										class="curriculumSelector">
-											<c:forEach items="${enrollCourse.commonCurriculums}"
-												var="comCur">
-												<option value="${comCur.idCommonCurriculum}">
-													${comCur.eduProgram.eduProgCode},
-													${comCur.eduProgram.eduProgName}</option>
-											</c:forEach>
-									</select></td>
+									<td colspan="7"><div style="width: 600px; float: right;">
+											<input class="curriculumSelectorInput"
+												placeholder="Найти образовательную программу по названию" /><br>
+											<select class="curriculumSelector">
+												<c:forEach items="${enrollCourse.commonCurriculums}"
+													var="comCur">
+													<option value="${comCur.idCommonCurriculum}">
+														${comCur.eduProgram.eduProgCode},
+														${comCur.eduProgram.eduProgName}</option>
+												</c:forEach>
+											</select>
+										</div></td>
+									<td style="border: 0"><img class="button clearSelection"
+										src="${baseUrl}/resources/img/cross.png" title="Очистить"></td>
 								</tr>
 								<c:forEach items="${hereGraphics}" var="g">
 									<c:if test="${g!=defaultGraphic}">
@@ -84,9 +83,10 @@
 											<c:set value="${g}" var="graphic" scope="request" />
 											<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
-											<td><c:if test="${g.idEduPeriod==null}">
+											<td style="border: 0"><c:if
+													test="${g.idEduPeriod==null}">
 													<img class="deleteLink button"
-														src="../../resources/cross.png" title="Удалить">
+														src="${baseUrl}/resources/img/cross.png" title="Удалить">
 												</c:if></td>
 										</tr>
 									</c:if>
@@ -102,8 +102,8 @@
 									<c:set value="${null}" var="graphic" scope="request" />
 									<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
-									<td><img class="deleteLink button"
-										src="../../resources/cross.png" title="Удалить"></td>
+									<td style="border: 0"><img class="deleteLink button"
+										src="${baseUrl}/resources/img/cross.png" title="Удалить"></td>
 								</tr>
 								<tr class="allCurriculums eduProcGraphic">
 									<td class="allCurriculumsTd">${i.index}&nbsp;курс,<br>
@@ -116,7 +116,7 @@
 									<c:set value="${defaultGraphic}" var="graphic" scope="request" />
 									<t:insertTemplate template="level2/eduProcGraphicEdit.jsp" />
 
-									<td><img src="../../resources/add.png"
+									<td style="border: 0"><img src="${baseUrl}/resources/img/add.png"
 										title="Уточнить для..." class="button pinpointCurriculumLink" /></td>
 								</tr>
 
@@ -129,10 +129,10 @@
 				</c:if>
 			</c:forEach>
 		</c:forEach>
-
-		<t:insertTemplate template="utils/submitButton.jsp" />
 	</table>
+	<button style="margin: 7px 0 0 100px">Отправить</button>
 </form:form>
+
 
 <script>
 	$(".eduProcGraphics")
@@ -193,16 +193,23 @@
 
 						new SelectorFindHelper(configFinder)
 
-						$("form#semester").submit(function() {
-							selector.find("option:not(:disabled)")
-								.each(function(i) {
-											holder.find(".allCurriculumsTd")
-													.append(
-															'<input type="hidden" name="'
+						$("form#semester")
+								.submit(
+										function() {
+											selector
+													.find(
+															"option:not(:disabled)")
+													.each(
+															function(i) {
+																holder
+																		.find(
+																				".allCurriculumsTd")
+																		.append(
+																				'<input type="hidden" name="'
 															+'eduProcGraphics[].curriculums['+
 	                                               i+'].idCommonCurriculum" value="'+this.value+'"/>')
+															})
 										})
-						})
 					})
 
 	$("form#semester").submit(function() {

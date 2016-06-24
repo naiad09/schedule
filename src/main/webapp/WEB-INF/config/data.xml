@@ -50,4 +50,6 @@
 
 	<bean name="curriculumDAO" class="schedule.dao.MinimalGenericDAO"
 		c:type="schedule.domain.curriculum.CommonCurriculum" />
+
+
 </beans>

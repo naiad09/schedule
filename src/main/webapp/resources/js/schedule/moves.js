@@ -123,7 +123,7 @@ function dragDropTd(ev) {
 	return false
 }
 
-function calcTwain(tr){return $(tr).find("input.twainInput").val();}
+function calcTwain(tr){return $(tr).find("input.twainInput").val()}
 
 $(".leftMover.mover").live("mousedown", function(e) {
     var schi = this.parentElement.parentElement.parentElement

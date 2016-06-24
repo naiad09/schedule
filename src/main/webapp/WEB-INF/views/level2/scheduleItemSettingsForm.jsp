@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/custom.tld" prefix="fmt"%>
 
@@ -39,15 +38,18 @@
 							type="hidden" class="classroomInput"
 							name="scheduleDisciplines[].scheduleItems[].classrooms[].idClassroom" />
 							<span></span> <img class="deleteClassroomLink button"
-							src="../../resources/cross.png" title="Удалить">
+							src="${baseUrl}/resources/img/cross.png" title="Удалить">
 					</span>
 					</span> <input id="classroomSelectorInput"
-						placeholder="Найти аудиторию по названию" />
+						placeholder="Найти аудиторию по названию или кафедре" />
 				</div> <img class="button" id="clearClassroomSelection"
-				src="../../resources/cross.png" title="Очистить"> <select
+				src="${baseUrl}/resources/img/cross.png" title="Очистить"> <select
 				id="classroomSelector">
 					<c:forEach items="${classrooms}" var="classroom">
 						<option value="${classroom.idClassroom}"
+							class="${(classroom.chair.faculty==currentUser.faculty)?'green':''}
+							${(empty classroom.chair.faculty)?'yellow':''}
+							${classroom.chair.idChair==schedule.group.curriculum.skillProfile.chair.idChair?'blue':''}"
 							title="а.&nbsp;${classroom.classroomNumber}">ауд.
 							${classroom.classroomNumber}, корпус ${classroom.campus}
 							<c:if test="${classroom.chair!=null}">
@@ -130,17 +132,16 @@
 		<tr>
 			<td>Комментарий</td>
 			<td colspan="2"><textarea name="comment"
-					style="width: 423px; height: 30px;"></textarea></td>
+					style="width: 472px; height: 30px;"></textarea></td>
 		</tr>
 		<tr>
 			<td></td>
 			<td colspan="2"><button type="button"
-					id="scheduleItemSettingsSaveButton">Сохранить</button>
+					id="scheduleItemSettingsSaveButton">Применить</button>
 				<button type="reset" id="scheduleItemSettingsResetButton">Отменить</button></td>
 		</tr>
 	</table>
 </form>
 
 
-<script
-	src="${pageContext.request.contextPath}/resources/js/schedule/scheduleItemSettings.js"></script>
+<script src="${baseUrl}/resources/js/schedule/scheduleItemSettings.js"></script>

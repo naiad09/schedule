@@ -109,8 +109,8 @@ public class Schedule {
 						return s1.compareTo(s2);
 					}
 				});
-		Map<SemesterDiscipline, List<ScheduleDiscipline>> collect = getScheduleDisciplines().stream()
-				.collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
+		Map<SemesterDiscipline, List<ScheduleDiscipline>> collect = getScheduleDisciplines()
+				.stream().collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
 		map.putAll(collect);
 		return map;
 	}

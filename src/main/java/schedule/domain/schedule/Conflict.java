@@ -1,5 +1,8 @@
 package schedule.domain.schedule;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -16,28 +19,28 @@ import javax.persistence.Transient;
 public class Conflict {
 	
 	@EmbeddedId
-	private ConflictId conflictIId = new ConflictId();
+	private ConflictId conflictId = new ConflictId();
+	
+	@Column(name = "classroom_conflict")
+	private boolean classroomConflict;
+	
+	@Column(name = "lecturer_conflict")
+	private boolean lecturerConflict;
 	
 	public Conflict() {
 		super();
 	}
 	
 	public Conflict(ScheduleItem schiFrom, ScheduleItem schiTo) {
-		conflictIId = new ConflictId(schiFrom, schiTo);
+		conflictId = new ConflictId(schiFrom, schiTo);
 	}
 	
-	@Column(name = "classroom_conflict")
-	public boolean classroomConflict;
-	
-	@Column(name = "lecturer_conflict")
-	public boolean lecturerConflict;
-	
-	public ConflictId getConflictIId() {
-		return conflictIId;
+	public ConflictId getConflictId() {
+		return conflictId;
 	}
 	
-	public void setConflictIId(ConflictId conflictIId) {
-		this.conflictIId = conflictIId;
+	public void setConflictId(ConflictId conflictId) {
+		this.conflictId = conflictId;
 	}
 	
 	public boolean isClassroomConflict() {
@@ -58,20 +61,28 @@ public class Conflict {
 	
 	@Transient
 	public ScheduleItem getSchiFrom() {
-		return conflictIId.getSchiFrom();
+		return conflictId.getSchiFrom();
 	}
 	
 	public void setSchiFrom(ScheduleItem schiFrom) {
-		this.conflictIId.setSchiFrom(schiFrom);
+		this.conflictId.setSchiFrom(schiFrom);
 	}
 	
 	@Transient
 	public ScheduleItem getSchiTo() {
-		return conflictIId.getSchiTo();
+		return conflictId.getSchiTo();
 	}
 	
 	public void setSchiTo(ScheduleItem schiTo) {
-		this.conflictIId.setSchiTo(schiTo);
+		this.conflictId.setSchiTo(schiTo);
+	}
+	
+	@Transient
+	public List<ScheduleItem> getTwoItems() {
+		ArrayList<ScheduleItem> list = new ArrayList<ScheduleItem>();
+		list.add(getSchiFrom());
+		list.add(getSchiTo());
+		return list;
 	}
 	
 }

@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
@@ -9,23 +8,18 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-<link
-	href="${pageContext.request.contextPath}/resources/style/style.css"
-	rel="stylesheet" />
+<c:set value="${pageContext.request.contextPath}" var="baseUrl" scope="request"/>
+
+<link href="${baseUrl}/resources/style/style.css" rel="stylesheet" />
 <link rel="stylesheet/less" type="text/css"
-	href="${pageContext.request.contextPath}/resources/style/style.less">
+	href="${baseUrl}/resources/style/style.less">
 
-<script
-	src="${pageContext.request.contextPath}/resources/js/jquery.min.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/less.min.js"></script>
+<script src="${baseUrl}/resources/js/jquery.min.js"></script>
+<script src="${baseUrl}/resources/js/less.min.js"></script>
 
-<script
-	src="${pageContext.request.contextPath}/resources/js/dynamicList.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/formHider.js"></script>
-<script
-	src="${pageContext.request.contextPath}/resources/js/selectorFinder.js"></script>
+<script src="${baseUrl}/resources/js/dynamicList.js"></script>
+<script src="${baseUrl}/resources/js/formHider.js"></script>
+<script src="${baseUrl}/resources/js/selectorFinder.js"></script>
 
 <c:set var="urlMatches" scope="request"
 	value="${fn:split(requestScope['org.springframework.web.servlet.HandlerMapping.bestMatchingPattern'], '/')}" />
@@ -55,22 +49,22 @@
 	<div id="page">
 		<div id="header">
 			<div id="title">
-				Рязанский Государственный Радиотехнический Университет <br>
-				<span style="font-size: 2.1em">Расписание занятий и сессии</span><br>
-				<a href="${pageContext.request.contextPath}/ed">Учебный отдел</a> &laquo;
-				<a href="${pageContext.request.contextPath}/persons">Пользователи</a>
+				Рязанский Государственный Радиотехнический Университет <br> <span
+					style="font-size: 2.1em">Электронное расписание</span><br> <a
+					href="${baseUrl}/ed">Учебный отдел</a> &laquo; <a
+					href="${baseUrl}/persons">Пользователи</a>
 			</div>
 			<div id="login">
 				<t:insertAttribute name="loginWidget" />
 			</div>
 		</div>
-		<h3 id="topPagination">
+		<h3 id="topPagination" class="pagination">
 			<t:insertTemplate template="pagination.jsp" />
 		</h3>
 		<div id="main">
 			<t:insertAttribute name="content" />
 		</div>
-		<h3 id="bottomPagenation">
+		<h3 id="bottomPagenation" class="pagination">
 			<t:insertTemplate template="pagination.jsp" />
 		</h3>
 		<div id="footer"></div>

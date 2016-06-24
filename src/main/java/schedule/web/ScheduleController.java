@@ -2,6 +2,8 @@ package schedule.web;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
@@ -24,6 +26,7 @@ import schedule.domain.schedule.Classroom;
 import schedule.domain.schedule.Schedule;
 import schedule.domain.schedule.ScheduleItem;
 import schedule.domain.schedule.Twain;
+import schedule.domain.semester.Semester;
 import schedule.service.ResourceNotFoundException;
 
 
@@ -38,9 +41,9 @@ import schedule.service.ResourceNotFoundException;
  */
 
 @Controller
-@RequestMapping("ed")
+@RequestMapping("ed/semester-{id}")
 @Secured("ROLE_EDUDEP")
-@SessionAttributes({ "schedule", "twains", "lecturers", "classrooms" })
+@SessionAttributes({ "twains", "lecturers", "classrooms" })
 public class ScheduleController {
 	
 	@Autowired
@@ -56,17 +59,25 @@ public class ScheduleController {
 	private PersonDAO personDAO;
 	
 	@RequestMapping(path = "new-schedule", method = RequestMethod.POST)
-	public String createSchedulePost(Schedule schedule) {
+	public String createSchedulePost(Schedule schedule, SessionStatus ss) {
 		scheduleDAO.create(schedule);
+		ss.setComplete();
 		return "redirect:schedule-" + schedule.getIdSchedule() + "/edit";
 	}
 	
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.GET)
-	public String editSchedule(@PathVariable Integer idSchedule, Model model) {
+	public String editSchedule(@PathVariable("id") Integer idSemester,
+			@PathVariable Integer idSchedule, Model model) {
 		
 		Schedule schedule = scheduleDAO.get(idSchedule);
 		if (schedule == null) throw new ResourceNotFoundException();
+		Semester semester = schedule.getEduProcGraphic().getSemester();
+		Integer realIdSemester = semester.getIdSemester();
+		if (realIdSemester != idSemester) return "redirect:../../semester-" + realIdSemester
+				+ "/schedule-" + idSchedule + "/edit";
+		
 		model.addAttribute("schedule", schedule);
+		model.addAttribute(semester);
 		
 		model.addAttribute("twains", twainDAO.getAll());
 		
@@ -80,21 +91,27 @@ public class ScheduleController {
 	}
 	
 	@RequestMapping(path = "schedule-{idSchedule}/edit", method = RequestMethod.POST)
-	public String editSchedulePost(RawSchedule rawSchedule, Model model, SessionStatus ss) {
-		
-		Schedule schedule = (Schedule) model.asMap().get("schedule");
+	public String editSchedulePost(@PathVariable Integer idSchedule, RawSchedule rawSchedule,
+			Model model, SessionStatus ss) {
 		
 		System.err.println("=== START SAVING");
 		
-		scheduleDAO.update(schedule, rawSchedule);
+		scheduleDAO.update(idSchedule, rawSchedule);
 		
 		System.err.println("== Я СОХРАНИЛСЯ!!!! ==");
-		
-		scheduleDAO.searchConflicts(schedule);
 		ss.setComplete();
 		
 		System.err.println("=== END SAVING");
 		return "redirect:edit";
+	}
+	
+	@RequestMapping(path = "schedule-{idSchedule}/delete", method = RequestMethod.POST)
+	public String deleteSchedule(@PathVariable Integer idSchedule, HttpServletRequest request) {
+		Schedule schedule = scheduleDAO.get(idSchedule);
+		if (schedule == null) throw new ResourceNotFoundException();
+		scheduleDAO.delete(schedule);
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
 	}
 	
 	@ResponseBody

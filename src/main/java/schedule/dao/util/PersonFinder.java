@@ -14,13 +14,10 @@ import schedule.domain.struct.Chair;
  * задает параметры отображения: число пользователей на странице и номер
  * страницы (не поставляются в запрос, используются на jsp для отображения).
  */
-public class PersonFinder {
+public class PersonFinder extends Finder {
 	private String role;
 	private String name;
 	private Person.Gender gender;
-	
-	private int perPage = 10;
-	private int page = 1;
 	
 	private Chair.Faculty faculty;
 	private Lecturer.Degree degree;
@@ -44,22 +41,6 @@ public class PersonFinder {
 	
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public int getPerPage() {
-		return perPage;
-	}
-	
-	public void setPerPage(int perPage) {
-		this.perPage = perPage;
-	}
-	
-	public int getPage() {
-		return page;
-	}
-	
-	public void setPage(int page) {
-		this.page = page;
 	}
 	
 	public Chair.Faculty getFaculty() {

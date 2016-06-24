@@ -29,8 +29,8 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import schedule.domain.curriculum.SemesterDiscipline;
 import schedule.domain.curriculum.Discipline;
+import schedule.domain.curriculum.SemesterDiscipline;
 import schedule.domain.persons.Lecturer;
 
 
@@ -160,7 +160,7 @@ public class ScheduleDiscipline {
 	
 	public String toString() {
 		StringBuilder string = new StringBuilder(
-				"ScheduleDiscipline [id=" + idScheduleDiscipline
+				"ScheduleDiscipline [id=" + idScheduleDiscipline + ", disc=" + getDisc()
 						+ ", lessonType=" + lessonType + ", lecturers=" + lecturers.stream()
 								.map(c -> c.getUid()).collect(Collectors.toList()).toString()
 						+ "]");

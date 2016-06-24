@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
+import schedule.dao.ConflictDAO;
 import schedule.dao.SemesterDAO;
+import schedule.dao.util.ConflictFinder;
 import schedule.domain.curriculum.CommonCurriculum;
+import schedule.domain.schedule.Conflict;
 import schedule.domain.semester.Semester;
 import schedule.domain.struct.Enrollment;
 import schedule.service.ResourceNotFoundException;
@@ -32,6 +35,9 @@ public class SemesterController {
 	@Autowired
 	private SemesterDAO semesterDAO;
 	
+	@Autowired
+	private ConflictDAO conflictDAO;
+	
 	@RequestMapping("")
 	public String getAllSemesters(Model model) {
 		List<Semester> all = semesterDAO.getAll();
@@ -41,9 +47,7 @@ public class SemesterController {
 	
 	@RequestMapping(path = "semester-{id}", method = RequestMethod.GET)
 	public String showSemester(@PathVariable Integer id, Model model) {
-		Semester semester = semesterDAO.get(id);
-		if (semester == null) throw new ResourceNotFoundException();
-		model.addAttribute("semester", semester);
+		Semester semester = getSemester(id, model);
 		List<Enrollment> actualEnrolls = semesterDAO.trainingInSemester(semester);
 		model.addAttribute("actualEnrolls", actualEnrolls);
 		
@@ -112,7 +116,25 @@ public class SemesterController {
 		System.out.println("SUCCESS!!!!!!");
 		
 		ss.setComplete();
-		return "redirect:/ed/semester-" + semester.getIdSemester();
+		return "redirect:../semester-" + semester.getIdSemester();
+	}
+	
+	@Secured("ROLE_EDUDEP")
+	@RequestMapping(path = "semester-{id}/conflicts")
+	public String getConflictManager(@PathVariable Integer id,
+			@ModelAttribute ConflictFinder conflictFinder, Model model) {
+		Semester semester = getSemester(id, model);
+		List<Conflict> conflictList = conflictDAO.getBySemester(conflictFinder);
+		model.addAttribute("conflictList", conflictList);
+		model.addAttribute(semester);
+		return "conflicts";
+	}
+	
+	private Semester getSemester(Integer id, Model model) {
+		Semester semester = semesterDAO.get(id);
+		if (semester == null) throw new ResourceNotFoundException();
+		model.addAttribute("semester", semester);
+		return semester;
 	}
 	
 }

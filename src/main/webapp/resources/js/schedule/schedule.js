@@ -43,7 +43,8 @@ function normalizeAllTrs(){
 			this.style.removeProperty("font-size")
 		}).filter(":only-child").each(function(){
 			var newHeight = $(this.parentElement).height()-3
-			if (newHeight / $(this).height() > 1.8) {
+			var height = $(this).find(".discipline").height()
+			if (newHeight / height > 4) {
 				this.style.fontSize = "large"
 			}
 			$(this).height(newHeight)

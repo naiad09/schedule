@@ -42,7 +42,7 @@ import schedule.service.ResourceNotFoundException;
  */
 @Controller
 @RequestMapping("persons")
-@SessionAttributes(names = { "chairs", "groups" })
+@SessionAttributes({ "chairs", "groups" })
 public class PersonController {
 	
 	@Autowired
@@ -82,8 +82,10 @@ public class PersonController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or "
 			+ "(isAuthenticated() and principal.uid == #personId)")
 	@RequestMapping(path = "uid-{personId}/edit", method = RequestMethod.GET)
-	public String editPerson(@PathVariable int personId, Model model) {
-		getPerson(personId, model);
+	public String editPersonProfile(@PathVariable int personId, Model model) {
+		Person find = personDAO.get(personId);
+		if (find == null || find.getAuthData() == null) throw new ResourceNotFoundException();
+		model.addAttribute("person", find);
 		return "editPerson";
 	}
 	
@@ -92,18 +94,20 @@ public class PersonController {
 	@PreAuthorize("hasRole('ROLE_ADMIN') or "
 			+ "(isAuthenticated() and principal.uid == #personId)")
 	@RequestMapping(path = "uid-{personId}/edit", method = RequestMethod.POST)
-	public String editPersonPost(@PathVariable int personId,
-			@Valid @ModelAttribute("person") Person person, BindingResult result, Model model) {
+	public String editPersonProfilePost(@PathVariable int personId,
+			@Valid @ModelAttribute("person") Person person, BindingResult result, Model model,
+			SessionStatus ss) {
 		// TODO
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
-			model.addAttribute("person", person);
+			if (person.getAuthData() != null) person.getAuthData().setPassword(null);
 			return "editPerson";
 		}
 		
 		personDAO.update(person);
+		ss.setComplete();
 		
-		return "redirect: /uid-" + personId + "?saved=true";
+		return "redirect:../uid-" + personId + "?saved=true";
 	}
 	
 	/**

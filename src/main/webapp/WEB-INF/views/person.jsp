@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -10,17 +9,21 @@
 <c:if test="${param.saved == true}">
 	<p class="alert success">Профиль обновлен.</p>
 </c:if>
-<c:url value="/persons/uid-${person.uid}/edit" var="editUrl" />
-<sec:authorize url="${editUrl}">
-	<div id="edit">
-		<a href="${editUrl}">Редактировать</a>
-	</div>
-</sec:authorize>
+<c:if test="${person.authData!=null}">
+	<c:url value="/persons/uid-${person.uid}/edit" var="editUrl" />
+	<sec:authorize
+		access="hasRole('ROLE_ADMIN') or (isAuthenticated() and principal.uid==#personId)">
+		<div id="edit">
+			<a href="${editUrl}">Редактировать профиль</a>
+		</div>
+	</sec:authorize>
+</c:if>
 <p>
 	<c:choose>
 
 		<c:when test="${person.role == 'student'}">
-			<c:set var="course" value="${person.group.curriculum.commonCurriculum.enrollment.course}" />
+			<c:set var="course"
+				value="${person.group.curriculum.commonCurriculum.enrollment.course}" />
 			<c:choose>
 				<c:when test="${course == null}">выпускник группы ${person.group.groupNumber},</c:when>
 				<c:otherwise>cтудент группы ${person.group.groupNumber}, ${course}-ый курс,</c:otherwise>
@@ -33,7 +36,7 @@
 			<c:forEach items="${person.lecturerJobs}" var="job" varStatus="loop">
 				<spring:message code="${job.jobType}.fullName" />
 				<a
-					href="${pageContext.request.contextPath}/${job.chair.faculty}/${job.chair.shortNameEng}">
+					href="${baseUrl}/${job.chair.faculty}/${job.chair.shortNameEng}">
 					кафедры ${job.chair.shortName}</a>
 				<c:if test="${!loop.last }">
 					,<br>
@@ -42,10 +45,10 @@
 		</c:when>
 
 		<c:when test="${person.role == 'edudep'}">
-			<a href="${pageContext.request.contextPath}/ed">учебный отдел</a>
+			<a href="${baseUrl}/ed">учебный отдел</a>
 			<c:if test="${person.faculty != null}">
 				<br>диспетчер <a
-					href="${pageContext.request.contextPath}/${job.chair.faculty}"><spring:message
+					href="${baseUrl}/${job.chair.faculty}"><spring:message
 						code="${person.faculty}.shortName" /></a>
 			</c:if>
 		</c:when>

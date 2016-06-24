@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -10,7 +9,7 @@
 <h1>${semester.semesterYear}/${semester.semesterYear+1}-ый&nbsp;учебный&nbsp;год,
 	${semester.fallSpring?'весна':'осень'}</h1>
 <form id="semester">
-	<table>
+	<table class="borderTable">
 		<thead>
 			<tr>
 				<th>Курс, образовательная программа</th>
@@ -73,41 +72,63 @@
 	</table>
 </form>
 
-<h3>Расписания</h3>
-<table>
+<h2 align="center">Расписания</h2>
+<div id="tableList" style="text-align: center">
 	<c:forEach items="${semester.eduProcGraphics}" var="graphic">
 		<c:forEach items="${graphic.curriculums}" var="comCur">
 			<c:forEach items="${comCur.curriculums}" var="cur">
 				<c:forEach items="${cur.groups}" var="thisGroup">
-					<tr>
-						<td>${thisGroup.groupNumber},&nbsp;${graphic.enroll.course}-ый
-							курс</td>
-						<td><c:set value="${thisGroup.idGroup}" var="idThisGroup" />
-							<spring:eval var="schedule"
-								expression="graphic.schedules.^[group.idGroup==${idThisGroup}]" /></td>
-						<td><c:if test="${schedule!=null}">
-								<a href="schedule-${schedule.idSchedule}">Посмотреть</a>
-							</c:if></td>
-						<td><sec:authorize access="hasRole('ROLE_EDUDEP')">
-								<c:choose>
-									<c:when test="${schedule==null}">
-										<c:url value="new-schedule" var="semesterUrl" />
-										<form method="post" action="${semesterUrl}" name="schedule">
-											<input type="hidden" name="group.idGroup"
-												value="${thisGroup.idGroup}" /> <input type="hidden"
-												name="eduProcGraphic.idEduPeriod"
-												value="${graphic.idEduPeriod}" />
-											<button>Создать расписание</button>
-										</form>
-									</c:when>
-									<c:otherwise>
-										<a href="schedule-${schedule.idSchedule}/edit">Редактировать</a>
-									</c:otherwise>
-								</c:choose>
-							</sec:authorize></td>
-					</tr>
+					<div>
+						<c:set value="${thisGroup.idGroup}" var="idThisGroup" />
+						<h3>
+							<a
+								href="${baseUrl}/
+								${thisGroup.curriculum.skillProfile.chair.faculty}/group-${idThisGroup}">
+								${thisGroup.groupNumber},&nbsp;${graphic.enroll.course}-ый курс</a>
+						</h3>
+						<spring:eval var="schedule"
+							expression="graphic.schedules.^[#this.group.idGroup==${idThisGroup}]" />
+						<c:if test="${schedule!=null}">
+							<a
+								href="semester-${semester.idSemester}/schedule-${schedule.idSchedule}">Посмотреть</a>
+						</c:if>
+						<br>
+						<sec:authorize access="hasRole('ROLE_EDUDEP')">
+							<c:choose>
+								<c:when test="${schedule==null}">
+									<form method="post" name="schedule"
+										action="semester-${semester.idSemester}/new-schedule">
+										<input type="hidden" name="group.idGroup"
+											value="${thisGroup.idGroup}" /> <input type="hidden"
+											name="eduProcGraphic.idEduPeriod"
+											value="${graphic.idEduPeriod}" /> <a
+											onclick="this.parentElement.submit()">Создать расписание</a>
+									</form>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="semester-${semester.idSemester}/schedule-${schedule.idSchedule}/edit">Редактировать</a>
+									<form method="post" name="schedule"
+										onsubmit="return confirm('Подтвердите удаление расписания')"
+										action="schedule-${schedule.idSchedule}/delete">
+										<input type="hidden" name="schedule.idSchedule"
+											value="${thisGroup.idGroup}" /> <a
+											onclick="this.parentElement.submit()">Удалить</a>
+									</form>
+								</c:otherwise>
+							</c:choose>
+						</sec:authorize>
+					</div>
 				</c:forEach>
 			</c:forEach>
 		</c:forEach>
 	</c:forEach>
-</table>
+</div>
+
+<sec:authorize access="hasRole('ROLE_EDUDEP')">
+	<h3 align="center">
+		<a
+			href="semester-${semester.idSemester}/conflicts?faculty=${currentUser.faculty}">Менеджер
+			конфликтов расписания</a>
+	</h3>
+</sec:authorize>

@@ -2,12 +2,12 @@ package schedule.dao;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Repository;
 
 import schedule.dao.util.RawSchedule;
 import schedule.domain.curriculum.Curriculum;
-import schedule.domain.curriculum.Discipline;
 import schedule.domain.curriculum.ProfileDiscipline;
 import schedule.domain.persons.Group;
 import schedule.domain.persons.Lecturer;
@@ -99,13 +99,15 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 	
 	// если реализовывать оповещения о смене расписания, то тут можно искать
 	// изменившиеся части
-	public void update(Schedule schedule, RawSchedule rawSchedule) {
+	public void update(Integer idSchedule, RawSchedule rawSchedule) {
+		Schedule schedule = get(idSchedule);
 		mergeFromRawSchedule(schedule, rawSchedule);
 		currentSession().update(schedule);
+		searchConflicts(schedule);
 		System.err.println("== КОНЕЦ СОХРАНЕНИЯ ==");
 	}
 	
-	public void searchConflicts(Schedule schedule) {
+	private void searchConflicts(Schedule schedule) {
 		List<ScheduleItem> listScheduleItems = new ArrayList<ScheduleItem>();
 		Semester semester = schedule.getEduProcGraphic().getSemester();
 		currentSession().refresh(semester);
@@ -115,8 +117,8 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 		System.err.println("== Конфликты == ");
 		schedule.getScheduleDisciplines()
 				.forEach(sd -> sd.getScheduleItems().stream().peek(schi1 -> {
-					// schi1.getConflicts().forEach(conflict ->
-					// currentSession().delete(conflict));
+					schi1.getConflictsFrom().forEach(conflict -> currentSession().delete(conflict));
+					schi1.getConflictsTo().forEach(conflict -> currentSession().delete(conflict));
 				}).forEach(schi1 -> {
 					listScheduleItems.stream() // потенциальные конфликты
 							.filter(schi2 -> schi2 != schi1
@@ -135,10 +137,10 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 							.forEach(schi2 -> {
 								System.err.println("ВОЗМОЖЕН КОНФЛИКТ: " + schi1.getIdScheduleItem()
 										+ " и " + schi2.getIdScheduleItem());
-								System.err.println(
-										schi1.getIdScheduleItem() + "" + schi1.getClassrooms());
-								System.err.println(
-										schi2.getIdScheduleItem() + "" + schi2.getClassrooms());
+								System.err.println(schi1.getScheduleDiscipline() + " "
+										+ schi1.getClassrooms());
+								System.err.println(schi2.getScheduleDiscipline() + " "
+										+ schi2.getClassrooms());
 								
 								boolean classrooms = new ArrayList<Classroom>(schi2.getClassrooms())
 										.removeIf(cl1 -> schi1
@@ -155,23 +157,9 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 																		.getUid())
 																.findAny().isPresent());
 								
-								Discipline disc = schi1
-										//
-										.getScheduleDiscipline()
-										//
-										.getDisc();
-								System.err.println(disc);
-								
-								boolean discipline = disc
-										//
-										.getIdDiscName() == schi2
-												//
-												.getScheduleDiscipline()
-												//
-												.getDisc()
-												//
+								boolean discipline = schi1.getScheduleDiscipline().getDisc()
+										.getIdDiscName() == schi2.getScheduleDiscipline().getDisc()
 												.getIdDiscName();
-								//
 								
 								if ((classrooms || lecturers) && !discipline) {
 									Conflict conflict = currentSession().get(Conflict.class,
@@ -192,14 +180,34 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 					.getScheduleDisciplines().stream().filter(newSD1 -> newSD1
 							.getIdScheduleDiscipline() == oldSD.getIdScheduleDiscipline())
 					.findAny().get();
-			oldSD.getScheduleItems().stream()
-					.filter(oldSchi -> !newSD.getScheduleItems().stream()
-							.filter(newSchi -> newSchi.getIdScheduleItem() == oldSchi
+			oldSD.setLecturers(newSD.getLecturers());
+			List<ScheduleItem> listOldSchi = oldSD.getScheduleItems().stream()
+					.filter(oldSchi -> !newSD
+							.getScheduleItems().stream().filter(newSchi -> newSchi
+									.getIdScheduleItem() == oldSchi.getIdScheduleItem())
+							.findAny().isPresent())
+					.peek(oldSchi -> {
+						currentSession().delete(oldSchi);
+					}).collect(Collectors.toList());
+			oldSD.getScheduleItems().removeAll(listOldSchi);
+			oldSD.getScheduleItems().forEach(schiOld -> {
+				ScheduleItem schiNew = newSD
+						.getScheduleItems().stream().filter(schiNew1 -> schiNew1
+								.getIdScheduleItem() == schiOld.getIdScheduleItem())
+						.findAny().get();
+				schiOld.setClassrooms(schiNew.getClassrooms());
+				schiOld.setComment(schiNew.getComment());
+				schiOld.setTwain(schiNew.getTwain());
+				schiOld.setWeekday(schiNew.getWeekday());
+				schiOld.setWeekplan(schiNew.getWeekplan());
+			});
+			List<ScheduleItem> listNewSchi = newSD.getScheduleItems().stream()
+					.filter(newSchi -> !oldSD.getScheduleItems().stream()
+							.filter(oldSchi -> oldSchi.getIdScheduleItem() == newSchi
 									.getIdScheduleItem())
 							.findAny().isPresent())
-					.forEach(oldSchi -> currentSession().delete(oldSchi));
+					.collect(Collectors.toList());
+			oldSD.getScheduleItems().addAll(listNewSchi);
 		});
-		
-		schedule.setScheduleDisciplines(rawSchedule.getScheduleDisciplines());
 	}
 }

@@ -1,6 +1,6 @@
 /* General */
 body {
-	background: url("../pattern.png") repeat-x #F5F8FA fixed;
+	background: url("../img/pattern.png") repeat-x #F5F8FA fixed;
 }
 
 #page {
@@ -9,7 +9,7 @@ body {
 }
 
 #header {
-	background: transparent url("../logo.png") no-repeat scroll left top;
+	background: transparent url("../img/logo.png") no-repeat scroll left top;
 	height: 120px;
 	padding: 30px 0px 0px 110px;
 	box-sizing: border-box;
@@ -90,6 +90,7 @@ input[type="date"] {
 select {
 	height: 26px;
 	min-width: 237px;
+    overflow-y: auto;
 }
 
 button {
@@ -160,8 +161,9 @@ table.borderTable, .borderTable td, .borderTable th {
 	text-align: left;
 }
 
-table.borderTable thead {
+table.borderTable thead th {
 	background: rgba(209, 195, 93, 0.3);
+	height: 30px
 }
 
 tr.blockHead1 {
@@ -220,7 +222,8 @@ form table#schedule td:nth-child(1) {
 }
 
 #scheduleOverflow {
-	height: 600px;
+	height: 97vh;
+	min-height: 600px;
 	overflow-y: auto;
 	display: block;
 }
@@ -239,8 +242,12 @@ table.schi {
 	display: inline-table;
 	vertical-align: middle;
 }
+table.schi:only-child {
+    min-height: 95%;
+}
 .schi.conflict {
-	border-color: maroon;
+    border-color: #ca3131;
+    border-width: 2px;
 }
 
 .schi td {
@@ -336,4 +343,19 @@ td.leftMover {
 }
 #vacancyTemplate.vacancy {
     display: none;
+}
+
+#startPage .pagination, #edit #bottomPagenation {
+	display: none;
+}
+
+#tableList>div {
+    display: inline-block;
+    width: 190px;
+    vertical-align: top;
+}
+
+#persons .borderTable td, #conflicts .borderTable td {
+    padding: 3px;
+	text-align: left;    
 }

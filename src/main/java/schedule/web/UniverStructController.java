@@ -43,16 +43,21 @@ public class UniverStructController {
 	@RequestMapping("{chairShort}")
 	public String getChair(HttpServletRequest req, @PathVariable String chairShort, Model model) {
 		Chair findChair = chairDAO.findFull(chairShort);
-		if (findChair == null || findChair.getFaculty() != getFacultyFromRequest(req))
-			throw new ResourceNotFoundException();
+		if (findChair == null) throw new ResourceNotFoundException();
+		Faculty facultyFromRequest = getFacultyFromRequest(req);
+		Faculty faculty = findChair.getFaculty();
+		if (faculty != facultyFromRequest) return "redirect:" + faculty + "/" + chairShort;
 		model.addAttribute("chair", findChair);
 		return "chair";
 	}
 	
 	@RequestMapping("group-{idGroup}")
-	public String getGroup(@PathVariable Integer idGroup, Model model) {
+	public String getGroup(HttpServletRequest req, @PathVariable Integer idGroup, Model model) {
 		Group group = groupDAO.get(idGroup);
 		if (group == null) throw new ResourceNotFoundException();
+		Faculty facultyFromRequest = getFacultyFromRequest(req);
+		Faculty faculty = group.getCurriculum().getSkillProfile().getChair().getFaculty();
+		if (faculty != facultyFromRequest) return "redirect:/" + faculty + "/group-" + idGroup;
 		model.addAttribute(group);
 		return "group";
 	}

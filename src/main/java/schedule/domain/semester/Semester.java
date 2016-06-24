@@ -88,7 +88,7 @@ public class Semester {
 		else fallSpring = true;
 		
 		Semester semester = new Semester();
-		semester.semesterYear = year;
+		semester.semesterYear = fallSpring ? year - 1 : year;
 		semester.fallSpring = fallSpring;
 		return semester;
 	}
@@ -98,6 +98,11 @@ public class Semester {
 		semester.semesterYear = one.fallSpring ? one.semesterYear : (one.semesterYear + 1);
 		semester.fallSpring = !one.fallSpring;
 		return semester;
+	}
+	
+	@Override
+	public String toString() {
+		return "Semester [semesterYear=" + semesterYear + ", fallSpring=" + fallSpring + "]";
 	}
 	
 }

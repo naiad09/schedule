@@ -1,3 +1,8 @@
+// Порядок аудиторий
+$(classroomSelector).find(".yellow").prependTo(classroomSelector)
+$(classroomSelector).find(".green").prependTo(classroomSelector)
+$(classroomSelector).find(".blue").prependTo(classroomSelector)
+
 FormHider("dblclick", $(".schi"), "#scheduleItemSettingsForm",
 		dropScheduleItemSettingsForm, showScheduleItemSettingsForm)
 

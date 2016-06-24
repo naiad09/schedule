@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
@@ -14,8 +13,9 @@
 	</p>
 </c:forEach>
 
-<h3>
-	<sec:authorize access="hasRole('ROLE_EDUDEP')">
+
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<h3>
 		<a href="ed/new-semester">Создать новый семестр</a>
-	</sec:authorize>
-</h3>
+	</h3>
+</sec:authorize>

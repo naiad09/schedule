@@ -36,15 +36,13 @@ function DynamicList(c) {
 	}
 
 	// Обработчик нажатия на option в селекторе. Добавляет стрку в таблицу
-	c.selector.find("option").click(
-			function() {
-				$(this).attr("disabled", "true")
-				c.selector.val("")
-				var row = cloneRow()
-				c.processCloning(row, $(this))
-				row.find("input:hidden[name*='" + c.nameToCopy + "']").val(
-						$(this).val())
-			})
+	c.selector.find("option").click(function() {
+		$(this).attr("disabled", "true")
+		c.selector.val("")
+		var row = cloneRow()
+		c.processCloning(row, $(this))
+		row.find("input:hidden[name*='" + c.nameToCopy + "']").val(this.value)
+	})
 
 }
 

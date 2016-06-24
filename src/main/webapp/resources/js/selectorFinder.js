@@ -1,7 +1,7 @@
 var generatedId = 0
 function SelectorFindHelper(c) {
 	var options = c.selector.find("option")
-	var optionHeight = 16.75
+	var optionHeight = 16.25
 	var count = options.size()
 	var width = c.selector.width();
 	c.input.width(width)

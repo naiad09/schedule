@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 
-<h1>Создать ${person.role == 'student' ? 'студента' : person.role == 'lecturer'
+<h1>Добавить ${person.role == 'student' ? 'студента' : person.role == 'lecturer'
  ? 'преподавателя' : 'работника учебного отдела'}
 </h1>
 
@@ -115,7 +114,7 @@
 											path="${tempPath}" cssClass="error" /> <t:insertTemplate
 											template="level2/jobTypeSelector.jsp" /></td>
 									<td><img class="deleteChairLink button"
-										src="../resources/cross.png" title="Удалить"></td>
+										src="${baseUrl}/resources/img/cross.png" title="Удалить"></td>
 								</tr>
 							</c:forEach>
 							<tr class="default">
@@ -125,7 +124,7 @@
 										scope="request" value="lecturerJobs[].jobType" /> <t:insertTemplate
 										template="level2/jobTypeSelector.jsp" /></td>
 								<td><img class="deleteChairLink button"
-									src="../resources/cross.png" title="Удалить"></td>
+									src="${baseUrl}/resources/img/cross.png" title="Удалить"></td>
 							</tr>
 						</table></td>
 				</tr>
@@ -133,8 +132,8 @@
 					<td>Добавить:</td>
 					<td colspan="2"><input id="chairSelectorInput"
 						placeholder="Найти кафедру по названию" /><img class="button"
-						id="clearSelection" src="../resources/cross.png" title="Очистить"><br>
-						<select id="chairSelector">
+						id="clearSelection" src="${baseUrl}/resources/img/cross.png"
+						title="Очистить"><br> <select id="chairSelector">
 							<c:forEach items="${chairs}" var="chair">
 								<option value="${chair.idChair}">
 									<spring:message code="${chair.faculty}.shortName" />,

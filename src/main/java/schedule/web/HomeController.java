@@ -1,9 +1,6 @@
 package schedule.web;
 
 import java.security.Principal;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpSession;
 
@@ -14,11 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import schedule.dao.ChairDAO;
 import schedule.dao.PersonDAO;
 import schedule.dao.SemesterDAO;
-import schedule.domain.struct.Chair;
-import schedule.domain.struct.Chair.Faculty;
 import schedule.service.security.CustomUserDetails;
 
 
@@ -28,9 +22,6 @@ import schedule.service.security.CustomUserDetails;
  */
 @Controller
 public class HomeController {
-	
-	@Autowired
-	private ChairDAO chairDAO;
 	@Autowired
 	private PersonDAO personDAO;
 	@Autowired
@@ -39,18 +30,12 @@ public class HomeController {
 	@RequestMapping("")
 	public String home(Authentication auth, Model model, HttpSession ses) {
 		
-		System.out.println(semesterDAO.getCurrent());
+		model.addAttribute("currentSemester", semesterDAO.getCurrent());
 		
-		// TODO
 		if (auth != null) {
 			CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
 			ses.setAttribute("currentUser", personDAO.get(cud.getUid()));
 		}
-		
-		List<Chair> all = chairDAO.getAll();
-		Map<Faculty, List<Chair>> collect = all.stream()
-				.collect(Collectors.groupingBy(c -> c.getFaculty()));
-		model.addAttribute("chairsMap", collect);
 		
 		return "home";
 	}

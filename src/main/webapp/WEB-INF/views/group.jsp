@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
@@ -21,8 +20,8 @@
 <c:if test="${!empty group.students}">
 	<h1>Студенты</h1>
 	<c:forEach items="${group.students}" var="student">
-		<p>
+		<h3>
 			<a href="../persons/uid-${student.uid}">${student.fullTextName}</a>
-		</p>
+		</h3>
 	</c:forEach>
 </c:if>

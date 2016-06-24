@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
@@ -9,8 +8,7 @@
 
 <h1>Пользователи</h1>
 
-<form:form action="" method="get" commandName="personFinder"
-	id="personFindForm">
+<form:form method="get" commandName="personFinder" id="personFindForm">
 	<table>
 		<tr>
 			<td>Имя (часть имени)<br> <form:input style="width:400px"
@@ -82,9 +80,9 @@
     })
 
 	function getPage(i) {
-	    $("input#page").val(i)
-	    $("#personFindForm").submit()
-	    }
+    	personFindForm.elements[page].value=i
+        personFindForm.submit()
+	}
 	    
     $("#roleSelector").change(function() {
             $(".selector").hide();
@@ -96,6 +94,7 @@
 	
 	function resetForm() {
         $("#roleSelector option:first-child").click()
+        $("#roleSelector").change()
 	}
 	
 </script>
@@ -114,24 +113,69 @@
 				</c:forEach>
 			</c:if>
 		</p>
-		<table>
-			<tr>
-				<th>ФИО</th>
-				<th>Роль</th>
-			</tr>
-			<c:forEach begin="${(personFinder.page-1)*personFinder.perPage}"
-				end="${personFinder.page*personFinder.perPage}" items="${persons}"
-				var="person" varStatus="i">
-				<tr class="${person.role}">
-					<td><a href="persons/uid-${person.uid}">${person.fullTextName}</a></td>
-					<td>${(person.role == 'student')?'студент':
-					(person.role == 'lecturer')?'преподаватель':'учебный отдел'}
-					</td>
-					<td><sec:authorize url="/persons/uid-${person.uid}/edit">
-							<a href="persons/uid-${person.uid}/edit">Редактировать</a>
-						</sec:authorize></td>
+		<table class="borderTable">
+			<thead>
+				<tr>
+					<th>ФИО</th>
+					<th></th>
+					<th></th>
+					<sec:authorize access="hasRole('ROLE_ADMIN')">
+						<th></th>
+					</sec:authorize>
 				</tr>
-			</c:forEach>
+			</thead>
+			<tbody>
+				<c:forEach begin="${(personFinder.page-1)*personFinder.perPage}"
+					end="${personFinder.page*personFinder.perPage}" items="${persons}"
+					var="person" varStatus="i">
+					<tr class="${person.role}">
+						<td><a href="persons/uid-${person.uid}">${person.fullTextName}</a></td>
+						<c:choose>
+
+							<c:when test="${person.role == 'student'}">
+								<c:set var="course"
+									value="${person.group.curriculum.commonCurriculum.enrollment.course}" />
+								<td><c:choose>
+										<c:when test="${course == null}">выпускник группы 
+										${person.group.groupNumber},</c:when>
+										<c:otherwise>cтудент группы ${person.group.groupNumber},
+										 ${course}-ый курс,</c:otherwise>
+									</c:choose></td>
+								<td>выпуск
+									${person.group.curriculum.commonCurriculum.enrollment.yearEnd}</td>
+							</c:when>
+
+							<c:when test="${person.role == 'lecturer'}">
+								<td><spring:message code="${person.degree}.fullName" /></td>
+								<td><c:forEach items="${person.lecturerJobs}" var="job"
+										varStatus="loop">
+										<spring:message code="${job.jobType}.shortName" />
+										<a
+											href="${baseUrl}/${job.chair.faculty}/${job.chair.shortNameEng}">
+											${job.chair.shortName}</a>
+										<c:if test="${!loop.last }">,<br>
+										</c:if>
+									</c:forEach></td>
+							</c:when>
+
+							<c:when test="${person.role == 'edudep'}">
+								<td>работник учебного отдела</td>
+								<td><c:if test="${person.faculty != null}">
+										<br>диспетчер
+										<a
+											href="${baseUrl}/${job.chair.faculty}">
+											<spring:message code="${person.faculty}.shortName" />
+										</a>
+									</c:if></td>
+							</c:when>
+
+						</c:choose>
+						<sec:authorize access="hasRole('ROLE_ADMIN')">
+							<td><a href="persons/uid-${person.uid}/edit">Редактировать</a></td>
+						</sec:authorize>
+					</tr>
+				</c:forEach>
+			</tbody>
 		</table>
 	</c:otherwise>
 </c:choose>
