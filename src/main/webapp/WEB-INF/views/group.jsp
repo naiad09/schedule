@@ -1,6 +1,7 @@
 <%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 
 <h1>
 	Группа ${group.groupNumber}
@@ -11,17 +12,26 @@
 </c:if>
 </h1>
 
-<p>
+<h3>
 	<a
-		href="cur/cur-${group.curriculum.commonCurriculum.idCommonCurriculum}">
+		href="${baseUrl}/cur/cur-${group.curriculum.commonCurriculum.idCommonCurriculum}">
 		Учебный план ${group.curriculum.skillProfile.eduProgram.eduProgCode}</a>
-</p>
+</h3>
 
 <c:if test="${!empty group.students}">
-	<h1>Студенты</h1>
-	<c:forEach items="${group.students}" var="student">
-		<h3>
-			<a href="../persons/uid-${student.uid}">${student.fullTextName}</a>
-		</h3>
-	</c:forEach>
+	<h2>Студенты</h2>
+	<div id="tableList">
+		<c:forEach items="${group.students}" var="student">
+			<div>
+				<h3>
+					<a href="${baseUrl}/persons/uid-${student.uid}">${student.fullTextName}</a>
+				</h3>
+			</div>
+		</c:forEach>
+	</div>
+</c:if>
+
+<c:if test="${schedule!=null}">
+	<h2>Расписание на текущий семестр</h2>
+	<t:insertTemplate template="level2/showSchedule.jsp" />
 </c:if>

@@ -13,8 +13,10 @@
 					<a href="../persons/uid-${job.lecturer.uid}">${job.lecturer.fullName}</a>
 				</h3>
 				<p>
-					<spring:message code="${job.lecturer.degree}.fullName" />
-					<br>
+					<c:if test="${job.lecturer.degree!=null}">
+						<spring:message code="${job.lecturer.degree}.fullName" />
+						<br>
+					</c:if>
 					<spring:message code="${job.jobType}.fullName" />
 				</p>
 			</div>

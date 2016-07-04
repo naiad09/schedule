@@ -2,7 +2,7 @@ var generatedId = 0
 function SelectorFindHelper(c) {
 	var options = c.selector.find("option")
 	var optionHeight = 16.25
-	var count = options.size()
+	var count = options.length
 	var width = c.selector.width();
 	c.input.width(width)
 	c.selector.width(width)
@@ -17,7 +17,7 @@ function SelectorFindHelper(c) {
 	if(!c.input.attr("id")) c.input.attr("id", "generatedId" + generatedId++)
 	if(!c.selector.attr("id")) c.selector.attr("id", "generatedId" + generatedId++)
 	
-	FormHider("click", c.input, 
+	FormHider("click", c.input.selector, 
 				"#" + c.input.attr("id") + ", #" + c.selector.attr("id"), dropSelection)
 	
 	c.clearButton.click(dropSelection)
@@ -34,7 +34,7 @@ function SelectorFindHelper(c) {
 		var filtred = options.filter(":not(:disabled)").filter(function(){
 					return $(this).html().match(new RegExp(RegExp.escape(text), "im"))
 					})
-		if (filtred.size()>0) showSelection(filtred)
+		if (filtred.length>0) showSelection(filtred)
 		else showSelection(notFound)
 	})
 		
@@ -50,7 +50,7 @@ function SelectorFindHelper(c) {
 		options.hide()
 		filtred.show()
 		c.selector.show()
-		var height = filtred.size() * optionHeight + 3
+		var height = filtred.length * optionHeight + 3
 		c.selector.height(Math.min(height,c.maxHeightSelect))
 	}
 	

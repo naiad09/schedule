@@ -36,8 +36,6 @@
 					<form:option value="15" />
 					<form:option value="20" />
 					<form:option value="30" />
-					<form:option value="50" />
-					<form:option value="100" />
 				</form:select></td>
 			<td><button>Искать</button>
 				<button type="reset">Сбросить</button></td>
@@ -47,7 +45,7 @@
 
 <script>
 function getPage(i) {
-	conflictFindForm.elements[page].value=i
+	personFindForm.elements["page"].value=i
 	conflictFindForm.submit()
 }
 </script>
@@ -59,7 +57,8 @@ function getPage(i) {
 			Найдено: ${conflictList.size()} <br>
 			<c:if test="${pages>=2}">Страницы:
             <c:forEach begin="1" end="${pages}" varStatus="i">
-					<a onclick="getPage(${i.index})" class="page">${i.index}</a>
+					<a onclick="getPage(${i.index})"
+						class="page ${i.index==personFinder.page?'currentPage':''}">${i.index}</a>
 				</c:forEach>
 			</c:if>
 		</p>
@@ -85,8 +84,7 @@ function getPage(i) {
 						<td><c:forEach items="${conflict.twoItems}" var="schi">
 								<c:set value="${schi.scheduleDiscipline}" var="gltFrom" />
 								<c:set value="${gltFrom.schedule}" var="scheduleFrom" />
-								<b><a href="schedule-${scheduleFrom.idSchedule}/edit">
-										<spring:message
+								<b><a href="schedule-${scheduleFrom.idSchedule}/edit"> <spring:message
 											code="${scheduleFrom.group.curriculum.skillProfile.chair.faculty}.shortName" />,
 										${scheduleFrom.group.groupNumber},
 										${scheduleFrom.eduProcGraphic.semester.semesterYear
@@ -111,7 +109,8 @@ function getPage(i) {
 										<c:choose>
 											<c:when
 												test="${fn:contains(conflict.twoItems[1-i.index].classrooms, classroom)}">
-												<b>a. ${classroom.classroomNumber}</b>
+												<b>а.&nbsp;${classroom.classroomNumber}${(classroom.campus=='1')?
+                                 '':('&nbsp;'.concat(classroom.campus=='БИ'?'':'к.').concat(classroom.campus))}</b>
 											</c:when>
 											<c:otherwise>a. ${classroom.classroomNumber}
 										</c:otherwise>

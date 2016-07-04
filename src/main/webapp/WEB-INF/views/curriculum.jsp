@@ -1,5 +1,4 @@
-<%@page contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -7,7 +6,7 @@
 
 <c:set var="eduProg" value="${cur.eduProgram}" />
 
-<h1>${eduProg.eduProgCode} &laquo;${eduProg.eduProgName}&raquo;</h1>
+<h1>${eduProg.eduProgCode}&laquo;${eduProg.eduProgName}&raquo;</h1>
 <c:if
 	test="${cur.curriculums.size() > 0 && cur.curriculums[0].skillProfile.profileName != null}">
 	<p>
@@ -21,11 +20,11 @@
 <table>
 	<tr>
 		<td><small>Форма обучения: <b><spring:message
-					code="${enroll.eduMode}" /></b><br> <b>Набор
+						code="${enroll.eduMode}" /></b><br> <b>Набор
 					${enroll.yearStart} года</b>
 		</small></td>
 		<td><small>Квалификация выпускника - <b><spring:message
-					code="${enroll.eduQual}.qual" /></b><br>Срок обучения -
+						code="${enroll.eduQual}.qual" /></b><br>Срок обучения -
 				${enroll.periodYears} ${enroll.periodYears>4?'лет':'года'}<c:if
 					test="${enroll.periodMonths!=0}">
                 ${enroll.periodMonths} месяцев</c:if>
@@ -39,8 +38,8 @@
 	<table id="curriculum" class="borderTable">
 		<c:forEach begin="1" end="3" varStatus="i">
 			<spring:eval scope="request" var="selectionProfDisc"
-				expression="cur.commonDisciplines.![profileDisciplines.^[curriculum==null 
-			&& discipline.discMod==${i.index}]].?[#this!=null]" />
+				expression="cur.commonDisciplines.?[(discCode matches 'Б1\.${i.index}.*')==true]
+				    .![profileDisciplines.^[curriculum==null]].?[#this!=null]" />
 			<c:if test="${!empty selectionProfDisc}">
 				<t:insertTemplate template="level2/curriculumHead.jsp" />
 

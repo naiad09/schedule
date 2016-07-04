@@ -55,7 +55,6 @@
         option.red {
             background-color: rgba(206, 30, 12, 0.2);
         }
-        
     }
 
     tr.toggleVisible {
@@ -75,6 +74,16 @@
     tr#weekplan table td {
         width: inherit;
         text-align: left;
+    }
+}
+
+a.page {
+    .grayBorder;
+    background: rgba(255, 255, 255, 0.3);
+    padding: 2px 4px;
+    display: inline-block;
+    &.currentPage {
+        background-color: rgba(117, 117, 136, 0.2);
     }
 }
 

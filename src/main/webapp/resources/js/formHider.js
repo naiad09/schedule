@@ -3,15 +3,12 @@
 // при клике вне обозначенного селектора - скрывается (processHide)
 function FormHider(event, turner, selector, processHide, processShow) {
 	var focus = false
-	turner.live(event, function(e) {
+	$("body").on(event, turner, function(e) {
 		if (!focus) {
 			focus = true
-
 			if (processShow)
 				processShow(e)
-
 			$(document).bind("mousedown", clickDocument)
-
 		}
 	})
 	function processUnbind() {

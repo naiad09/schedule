@@ -14,8 +14,23 @@
 
 <h2>${currentSemester.semesterYear}/${currentSemester.semesterYear+1}-ый&nbsp;учебный&nbsp;год,
 	${currentSemester.fallSpring?'весна':'осень'}, числитель</h2>
-<c:forEach items="${refsContainer.faculties}" var="faculty">
-	<p>
-		<a href="${faculty}"><spring:message code="${faculty}.fullName" /></a>
-	</p>
-</c:forEach>
+
+<c:choose>
+	<c:when test="${currentUser.role=='student'}">
+		<div id="tableList">
+			<c:forEach items="${refsContainer.faculties}" var="faculty">
+				<b><a href="${faculty}"><spring:message
+							code="${faculty}.shortName" /></a> </b>
+			</c:forEach>
+		</div>
+		<br>
+		<t:insertTemplate template="level2/showSchedule.jsp" />
+	</c:when>
+	<c:otherwise>
+		<c:forEach items="${refsContainer.faculties}" var="faculty">
+			<p>
+				<a href="${faculty}"><spring:message code="${faculty}.fullName" /></a>
+			</p>
+		</c:forEach>
+	</c:otherwise>
+</c:choose>

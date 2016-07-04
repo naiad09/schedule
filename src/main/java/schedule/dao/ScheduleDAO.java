@@ -75,16 +75,16 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 							}
 							if (cd.getLectureHours() > 0)// и создаем нужные
 								groupLessonTypes.add(new ScheduleDiscipline(schedule, dt,
-										LessonType.lec, profileDiscipline.getDiscipline()));
+										profileDiscipline.getDiscipline(), LessonType.lec));
 							if (cd.getLabHours() > 0) {
 								groupLessonTypes.add(new ScheduleDiscipline(schedule, dt,
-										LessonType.lab, profileDiscipline.getDiscipline()));
+										profileDiscipline.getDiscipline(), LessonType.lab));
 								groupLessonTypes.add(new ScheduleDiscipline(schedule, dt,
-										LessonType.lab4, profileDiscipline.getDiscipline()));
+										profileDiscipline.getDiscipline(), LessonType.lab4));
 							}
 							if (cd.getSeminarHours() > 0)
 								groupLessonTypes.add(new ScheduleDiscipline(schedule, dt,
-										LessonType.pract, profileDiscipline.getDiscipline()));
+										profileDiscipline.getDiscipline(), LessonType.pract));
 						}));
 		
 		schedule.setScheduleDisciplines(groupLessonTypes);
@@ -92,22 +92,17 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 		currentSession().save(schedule);
 	}
 	
-	public List<Integer> getConflictingClassrooms(ScheduleItem scheduleItem) {
-		// TODO
-		return null;
-	}
-	
 	// если реализовывать оповещения о смене расписания, то тут можно искать
 	// изменившиеся части
-	public void update(Integer idSchedule, RawSchedule rawSchedule) {
+	public Schedule update(Integer idSchedule, RawSchedule rawSchedule) {
 		Schedule schedule = get(idSchedule);
 		mergeFromRawSchedule(schedule, rawSchedule);
 		currentSession().update(schedule);
-		searchConflicts(schedule);
 		System.err.println("== КОНЕЦ СОХРАНЕНИЯ ==");
+		return schedule;
 	}
 	
-	private void searchConflicts(Schedule schedule) {
+	public void searchConflicts(Schedule schedule) {
 		List<ScheduleItem> listScheduleItems = new ArrayList<ScheduleItem>();
 		Semester semester = schedule.getEduProcGraphic().getSemester();
 		currentSession().refresh(semester);
@@ -156,6 +151,8 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 																.filter(cl2 -> cl1.getUid() == cl2
 																		.getUid())
 																.findAny().isPresent());
+								
+								System.err.println(schi1.getScheduleDiscipline().getDisc());
 								
 								boolean discipline = schi1.getScheduleDiscipline().getDisc()
 										.getIdDiscName() == schi2.getScheduleDiscipline().getDisc()
@@ -206,8 +203,9 @@ public class ScheduleDAO extends GenericDAO<Schedule> {
 							.filter(oldSchi -> oldSchi.getIdScheduleItem() == newSchi
 									.getIdScheduleItem())
 							.findAny().isPresent())
-					.collect(Collectors.toList());
+					.peek(schi -> schi.setScheduleDiscipline(oldSD)).collect(Collectors.toList());
 			oldSD.getScheduleItems().addAll(listNewSchi);
 		});
 	}
+	
 }

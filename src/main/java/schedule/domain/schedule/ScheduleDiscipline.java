@@ -56,7 +56,7 @@ public class ScheduleDiscipline {
 	
 	@JoinColumn(name = "id_disc_sem", updatable = false, nullable = false)
 	@ManyToOne
-	private SemesterDiscipline discTerm;
+	private SemesterDiscipline semesterDiscipline;
 	
 	@OneToOne(cascade = CascadeType.ALL, optional = true, mappedBy = "scheduleDiscipline")
 	@Embedded
@@ -86,12 +86,12 @@ public class ScheduleDiscipline {
 		super();
 	}
 	
-	public ScheduleDiscipline(Schedule schedule, SemesterDiscipline discTerm, LessonType lessonType,
-			Discipline disc) {
+	public ScheduleDiscipline(Schedule schedule, SemesterDiscipline semesterDiscipline,
+			Discipline disc, LessonType lessonType) {
 		this.schedule = schedule;
-		this.discTerm = discTerm;
-		this.lessonType = lessonType;
+		this.semesterDiscipline = semesterDiscipline;
 		this.disc = disc;
+		this.lessonType = lessonType;
 	}
 	
 	public int getIdScheduleDiscipline() {
@@ -142,12 +142,12 @@ public class ScheduleDiscipline {
 		this.scheduleItems = scheduleItems;
 	}
 	
-	public SemesterDiscipline getDiscTerm() {
-		return discTerm;
+	public SemesterDiscipline getSemesterDiscipline() {
+		return semesterDiscipline;
 	}
 	
-	public void setDiscTerm(SemesterDiscipline discTerm) {
-		this.discTerm = discTerm;
+	public void setSemesterDiscipline(SemesterDiscipline semesterDiscipline) {
+		this.semesterDiscipline = semesterDiscipline;
 	}
 	
 	public Discipline getDisc() {

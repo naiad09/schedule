@@ -80,7 +80,7 @@
     })
 
 	function getPage(i) {
-    	personFindForm.elements[page].value=i
+    	personFindForm.elements["page"].value=i
         personFindForm.submit()
 	}
 	    
@@ -99,20 +99,31 @@
 	
 </script>
 
+<sec:authorize access="hasRole('ROLE_ADMIN')">
+	<h3 style="float: right;">
+		Добавить: <select onchange="location = 'persons/new-'+this.value">
+			<option selected="selected" disabled="disabled"
+				label="-- Выберите тип персоны --" />
+			<option value="student" label="студента" />
+			<option value="lecturer" label="преподавателя" />
+			<option value="edudep" label="работника учебного отдела" />
+		</select>
+	</h3>
+</sec:authorize>
+
 <c:choose>
 	<c:when test="${empty persons}">
 		<p>Ничего не найдено.</p>
 	</c:when>
 	<c:otherwise>
-		<p>
-			<c:set value="${persons.size()/personFinder.perPage+1}" var="pages" />
+		<c:set value="${persons.size()/personFinder.perPage+1}" var="pages" />
 			Найдено: ${persons.size()}<br>
-			<c:if test="${pages>=2}">Страницы:
+		<c:if test="${pages>=2}">Страницы:
 			<c:forEach begin="1" end="${pages}" varStatus="i">
-					<a onclick="getPage(${i.index})" class="page">${i.index}</a>
-				</c:forEach>
-			</c:if>
-		</p>
+				<a onclick="getPage(${i.index})"
+					class="page ${i.index==personFinder.page?'currentPage':''}">${i.index}</a>
+			</c:forEach>
+		</c:if>
 		<table class="borderTable">
 			<thead>
 				<tr>
@@ -139,14 +150,16 @@
 										<c:when test="${course == null}">выпускник группы 
 										${person.group.groupNumber},</c:when>
 										<c:otherwise>cтудент группы ${person.group.groupNumber},
-										 ${course}-ый курс,</c:otherwise>
+										 ${course}-ый курс</c:otherwise>
 									</c:choose></td>
 								<td>выпуск
 									${person.group.curriculum.commonCurriculum.enrollment.yearEnd}</td>
 							</c:when>
 
 							<c:when test="${person.role == 'lecturer'}">
-								<td><spring:message code="${person.degree}.fullName" /></td>
+								<td><c:if test="${person.degree!=null}">
+										<spring:message code="${person.degree}.fullName" />
+									</c:if></td>
 								<td><c:forEach items="${person.lecturerJobs}" var="job"
 										varStatus="loop">
 										<spring:message code="${job.jobType}.shortName" />
@@ -160,18 +173,18 @@
 
 							<c:when test="${person.role == 'edudep'}">
 								<td>работник учебного отдела</td>
-								<td><c:if test="${person.faculty != null}">
-										<br>диспетчер
-										<a
-											href="${baseUrl}/${job.chair.faculty}">
-											<spring:message code="${person.faculty}.shortName" />
+								<td><c:if test="${person.faculty != null}">диспетчер
+										<a href="${baseUrl}/${job.chair.faculty}"> <spring:message
+												code="${person.faculty}.shortName" />
 										</a>
 									</c:if></td>
 							</c:when>
 
 						</c:choose>
 						<sec:authorize access="hasRole('ROLE_ADMIN')">
-							<td><a href="persons/uid-${person.uid}/edit">Редактировать</a></td>
+							<td><c:if test="${person.authData!=null}">
+									<a href="persons/uid-${person.uid}/edit">Редактировать</a>
+								</c:if></td>
 						</sec:authorize>
 					</tr>
 				</c:forEach>

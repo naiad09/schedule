@@ -110,7 +110,7 @@ public class Schedule {
 					}
 				});
 		Map<SemesterDiscipline, List<ScheduleDiscipline>> collect = getScheduleDisciplines()
-				.stream().collect(Collectors.groupingBy((g) -> g.getDiscTerm()));
+				.stream().collect(Collectors.groupingBy((g) -> g.getSemesterDiscipline()));
 		map.putAll(collect);
 		return map;
 	}

@@ -69,10 +69,10 @@ public class ScheduleItem {
 	private List<Classroom> classrooms = new ArrayList<Classroom>(0);
 	
 	@OneToMany(mappedBy = "conflictId.schiFrom")
-	private List<Conflict> conflictsFrom;
+	private List<Conflict> conflictsFrom = new ArrayList<Conflict>(0);
 	
 	@OneToMany(mappedBy = "conflictId.schiTo")
-	private List<Conflict> conflictsTo;
+	private List<Conflict> conflictsTo = new ArrayList<Conflict>(0);
 	
 	@Formula("exists(select * from conflict where conflict.id_schedule_item_from "
 			+ "= id_schedule_item or conflict.id_schedule_item_to = id_schedule_item)")

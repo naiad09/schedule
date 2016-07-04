@@ -8,13 +8,14 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf8">
 
-<c:set value="${pageContext.request.contextPath}" var="baseUrl" scope="request"/>
+<c:set value="${pageContext.request.contextPath}" var="baseUrl"
+	scope="request" />
 
 <link href="${baseUrl}/resources/style/style.css" rel="stylesheet" />
 <link rel="stylesheet/less" type="text/css"
 	href="${baseUrl}/resources/style/style.less">
 
-<script src="${baseUrl}/resources/js/jquery.min.js"></script>
+<script src="${baseUrl}/resources/js/jquery-3.0.0.js"></script>
 <script src="${baseUrl}/resources/js/less.min.js"></script>
 
 <script src="${baseUrl}/resources/js/dynamicList.js"></script>
@@ -45,9 +46,12 @@
 	}
 </script>
 </head>
-<body id="${(urlLength>0)?urlMatches[urlLength-1]:'startPage'}">
+<body
+	id="${(urlLength>0)?fn:replace(fn:replace(urlMatches[urlLength-1],'{',''),'}',''):'startPage'}">
+
 	<div id="page">
 		<div id="header">
+			<a href="${baseUrl}"><img src="${baseUrl}/resources/img/logo.png" id="logo"></a>
 			<div id="title">
 				Рязанский Государственный Радиотехнический Университет <br> <span
 					style="font-size: 2.1em">Электронное расписание</span><br> <a

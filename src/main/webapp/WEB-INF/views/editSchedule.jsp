@@ -16,57 +16,14 @@
 	id="dateChange" type="hidden" />
 <input type="hidden" value="${schedule.eduProcGraphic.semesterEnd}"
 	id="dateEnd" type="hidden" />
-
 <form action="edit" method="post" id="scheduleForm">
 	<table style="width: 1100px; margin-left: -50px;">
 		<tr>
-			<td style="padding: 0;"><div id="scheduleOverflow">
-					<table id="schedule" class="borderTable"
-						ondragover="return dragEnter(event)">
-						<thead>
-							<tr>
-								<th rowspan="3" style="width: 21px;"></th>
-								<th rowspan="3">Пара</th>
-								<th colspan="4" style="font-size: 26px;">${schedule.group.groupNumber}</th>
-							</tr>
-							<tr>
-								<th colspan="2"
-									style="width: 43%; border-bottom: none; padding-bottom: 0">Числитель</th>
-								<th colspan="2"
-									style="width: 43%; border-bottom: none; padding-bottom: 0">Знаменатель</th>
-							</tr>
-							<tr>
-								<th style="width: 21%; border-top: none; border-right: none; height: 0"></th>
-								<th style="width: 21%; border-top: none; border-left: none; height: 0"></th>
-								<th style="width: 21%; border-top: none; border-right: none; height: 0"></th>
-								<th style="width: 21%; border-top: none; border-left: none; height: 0"></th>
-							</tr>
-						</thead>
-						<c:forEach items="${refsContainer.daysOfWeek}" var="day">
-							<tbody class="weekday">
-								<tr>
-									<th rowspan="${twains.size()*2+2}"><small><fmt:formatDate
-												value="${day}" pattern="eeee" /></small></th>
-								</tr>
-								<c:forEach items="${twains}" var="twain">
-									<tr class="empty scheduleTr">
-										<td><fmt:formatDate value="${twain.timeStart}"
-												pattern="HH'<sup>'mm'</sup>'" /> - <fmt:formatDate
-												value="${twain.timeEnd}" pattern="HH' <sup>'mm'</sup>'" />
-											<input value="${twain.idTwain}" class="twainInput"
-											type="hidden" /></td>
-										<td colspan="4" class="scheduleItem"
-											ondrop="return dragDropTd(event)"></td>
-									</tr>
-								</c:forEach>
-							</tbody>
-						</c:forEach>
-					</table>
-				</div></td>
+			<td style="padding: 0;"><t:insertTemplate
+					template="level2/scheduleEmptyTable.jsp" /></td>
 			<td id="scheduleDisciplines">
-				<h3 style="margin-top: 0">Дисциплины:</h3> <c:forEach
-					items="${schedule.scheduleDisciplinesMap}" var="mapRow"
-					varStatus="i">
+				<h3 style="margin-top: 0">Дисциплины:</h3>
+				<c:forEach items="${schedule.scheduleDisciplinesMap}" var="mapRow" >
 					<div class="scheDisc" title="Нажмите дважды, чтобы настроить">
 						<b>${mapRow.value[0].disc.discName}</b> <br>
 						<c:forEach items="${mapRow.value}" var="glt">
@@ -130,31 +87,32 @@
 			</tr>
 		</tbody>
 	</table>
-</div>
 
-<div id="scheduleItemsInfo" style="display: none">
-	<c:forEach items="${schedule.scheduleDisciplines}" var="glt">
-		<c:forEach items="${glt.scheduleItems}" var="schi">
-			<div class="schiInfo">${schi.idScheduleItem},
-				${schi.twain.idTwain}, ${glt.idScheduleDiscipline}, ${schi.weekday},
-				${schi.weekplan}, ${schi.isConflict()}, ${schi.comment}
-				<c:forEach items="${schi.classrooms}" var="c">
-					<input type="hidden" class="classroomInput"
-						value="${c.idClassroom}"
-						name="scheduleDisciplines[].scheduleItems[].classrooms[].idClassroom" />
-				</c:forEach>
-			</div>
+	<div id="scheduleItemsInfo">
+		<c:forEach items="${schedule.scheduleDisciplines}" var="glt">
+			<c:forEach items="${glt.scheduleItems}" var="schi">
+				<div class="schiInfo">${schi.idScheduleItem},
+					${schi.twain.idTwain}, ${glt.idScheduleDiscipline},
+					${schi.weekday}, ${schi.weekplan}, ${schi.isConflict()},
+					${schi.comment}
+					<c:forEach items="${schi.classrooms}" var="c">
+						<input type="hidden" class="classroomInput"
+							value="${c.idClassroom}"
+							name="scheduleDisciplines[].scheduleItems[].classrooms[].idClassroom" />
+					</c:forEach>
+				</div>
+			</c:forEach>
 		</c:forEach>
-	</c:forEach>
+	</div>
+
+	<div class="vacancy" id="vacancyTemplate"
+		ondrop="return dragDropVacancy(event)">
+		<span class="twain"></span> <span class="numDen"></span> <span
+			class="weekplan"></span>
+	</div>
 </div>
 
-<div class="vacancy" id="vacancyTemplate"
-	ondrop="return dragDropVacancy(event)">
-	<span class="twain"></span> <span class="numDen"></span> <span
-		class="weekplan"></span>
-</div>
 
-<script
-	src="${baseUrl}/resources/js/schedule/moves.js"></script>
-<script
-	src="${baseUrl}/resources/js/schedule/schedule.js"></script>
+<script src="${baseUrl}/resources/js/schedule/weekplan.js"></script>
+<script src="${baseUrl}/resources/js/schedule/moves.js"></script>
+<script src="${baseUrl}/resources/js/schedule/schedule.js"></script>

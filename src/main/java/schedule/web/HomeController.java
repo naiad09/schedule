@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import schedule.dao.PersonDAO;
 import schedule.dao.SemesterDAO;
+import schedule.domain.persons.Person;
+import schedule.domain.persons.Student;
+import schedule.domain.semester.Semester;
 import schedule.service.security.CustomUserDetails;
 
 
@@ -26,15 +29,25 @@ public class HomeController {
 	private PersonDAO personDAO;
 	@Autowired
 	private SemesterDAO semesterDAO;
+	@Autowired
+	private ScheduleController scheduleController;
 	
 	@RequestMapping("")
 	public String home(Authentication auth, Model model, HttpSession ses) {
 		
-		model.addAttribute("currentSemester", semesterDAO.getCurrent());
+		Semester currentSemester = semesterDAO.getCurrent();
+		model.addAttribute("currentSemester", currentSemester);
 		
 		if (auth != null) {
 			CustomUserDetails cud = (CustomUserDetails) auth.getPrincipal();
-			ses.setAttribute("currentUser", personDAO.get(cud.getUid()));
+			Person currentUser = personDAO.get(cud.getUid());
+			ses.setAttribute("currentUser", currentUser);
+			if (currentUser instanceof Student)
+				scheduleController.addToModel(model, currentSemester,
+						((Student) currentUser).getGroup().getSchedules().stream()
+								.filter(schedule -> schedule.getEduProcGraphic().getSemester()
+										.getIdSemester() == currentSemester.getIdSemester())
+								.findAny().get());
 		}
 		
 		return "home";

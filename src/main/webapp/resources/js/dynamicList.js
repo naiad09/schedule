@@ -21,13 +21,13 @@ function DynamicList(c) {
 				"value")
 		c.selector.find("option[value='" + id + "']").removeAttr("disabled")
 		row.remove()
-		if (c.holder.find("." + c.rowClass).size() == c.minRows)
+		if (c.holder.find("." + c.rowClass).length == c.minRows)
 			if (c.processDropAll)
 				c.processDropAll()
 	}
 
 	function cloneRow() {
-		if (c.holder.find("." + c.rowClass).size() == 0)
+		if (c.holder.find("." + c.rowClass).length == 0)
 			c.holder.show();
 		var defaultRow = c.holder.find("." + c.defaultRowClass);
 		var row = defaultRow.clone(true).removeClass(c.defaultRowClass)

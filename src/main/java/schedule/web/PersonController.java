@@ -53,8 +53,8 @@ public class PersonController {
 	private ChairDAO chairDAO;
 	
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public String getPersons(Model model, @ModelAttribute PersonFinder personFinder) {
-		model.addAttribute("persons", personDAO.getAll(personFinder));
+	public String getPersons(@ModelAttribute PersonFinder personFinder, Model model) {
+		model.addAttribute("persons", personDAO.findPersons(personFinder));
 		return "persons";
 	}
 	
@@ -73,7 +73,6 @@ public class PersonController {
 		return "person";
 	}
 	
-	// TODO
 	/**
 	 * Редактирование профиля. Ограничено правами админа или хозяина профиля.
 	 * Использует добавление в модель объекта пользователя из метода просмотра
@@ -89,7 +88,6 @@ public class PersonController {
 		return "editPerson";
 	}
 	
-	// TODO
 	/** Пост редактирования профиля, ограничен аналогичными правами. */
 	@PreAuthorize("hasRole('ROLE_ADMIN') or "
 			+ "(isAuthenticated() and principal.uid == #personId)")
@@ -97,7 +95,6 @@ public class PersonController {
 	public String editPersonProfilePost(@PathVariable int personId,
 			@Valid @ModelAttribute("person") Person person, BindingResult result, Model model,
 			SessionStatus ss) {
-		// TODO
 		if (result.hasErrors()) {
 			result.getAllErrors().forEach(e -> System.out.println(e.toString()));
 			if (person.getAuthData() != null) person.getAuthData().setPassword(null);

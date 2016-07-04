@@ -4,23 +4,21 @@ import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.Subqueries;
 import org.springframework.stereotype.Repository;
 
 import schedule.dao.util.ConflictFinder;
+import schedule.dao.util.ConjuntionExpression;
 import schedule.domain.schedule.Conflict;
+import schedule.domain.schedule.ScheduleDiscipline.LessonType;
+import schedule.domain.schedule.ScheduleItem;
 import schedule.domain.semester.Semester;
 import schedule.domain.struct.Chair;
 
 
-/**
- * DAO кафедры, наследует {@link MinimalGenericDAO}. Переопределяет метод
- * выборки всех групп, устанавливая сортировку, и добавляет публичные методы
- * выборки всех кафедр факультета и выборки кафедры по ее сокращению на
- * латинице;
- */
 @Repository
 public class ConflictDAO extends MinimalGenericDAO<Conflict> {
 	public ConflictDAO() {
@@ -28,7 +26,7 @@ public class ConflictDAO extends MinimalGenericDAO<Conflict> {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public List<Conflict> getBySemester(ConflictFinder conflictFinder) {
+	public List<Conflict> findConflicts(ConflictFinder conflictFinder) {
 		DetachedCriteria dcSemester = DetachedCriteria.forClass(Semester.class)
 				.add(Restrictions.idEq(conflictFinder.getId())).createCriteria("eduProcGraphics")
 				.createCriteria("schedules").createCriteria("scheduleDisciplines")
@@ -55,4 +53,29 @@ public class ConflictDAO extends MinimalGenericDAO<Conflict> {
 		return crit.list();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<Integer> getConflictingClassrooms(ScheduleItem schi, Integer idSemester) {
+		Criteria crit = currentSession().createCriteria(Semester.class)
+				.add(Restrictions.idEq(idSemester)).createCriteria("eduProcGraphics")
+				.createCriteria("schedules").createCriteria("scheduleDisciplines", "sd")
+				.createCriteria("scheduleItems");
+		if (schi.getIdScheduleItem() != null)
+			crit.add(Restrictions.not(Restrictions.idEq(schi.getIdScheduleItem())));
+		crit.add(Restrictions.eq("weekday", schi.getWeekday()))
+				.add(new ConjuntionExpression("weekplan", schi.getWeekplan()));
+		
+		Disjunction disjunction = Restrictions.disjunction();
+		disjunction.add(Restrictions.eq("twain.idTwain", schi.getTwain().getIdTwain()));
+		if (schi.getScheduleDiscipline().getLessonType() == LessonType.lab4) {
+			disjunction.add(Restrictions.eq("twain.idTwain", schi.getTwain().getIdTwain() + 1));
+		}
+		disjunction.add(
+				Restrictions.and(Restrictions.eq("twain.idTwain", schi.getTwain().getIdTwain() - 1),
+						Restrictions.eq("sd.lessonType", LessonType.lab4)));
+		
+		crit.add(disjunction);
+		
+		return crit.createCriteria("classrooms").setProjection(Projections.id())
+				.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+	}
 }

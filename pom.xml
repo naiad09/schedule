@@ -12,7 +12,6 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<org.springframework.version>4.2.6.RELEASE</org.springframework.version>
 		<org.springframework.security.version>4.1.0.RELEASE</org.springframework.security.version>
-		<jackson.version>2.6.3</jackson.version>
 		<org.apache.tiles.version>3.0.5</org.apache.tiles.version>
 	</properties>
 	<dependencies>
@@ -202,19 +201,6 @@
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-el</artifactId>
 			<version>${org.apache.tiles.version}</version>
-		</dependency>
-
-		<!-- Jackson -->
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jackson.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-			<version>${jackson.version}</version>
 		</dependency>
 
 

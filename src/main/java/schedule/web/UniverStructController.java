@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import schedule.dao.ChairDAO;
 import schedule.dao.MinimalGenericDAO;
+import schedule.dao.SemesterDAO;
 import schedule.domain.persons.Group;
+import schedule.domain.semester.Semester;
 import schedule.domain.struct.Chair;
 import schedule.domain.struct.Chair.Faculty;
 import schedule.service.ResourceNotFoundException;
@@ -28,7 +30,12 @@ public class UniverStructController {
 	private ChairDAO chairDAO;
 	@Autowired
 	private MinimalGenericDAO<Group> groupDAO;
+	@Autowired
+	private SemesterDAO semesterDAO;
 	
+	@Autowired
+	private ScheduleController scheduleController;
+
 	@RequestMapping("")
 	public String getFaculty(HttpServletRequest req, Model model) {
 		Faculty f = getFacultyFromRequest(req);
@@ -59,6 +66,13 @@ public class UniverStructController {
 		Faculty faculty = group.getCurriculum().getSkillProfile().getChair().getFaculty();
 		if (faculty != facultyFromRequest) return "redirect:/" + faculty + "/group-" + idGroup;
 		model.addAttribute(group);
+		
+		Semester currentSemester = semesterDAO.getCurrent();
+		scheduleController.addToModel(model, currentSemester,
+				group.getSchedules().stream()
+						.filter(schedule -> schedule.getEduProcGraphic().getSemester()
+								.getIdSemester() == currentSemester.getIdSemester())
+						.findAny().orElse(null));
 		return "group";
 	}
 	

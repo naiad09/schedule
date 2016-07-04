@@ -1,4 +1,4 @@
-FormHider("dblclick", $("#scheduleDisciplines>div"),
+FormHider("dblclick", "#scheduleDisciplines>div",
 		"#scheduleDiscSettingsForm", dropScheduleDiscSettingsForm,
 		showScheduleDiscSettingsForm)
 

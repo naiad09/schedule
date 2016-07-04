@@ -38,16 +38,20 @@ function normalizeAllTrs(){
 		normalizeTr(this)
 	}).each(function(){
 		this.needNormalize = undefined
-		$(this).find(".schi").each(function(){
+		$(this).find(".schi").filter(function() {
+			return $(this).attr("colspan") > 1
+		}).each(function(){
 			this.style.removeProperty("height")
 			this.style.removeProperty("font-size")
 		}).filter(":only-child").each(function(){
-			var newHeight = $(this.parentElement).height()-3
+			var newHeight = $(this.parentElement).height()
 			var height = $(this).find(".discipline").height()
-			if (newHeight / height > 4) {
-				this.style.fontSize = "large"
+			this.style.fontSize = "large"
+			if (newHeight < $(this.parentElement).height()) {
+				this.style.removeProperty("font-size")
 			}
-			$(this).height(newHeight)
+				
+			$(this).height(newHeight-3)
 		})
 	})
 	
@@ -100,7 +104,7 @@ function normalizeAllTrs(){
 			    for (;i<newEnd+1;i++) {
 			    	var nonDominSchi = (dominSchiFlag?tr.schiBefore:tr.schiAfter)[i]
 			    	if ((i == newEnd) || nonDominSchi) {
-			    		while (vac > 0) {
+			    		while (vac > 0 && typeof vacancyTemplate != "undefined") {
 			    			var minus = (vac == 4)?4:(i==vac && i>1)?2:(i-vac==1)?1:vac
 			    			var newWeekplan = Array(i-vac+1).join("0")
 			    				+ Array(minus+1).join("1") + Array(4-i+vac-minus+1).join("0")
@@ -120,14 +124,14 @@ function normalizeAllTrs(){
 			}	
 					
 			
-		}
+		}		
 		
-		
-		
-		
-		if (tr.getElementsByClassName("schi").length == 0) // && !flagLab4Prev)
+		if (tr.getElementsByClassName("schi").length == 0)
 	        tr.classList.add("empty")// и определяем класс
 	    else  tr.classList.remove("empty")
+	    
+	    if (flagLab4Prev) tr.classList.add("lab4Prev") 
+	    else tr.classList.remove("lab4Prev")
 	}
 	
 	function cloneVacancy(weekplan) {
@@ -150,7 +154,7 @@ function normalizeAllTrs(){
 		var td = document.createElement("td")
 		td.colSpan = colSpan
 		td.classList.add("scheduleItem")
-		td.ondrop = dragDropTd
+		if (typeof dragDropTd != 'undefined') td.ondrop = dragDropTd
 		return td
 	} 
 }
@@ -228,14 +232,14 @@ function updateDetails(schi) {
 	details2.empty().append(clrooms)
 	clrooms.each(function(i){
 		var cl = $(classroomSelector).find("option[value='"+this.value+"']").attr("title")
-		details2.append(cl+((i<clrooms.size()-1)?", ":""))
+		details2.append(cl+((i<clrooms.length-1)?", ":""))
 	})
 	
 	var details0 = $(schi).find(".details span.lecturers").empty()
 	var lects = $(schi.glt).find(".lecturers input")
 	lects.each(function(i){
 		var cl = $(lecLecturerSelector).find("option[value='"+this.value+"']").attr("title")
-		details0.append(cl+((i<lects.size()-1)?", ":""))
+		details0.append(cl+((i<lects.length-1)?", ":""))
 	})
 	
 	updateDivider(schi)
@@ -304,16 +308,4 @@ function updateWeekplanLabel(schi) {
 	}
 }
 
-function calcTdWeekplan(td) {
-	var tr = td.parentElement
-	var weekplan = "0000"
-	var j = -1
-	for (var i = 0; tr.cells[i] != td; i++)
-		// считаем пропуски в этой строке
-		j += tr.cells[i].colSpan
-		
-	for (var i = j; i < td.colSpan + j; i++) {
-		weekplan = weekplan.substr(0, i).concat("1").concat(weekplan.substring(i + 1))
-	}
-	return new Weekplan(weekplan + "" + weekplan)
-}
+function calcTwain(tr){return $(tr).find("input.twainInput").val()}

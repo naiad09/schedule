@@ -6,6 +6,11 @@
 <%@taglib uri="http://www.springframework.org/security/tags"
 	prefix="sec"%>
 
+<sec:authorize access="hasRole('ROLE_EDUDEP')">
+	<h3 style="float: right">
+		<a href="semester-${semester.idSemester}/edit">Редактировать</a>
+	</h3>
+</sec:authorize>
 <h1>${semester.semesterYear}/${semester.semesterYear+1}-ый&nbsp;учебный&nbsp;год,
 	${semester.fallSpring?'весна':'осень'}</h1>
 <form id="semester">
@@ -72,7 +77,7 @@
 	</table>
 </form>
 
-<h2 align="center">Расписания</h2>
+<h2 align="center">Расписание</h2>
 <div id="tableList" style="text-align: center">
 	<c:forEach items="${semester.eduProcGraphics}" var="graphic">
 		<c:forEach items="${graphic.curriculums}" var="comCur">
@@ -80,7 +85,7 @@
 				<c:forEach items="${cur.groups}" var="thisGroup">
 					<div>
 						<c:set value="${thisGroup.idGroup}" var="idThisGroup" />
-						<h3>
+						<h3 style="margin: 0">
 							<a
 								href="${baseUrl}/
 								${thisGroup.curriculum.skillProfile.chair.faculty}/group-${idThisGroup}">
@@ -109,11 +114,9 @@
 									<a
 										href="semester-${semester.idSemester}/schedule-${schedule.idSchedule}/edit">Редактировать</a>
 									<form method="post" name="schedule"
-										onsubmit="return confirm('Подтвердите удаление расписания')"
-										action="schedule-${schedule.idSchedule}/delete">
-										<input type="hidden" name="schedule.idSchedule"
-											value="${thisGroup.idGroup}" /> <a
-											onclick="this.parentElement.submit()">Удалить</a>
+										onsubmit="confirm('Подтвердите удаление расписания')"
+										action="semester-${semester.idSemester}/schedule-${schedule.idSchedule}/delete">
+										<a onclick="this.parentElement.submit()">Удалить</a>
 									</form>
 								</c:otherwise>
 							</c:choose>

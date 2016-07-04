@@ -8,8 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -29,11 +27,6 @@ public class Discipline {
 	@Column(name = "id_disc_name", updatable = false)
 	private int idDiscName;
 	
-	@Column(name = "id_disc_mod", updatable = false)
-	@Min(1)
-	@Max(3)
-	private int discMod;
-	
 	@Column(name = "disc_name", updatable = false, nullable = false)
 	@Pattern(regexp = "[А-ЯЁA-Z][\\w\\s]+")
 	@Size(max = 255, min = 5)
@@ -45,14 +38,6 @@ public class Discipline {
 	
 	public void setIdDiscName(int idDiscName) {
 		this.idDiscName = idDiscName;
-	}
-	
-	public int getDiscMod() {
-		return discMod;
-	}
-	
-	public void setDiscMod(int discMod) {
-		this.discMod = discMod;
 	}
 	
 	public String getDiscName() {

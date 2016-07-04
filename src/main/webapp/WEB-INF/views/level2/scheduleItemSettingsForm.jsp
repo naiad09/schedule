@@ -1,6 +1,7 @@
 <%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@taglib uri="/WEB-INF/custom.tld" prefix="fmt"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="t"%>
 
 <form id="scheduleItemSettingsForm" class="scheduleSettingsForm">
 	<h2 style="text-align: center; margin: 0;">Настроить элемент
@@ -43,44 +44,8 @@
 					</span> <input id="classroomSelectorInput"
 						placeholder="Найти аудиторию по названию или кафедре" />
 				</div> <img class="button" id="clearClassroomSelection"
-				src="${baseUrl}/resources/img/cross.png" title="Очистить"> <select
-				id="classroomSelector">
-					<c:forEach items="${classrooms}" var="classroom">
-						<option value="${classroom.idClassroom}"
-							class="${(classroom.chair.faculty==currentUser.faculty)?'green':''}
-							${(empty classroom.chair.faculty)?'yellow':''}
-							${classroom.chair.idChair==schedule.group.curriculum.skillProfile.chair.idChair?'blue':''}"
-							title="а.&nbsp;${classroom.classroomNumber}">ауд.
-							${classroom.classroomNumber}, корпус ${classroom.campus}
-							<c:if test="${classroom.chair!=null}">
-                                        , каф. ${classroom.chair.shortName}</c:if>
-						</option>
-					</c:forEach>
-			</select> <script>
-				function onClone(newRow, option) {
-					newRow.find("span").text(option.attr("title"))
-				}
-				var config = {
-					holder : $("#classrooms"),
-					rowClass : 'classroom',
-					removeLink : $(".deleteClassroomLink"),
-					selector : $("#classroomSelector"),
-					defaultRowClass : "default",
-					nameToCopy : "idClassroom",
-					processCloning : onClone,
-					minRows : 1
-				}
-				new DynamicList(config)
-
-				var configFinder = {
-					selector : $("#classroomSelector"),
-					input : $("#classroomSelectorInput"),
-					clearButton : $("#clearClassroomSelection"),
-					maxHeightSelect : 100
-				}
-
-				new SelectorFindHelper(configFinder)
-			</script></td>
+				src="${baseUrl}/resources/img/cross.png" title="Очистить"> <t:insertTemplate
+					template="classroomSelestor.jsp" /></td>
 		</tr>
 		<tr id="weekplan">
 			<td>Понедельный план</td>

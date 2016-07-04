@@ -124,7 +124,7 @@ public class SemesterController {
 	public String getConflictManager(@PathVariable Integer id,
 			@ModelAttribute ConflictFinder conflictFinder, Model model) {
 		Semester semester = getSemester(id, model);
-		List<Conflict> conflictList = conflictDAO.getBySemester(conflictFinder);
+		List<Conflict> conflictList = conflictDAO.findConflicts(conflictFinder);
 		model.addAttribute("conflictList", conflictList);
 		model.addAttribute(semester);
 		return "conflicts";

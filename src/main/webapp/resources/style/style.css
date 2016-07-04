@@ -9,9 +9,8 @@ body {
 }
 
 #header {
-	background: transparent url("../img/logo.png") no-repeat scroll left top;
 	height: 120px;
-	padding: 30px 0px 0px 110px;
+	padding-top: 30px;
 	box-sizing: border-box;
 	margin: 0px 30px 10px;
 }
@@ -19,6 +18,11 @@ body {
 #header>div {
 	display: inline-block;
 	vertical-align: middle;
+}
+img#logo {
+    float: left;
+    margin-top: -30px;
+    margin-right: -10px;
 }
 
 #title, h1, h2, h3 {
@@ -65,13 +69,7 @@ a {
 form table td:nth-child(1) {
 	text-align: right;
 	width: 180px;
-}
-fieldset {
-    border: none;
-}
-fieldset:disabled {
-    color: gray !important;
-}
+} 
 input {
     height: 26px;
     width: 260px;
@@ -113,6 +111,10 @@ table {
 
 th {
 	text-align: center;
+    padding: 5px;
+}
+#semester th {
+    width: 141px;
 }
 
 .button {
@@ -163,7 +165,6 @@ table.borderTable, .borderTable td, .borderTable th {
 
 table.borderTable thead th {
 	background: rgba(209, 195, 93, 0.3);
-	height: 30px
 }
 
 tr.blockHead1 {
@@ -217,8 +218,8 @@ form table#schedule td:nth-child(1) {
 	font-size: 8px;
 	height: 0px;
 }
-#schedule>tbody>tr:last-child {
-    border-bottom: 1px solid black;
+.weekday:not(:nth-child(2)) tr:first-child, .weekday:not(:nth-child(2)) .scheduleTr:nth-child(2) {
+    border-top: 2px solid gray;
 }
 
 #scheduleOverflow {
@@ -237,16 +238,18 @@ div.glt {
 
 table.schi {
     border: 1px gray solid;
-	cursor: move;
 	margin: 2px 5px;
 	display: inline-table;
 	vertical-align: middle;
 }
-table.schi:only-child {
-    min-height: 95%;
+#edit .schi {
+    cursor: move;
 }
-.schi.conflict {
-    border-color: #ca3131;
+table.schi:only-child {
+    min-height: 92%;
+}
+#edit .schi.conflict, #edit .classroom.conflict {
+    border-color: #ca3131 !important;
     border-width: 2px;
 }
 
@@ -300,7 +303,7 @@ td.leftMover {
     display: block;
 }
 
-#scheduleForm .schi .numDen {
+.numDen {
 	display: none;
 }
 
@@ -353,6 +356,11 @@ td.leftMover {
     display: inline-block;
     width: 190px;
     vertical-align: top;
+}
+
+#tableList>b {
+    display: inline-block;
+    margin-right: 30px;
 }
 
 #persons .borderTable td, #conflicts .borderTable td {

@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -47,7 +46,7 @@ public class EduProcGraphic {
 	@JoinTable(	name = "curriculum_semester",
 				joinColumns = @JoinColumn(name = "id_edu_period", updatable = false),
 				inverseJoinColumns = @JoinColumn(name = "id_common_curriculum"))
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany
 	private List<CommonCurriculum> curriculums = new ArrayList<CommonCurriculum>(0);
 	
 	@Transient

@@ -83,7 +83,7 @@ public class PersonDAO extends GenericDAO<Person> {
 	 * составляет запрос. Крутая штука вышла.
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Person> getAll(PersonFinder pf) {
+	public List<Person> findPersons(PersonFinder pf) {
 		Criteria crit;
 		if (pf.getRole() == null) crit = getCriteriaDaoType();
 		else {

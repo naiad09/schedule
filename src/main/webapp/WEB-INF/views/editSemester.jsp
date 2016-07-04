@@ -53,7 +53,7 @@
 							<tbody
 								class="eduProcGraphics ${eduMode} ${qual} course${i.index}">
 								<tr class="selectCurriculum toggleVisiable">
-									<td colspan="7"><div style="width: 600px; float: right;">
+									<td colspan="7"><div style="width: 600px; padding-left: 370px;">
 											<input class="curriculumSelectorInput"
 												placeholder="Найти образовательную программу по названию" /><br>
 											<select class="curriculumSelector">

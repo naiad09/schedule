@@ -123,9 +123,7 @@ function dragDropTd(ev) {
 	return false
 }
 
-function calcTwain(tr){return $(tr).find("input.twainInput").val()}
-
-$(".leftMover.mover").live("mousedown", function(e) {
+$(schedule).on("mousedown", ".leftMover.mover", function(e) {
     var schi = this.parentElement.parentElement.parentElement
     var startX = e.pageX
     var startWidth = schi.clientWidth
@@ -156,7 +154,7 @@ $(".leftMover.mover").live("mousedown", function(e) {
     }
 })
 
-$(".rightMover.mover").live("mousedown", function(e) {
+$(schedule).on("mousedown", ".rightMover.mover", function(e) {
     var schi = this.parentElement.parentElement.parentElement
     var startX = e.pageX
     var startWidth = schi.clientWidth
@@ -244,4 +242,18 @@ scheduleForm.onsubmit = function() {
 		}
 		processDynamicListForm(configSubmit)
 	})
+}
+
+function calcTdWeekplan(td) {
+	var tr = td.parentElement
+	var weekplan = "0000"
+	var j = -1
+	for (var i = 0; tr.cells[i] != td; i++)
+		// считаем пропуски в этой строке
+		j += tr.cells[i].colSpan
+		
+	for (var i = j; i < td.colSpan + j; i++) {
+		weekplan = weekplan.substr(0, i).concat("1").concat(weekplan.substring(i + 1))
+	}
+	return new Weekplan(weekplan + "" + weekplan)
 }

@@ -19,8 +19,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotEmpty;
-
 import schedule.domain.persons.LecturerJob;
 import schedule.domain.schedule.Classroom;
 
@@ -45,23 +43,20 @@ public class Chair {
 	@NotNull
 	private Faculty faculty;
 	
-	@Column(name = "chair_fullname", updatable = false, unique = true)
+	@Column(name = "chair_fullname", updatable = false, unique = true, nullable = false)
 	@Size(max = 100, min = 5)
-	@NotEmpty
 	private String fullName;
 	
-	@Column(name = "chair_shortname", updatable = false, unique = true)
+	@Column(name = "chair_shortname", updatable = false, unique = true, nullable = false)
 	@Size(max = 32, min = 2)
 	private String shortName;
 	
-	@Column(name = "chair_shortname_eng", updatable = false, unique = true)
+	@Column(name = "chair_shortname_eng", updatable = false, unique = true, nullable = false)
 	@Size(max = 8, min = 2)
-	@NotEmpty
 	private String shortNameEng;
 	
 	@OneToMany(mappedBy = "id.chair")
-	@OrderBy("jobType") // , lecturer.degree, lecturer.lastName,
-						// lecturer.firstName, lecturer.middleName")
+	@OrderBy("jobType")
 	@ElementCollection(targetClass = LecturerJob.class)
 	private List<LecturerJob> lecturerJobs = new ArrayList<LecturerJob>(0);
 	

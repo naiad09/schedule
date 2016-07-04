@@ -1,5 +1,4 @@
-<%@page contentType="text/html; charset=utf8"
-	pageEncoding="utf8"%>
+<%@page contentType="text/html; charset=utf8" pageEncoding="utf8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <h1>Войти в систему</h1>
@@ -12,12 +11,12 @@
 		<tr>
 			<td>Логин</td>
 			<td><input type="text" id="username" name="j_username"
-				value="admin" placeholder="Введите логин" required></td>
+				placeholder="Введите логин" required></td>
 		</tr>
 		<tr>
 			<td>Пароль</td>
 			<td><input type="password" id="password" name="j_password"
-				value="admin" placeholder="Введите пароль" required></td>
+				placeholder="Введите пароль" required></td>
 		</tr>
 		<tr>
 			<td></td>
